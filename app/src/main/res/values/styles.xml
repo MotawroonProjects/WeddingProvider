@@ -1,0 +1,72 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:typeface">monospace</item>
+        <item name="fontFamily">@font/ar_font</item>
+        <item name="android:windowBackground">@color/white</item>
+
+    </style>
+
+
+    <style name="tabStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/ar_font</item>
+    </style>
+
+
+    <style name="AppTheme2" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="sliderStyle">@style/Widget.App.Slider</item>
+        <item name="fontFamily">@font/ar_font</item>
+
+
+
+
+    </style>
+
+    <style name="Widget.App.Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>
+        <item name="labelStyle">@style/Widget.App.Tooltip</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Slider" parent="">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorPrimary</item>
+        <item name="colorOnSurface">@color/colorPrimary</item>
+    </style>
+
+    <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:textAppearance">@style/TextAppearance.App.Tooltip</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.App.Tooltip" parent="TextAppearance.MaterialComponents.Tooltip">
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+
+    <style name="button" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearance">@style/buttonShape</item>
+        <item name="materialThemeOverlay">@style/ButtonBgColor</item>
+    </style>
+
+    <style name="buttonShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+
+    </style>
+
+    <style name="ButtonBgColor">
+        <item name="colorPrimary">@color/color2</item>
+    </style>
+
+
+</resources>

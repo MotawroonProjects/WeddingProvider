@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">WeddingProvider</string>
+    <string name="map_api_key">AIzaSyAnjvMAJEmiAv3yeCDUXWv-PboXiT_uaoQ</string>
+    <string name="search_key">AIzaSyAnjvMAJEmiAv3yeCDUXWv-PboXiT_uaoQ</string>
+    <string name="wait">Wait</string>
+    <string name="user_blocked">User Blocked</string>
+    <string name="user_found">User Found</string>
+    <string name="phone">Phone</string>
+    <string name="login">Login</string>
+    <string name="please_enter_code_sent_to">please enter code sent to</string>
+    <string name="please_enter_the_verification_code_sent_to">Please enter the verification code sent to</string>
+    <string name="resend">Resend</string>
+    <string name="confirm">Confirm</string>
+    <string name="field_required">Field Required</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="cancel">Cancel</string>
+    <string name="perm_image_denied">Permission image denied</string>
+    <string name="sign_up">Signup</string>
+    <string name="save">Save</string>
+    <string name="provider_name">Provider Name</string>
+    <string name="location">Location</string>
+    <string name="k_m">K.M</string>
+</resources>
