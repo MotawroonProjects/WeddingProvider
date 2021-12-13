@@ -15,6 +15,7 @@ import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.ActivityVerificationCodeBinding;
 import com.apps.weddingprovider.mvvm.ActivityVerificationMvvm;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
+import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.apps.weddingprovider.uis.activity_sign_up.SignUpActivity;
 
 public class VerificationCodeActivity extends BaseActivity {
@@ -88,9 +89,9 @@ public class VerificationCodeActivity extends BaseActivity {
         startActivity(intent);
     }
     private void navigateToHomeActivity() {
-//        Intent intent = new Intent(this, HomeActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
     }
 }

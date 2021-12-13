@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="lang"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+
+
+            >
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                >
+
+                <ImageView
+                    android:layout_width="132dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="start"
+                    android:src="@drawable/logo_2"
+
+
+                    />
+
+
+                <ImageView
+                    android:id="@+id/imgNotification"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_notification"
+
+                    />
+
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <fragment
+            android:id="@+id/navHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph"
+
+            />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            app:elevation="5dp"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu"
+            app:itemIconTint="@drawable/bottom_nav_item_bg"
+            app:itemTextColor="@drawable/bottom_nav_item_bg"
+            />
+
+
+</LinearLayout>
+</layout>
+

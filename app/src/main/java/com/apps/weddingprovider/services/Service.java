@@ -5,6 +5,7 @@ package com.apps.weddingprovider.services;
 
 import com.apps.weddingprovider.model.PlaceGeocodeData;
 import com.apps.weddingprovider.model.PlaceMapDetailsData;
+import com.apps.weddingprovider.model.StatusResponse;
 import com.apps.weddingprovider.model.UserModel;
 
 import io.reactivex.Observable;
@@ -78,6 +79,9 @@ public interface Service {
     Single<Response<UserModel>> editProfile(@Header("AUTHORIZATION") String token,
                                             @Field("api_key") String api_key,
                                             @Field("name") String name,
+                                            @Field("latitude") String latitude,
+                                            @Field("longitude") String longitude,
+                                            @Field("address") String address,
                                             @Field("user_id") String user_id
 
 
@@ -90,11 +94,43 @@ public interface Service {
                                                          @Part("api_key") RequestBody api_key,
                                                          @Part("name") RequestBody name,
                                                          @Part("user_id") RequestBody user_id,
+                                                         @Part("latitude") RequestBody latitude,
+                                                         @Part("longitude") RequestBody longitude,
+                                                         @Part("address") RequestBody address,
                                                          @Part MultipartBody.Part logo
 
 
     );
 
+    @FormUrlEncoded
+    @POST("api/logout")
+    Single<Response<StatusResponse>> logout(@Header("AUTHORIZATION") String token,
+                                            @Field("api_key") String api_key,
+                                            @Field("phone_token") String phone_token
+
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/firebase-tokens")
+    Single<Response<StatusResponse>> updateFirebasetoken(@Header("AUTHORIZATION") String token,
+                                                         @Field("api_key") String api_key,
+                                                         @Field("phone_token") String phone_token,
+                                                         @Field("user_id") String user_id,
+                                                         @Field("software_type") String software_type
+
+
+    );
+    @FormUrlEncoded
+    @POST("api/contact-us")
+    Single<Response<StatusResponse>> contactUs(@Field("api_key") String api_key,
+                                               @Field("name") String name,
+                                               @Field("email") String email,
+                                               @Field("phone") String phone,
+                                               @Field("message") String message
+
+
+    );
 
 
 }

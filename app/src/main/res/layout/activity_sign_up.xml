@@ -178,10 +178,11 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="8dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="10dp"
+
+                    app:cardElevation="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -192,12 +193,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="12dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/ll">
+                            >
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -231,6 +229,7 @@
                                 android:ellipsize="end"
                                 android:gravity="start"
                                 android:maxLines="2"
+                                android:visibility="gone"
                                 android:paddingStart="5dp"
                                 android:paddingEnd="5dp"
 android:text="@string/k_m"                                android:textAlignment="viewStart"
@@ -239,9 +238,10 @@ android:text="@string/k_m"                                android:textAlignment=
                         </LinearLayout>
                         <fragment
                             android:id="@+id/map"
+                            android:layout_marginTop="8dp"
                             android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp" />
+                            android:layout_height="250dp" />
 
                     </LinearLayout>
 

@@ -36,6 +36,50 @@ public class GeneralMethod {
         }
     }
 
+    @BindingAdapter("user_image")
+    public static void user_image(View view, String imageUrl) {
+
+
+        if (view instanceof CircleImageView) {
+            CircleImageView imageView = (CircleImageView) view;
+            if (imageUrl != null) {
+
+                Glide.with(view.getContext()).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.circle_avatar)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(imageView);
+
+            }
+        } else if (view instanceof RoundedImageView) {
+            RoundedImageView imageView = (RoundedImageView) view;
+
+            if (imageUrl != null) {
+
+                Glide.with(view.getContext()).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.circle_avatar)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(imageView);
+
+            }
+        } else if (view instanceof ImageView) {
+            ImageView imageView = (ImageView) view;
+
+            if (imageUrl != null) {
+
+                Glide.with(view.getContext()).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.circle_avatar)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(imageView);
+            }
+        }
+
+    }
 
 
 }

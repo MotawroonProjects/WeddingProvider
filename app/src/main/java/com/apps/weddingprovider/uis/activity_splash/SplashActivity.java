@@ -12,6 +12,7 @@ import com.apps.weddingprovider.databinding.ActivitySplashBinding;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.preferences.Preferences;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
+import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.apps.weddingprovider.uis.activity_login.LoginActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -81,10 +82,10 @@ public class SplashActivity extends BaseActivity {
 
 
     private void navigateToHomeActivity() {
-//        Intent intent = new Intent(this, HomeActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
     }
 
     @Override

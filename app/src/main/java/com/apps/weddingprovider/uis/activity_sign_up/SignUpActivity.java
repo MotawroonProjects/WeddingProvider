@@ -33,6 +33,7 @@ import com.apps.weddingprovider.mvvm.ActivitySignupMvvm;
 import com.apps.weddingprovider.preferences.Preferences;
 import com.apps.weddingprovider.share.Common;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
+import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -63,6 +64,7 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
     private Marker marker;
     private float zoom = 15.0f;
     private ActivityResultLauncher<String> permissionLauncher;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,25 +74,25 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
     }
 
 
-
     private void getDataFromIntent() {
         Intent intent = getIntent();
-        if(intent.getStringExtra("phone_code")!=null){
-        phone_code = intent.getStringExtra("phone_code");
-        phone = intent.getStringExtra("phone");
-    }}
+        if (intent.getStringExtra("phone_code") != null) {
+            phone_code = intent.getStringExtra("phone_code");
+            phone = intent.getStringExtra("phone");
+        }
+    }
 
     private void initView() {
         preferences = Preferences.getInstance();
-        userModel=preferences.getUserData(this);
+        userModel = preferences.getUserData(this);
         model = new SignUpModel();
-        if(userModel!=null){
+        if (userModel != null) {
             binding.btnSignup.setText(getResources().getString(R.string.edit_profile));
             model.setAddress(userModel.getData().getAddress());
             model.setLat(userModel.getData().getLatitude());
             model.setLng(userModel.getData().getLongitude());
             model.setName(userModel.getData().getName());
-            if(userModel.getData().getLogo()!=null){
+            if (userModel.getData().getLogo() != null) {
                 Picasso.get().load(userModel.getData().getLogo()).into(binding.image);
             }
         }
@@ -102,11 +104,11 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
 
         activitySignupMvvm.getLocationData().observe(this, locationModel -> {
 
-              addMarker(locationModel.getLat(), locationModel.getLng());
-              model.setLat(locationModel.getLat());
-              model.setLng(locationModel.getLng());
+            addMarker(locationModel.getLat(), locationModel.getLng());
+            model.setLat(locationModel.getLat());
+            model.setLng(locationModel.getLng());
 
-              activitySignupMvvm.getGeoData(locationModel.getLat(),locationModel.getLng(),getLang());
+            activitySignupMvvm.getGeoData(locationModel.getLat(), locationModel.getLng(), getLang());
 
 
         });
@@ -155,8 +157,16 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
             }
         });
         activitySignupMvvm.userModelMutableLiveData.observe(this, userModel -> {
-          setUserModel(userModel);
-          navigateToHomeActivity();
+            setUserModel(userModel);
+
+            if (this.userModel == null) {
+                navigateToHomeActivity();
+            }
+            else{
+                setResult(RESULT_OK);
+                finish();
+            }
+
         });
 
         binding.flImage.setOnClickListener(view -> openSheet());
@@ -174,26 +184,33 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
 
         binding.btnSignup.setOnClickListener(view -> {
             if (model.isDataValid(this)) {
-                if (model.isDataValid(this)) {
-                    if (uri == null) {
+
+                if (uri == null) {
+                    if (userModel == null) {
                         activitySignupMvvm.signupWithOutImage(this, model, phone_code, phone);
                     } else {
+                        activitySignupMvvm.updateProfileWithOutImage(this, model, userModel);
+                    }
+                } else {
+                    if (userModel == null) {
                         activitySignupMvvm.signupWithImage(this, model, phone_code, phone, uri);
+                    } else {
+                        activitySignupMvvm.updateProfileWithImage(this, model, uri, userModel);
                     }
                 }
+
             }
         });
         binding.editSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i== EditorInfo.IME_ACTION_SEARCH)
-            {
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
                 String query = binding.editSearch.getText().toString().trim();
-                if (!TextUtils.isEmpty(query))
-                {
-                    activitySignupMvvm.Search(query,getLang());
+                if (!TextUtils.isEmpty(query)) {
+                    activitySignupMvvm.Search(query, getLang());
                 }
             }
             return false;
-        });        updateUI();
+        });
+        updateUI();
         checkPermission();
     }
 
@@ -251,6 +268,7 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
 
         }
     }
+
     public void openSheet() {
         binding.expandLayout.setExpanded(true, true);
     }
@@ -343,15 +361,17 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         return Uri.parse(MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "", ""));
     }
+
     protected void setUserModel(UserModel userModel) {
         Preferences preferences = Preferences.getInstance();
         preferences.createUpdateUserData(this, userModel);
     }
+
     private void navigateToHomeActivity() {
-//        Intent intent = new Intent(this, HomeActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
     }
 
 }
