@@ -22,7 +22,6 @@ public class VerificationCodeActivity extends BaseActivity {
     private String phone_code = "";
     private String phone = "";
     private ActivityVerificationMvvm activityVerificationMvvm;
-    private ActivityResultLauncher<Intent> launcher;
 
 
     @Override
@@ -60,8 +59,7 @@ public class VerificationCodeActivity extends BaseActivity {
         });
         activityVerificationMvvm.userModelMutableLiveData.observe(this, userModel -> {
             setUserModel(userModel);
-            setResult(RESULT_OK);
-            finish();
+           navigateToHomeActivity();
         });
         activityVerificationMvvm.found.observe(this, s -> {
             if (s != null) {
@@ -79,12 +77,7 @@ public class VerificationCodeActivity extends BaseActivity {
             }
         });
 
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK) {
-                setResult(RESULT_OK);
-                finish();
-            }
-        });
+
 
     }
 
@@ -92,7 +85,12 @@ public class VerificationCodeActivity extends BaseActivity {
         Intent intent = new Intent(this, SignUpActivity.class);
         intent.putExtra("phone_code", phone_code);
         intent.putExtra("phone", phone);
-        launcher.launch(intent);
+        startActivity(intent);
     }
-
+    private void navigateToHomeActivity() {
+//        Intent intent = new Intent(this, HomeActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivity(intent);
+//        finish();
+    }
 }

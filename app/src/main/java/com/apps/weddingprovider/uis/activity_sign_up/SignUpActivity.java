@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -19,12 +20,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.ActivitySignUpBinding;
 import com.apps.weddingprovider.model.SignUpModel;
+import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.mvvm.ActivitySignupMvvm;
 import com.apps.weddingprovider.preferences.Preferences;
 import com.apps.weddingprovider.share.Common;
@@ -45,6 +49,7 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
     private ActivitySignUpBinding binding;
     private SignUpModel model;
     private Preferences preferences;
+    private UserModel userModel;
     private ActivitySignupMvvm activitySignupMvvm;
     private String phone_code, phone;
     private ActivityResultLauncher<Intent> launcher;
@@ -66,22 +71,53 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
         initView();
     }
 
+
+
     private void getDataFromIntent() {
         Intent intent = getIntent();
+        if(intent.getStringExtra("phone_code")!=null){
         phone_code = intent.getStringExtra("phone_code");
         phone = intent.getStringExtra("phone");
-    }
+    }}
 
     private void initView() {
         preferences = Preferences.getInstance();
+        userModel=preferences.getUserData(this);
+        model = new SignUpModel();
+        if(userModel!=null){
+            binding.btnSignup.setText(getResources().getString(R.string.edit_profile));
+            model.setAddress(userModel.getData().getAddress());
+            model.setLat(userModel.getData().getLatitude());
+            model.setLng(userModel.getData().getLongitude());
+            model.setName(userModel.getData().getName());
+            if(userModel.getData().getLogo()!=null){
+                Picasso.get().load(userModel.getData().getLogo()).into(binding.image);
+            }
+        }
+        binding.setModel(model);
+
+
         activitySignupMvvm = ViewModelProviders.of(this).get(ActivitySignupMvvm.class);
         activitySignupMvvm.setContext(this);
 
         activitySignupMvvm.getLocationData().observe(this, locationModel -> {
-            //  addMarker(locationModel.getLat(), locationModel.getLng());
+
+              addMarker(locationModel.getLat(), locationModel.getLng());
+              model.setLat(locationModel.getLat());
+              model.setLng(locationModel.getLng());
+
+              activitySignupMvvm.getGeoData(locationModel.getLat(),locationModel.getLng(),getLang());
+
+
         });
-        model = new SignUpModel();
-        binding.setModel(model);
+        activitySignupMvvm.getAddress().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                model.setAddress(s);
+                binding.tvAddress.setText(s);
+            }
+        });
+
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 if (selectedReq == READ_REQ) {
@@ -119,9 +155,8 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
             }
         });
         activitySignupMvvm.userModelMutableLiveData.observe(this, userModel -> {
-            setUserModel(userModel);
-            setResult(RESULT_OK);
-            finish();
+          setUserModel(userModel);
+          navigateToHomeActivity();
         });
 
         binding.flImage.setOnClickListener(view -> openSheet());
@@ -148,7 +183,17 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
                 }
             }
         });
-        updateUI();
+        binding.editSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i== EditorInfo.IME_ACTION_SEARCH)
+            {
+                String query = binding.editSearch.getText().toString().trim();
+                if (!TextUtils.isEmpty(query))
+                {
+                    activitySignupMvvm.Search(query,getLang());
+                }
+            }
+            return false;
+        });        updateUI();
         checkPermission();
     }
 
@@ -298,6 +343,15 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         return Uri.parse(MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "", ""));
     }
-
+    protected void setUserModel(UserModel userModel) {
+        Preferences preferences = Preferences.getInstance();
+        preferences.createUpdateUserData(this, userModel);
+    }
+    private void navigateToHomeActivity() {
+//        Intent intent = new Intent(this, HomeActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivity(intent);
+//        finish();
+    }
 
 }

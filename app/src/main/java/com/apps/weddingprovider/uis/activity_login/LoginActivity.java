@@ -19,7 +19,6 @@ public class LoginActivity extends BaseActivity {
     private String phone_code = "";
     private String phone = "";
     private LoginModel model;
-    private ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +31,7 @@ public class LoginActivity extends BaseActivity {
     private void initView() {
         model = new LoginModel();
         binding.setModel(model);
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK) {
-                setResult(RESULT_OK);
-                finish();
-            }
-        });
+
 
         binding.btnLogin.setOnClickListener(v -> {
             if (model.isDataValid(this)) {
@@ -50,6 +44,6 @@ public class LoginActivity extends BaseActivity {
         Intent intent = new Intent(this, VerificationCodeActivity.class);
         intent.putExtra("phone_code", model.getPhone_code());
         intent.putExtra("phone", model.getPhone());
-        launcher.launch(intent);
+        startActivity(intent);
     }
 }

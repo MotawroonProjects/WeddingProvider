@@ -4,6 +4,7 @@ package com.apps.weddingprovider.services;
 
 
 import com.apps.weddingprovider.model.PlaceGeocodeData;
+import com.apps.weddingprovider.model.PlaceMapDetailsData;
 import com.apps.weddingprovider.model.UserModel;
 
 import io.reactivex.Observable;
@@ -27,6 +28,12 @@ public interface Service {
                                                   @Query(value = "language") String language,
                                                   @Query(value = "key") String key);
 
+    @GET("place/findplacefromtext/json")
+    Single<Response<PlaceMapDetailsData>> searchOnMap(@Query(value = "inputtype") String inputtype,
+                                                      @Query(value = "input") String input,
+                                                      @Query(value = "fields") String fields,
+                                                      @Query(value = "language") String language,
+                                                      @Query(value = "key") String key);
 
 
 
@@ -37,11 +44,14 @@ public interface Service {
                                       @Field("phone") String phone);
 
     @FormUrlEncoded
-    @POST("api/client-register")
+    @POST("api/provider-register")
     Single<Response<UserModel>> signUp(@Field("api_key") String api_key,
                                        @Field("name") String name,
                                        @Field("phone_code") String phone_code,
                                        @Field("phone") String phone,
+                                       @Field("latitude") String latitude,
+                                       @Field("longitude") String longitude,
+                                       @Field("address") String address,
                                        @Field("software_type") String software_type
 
 
@@ -49,11 +59,14 @@ public interface Service {
 
 
     @Multipart
-    @POST("api/client-register")
+    @POST("api/provider-register")
     Observable<Response<UserModel>> signUpwithImage(@Part("api_key") RequestBody api_key,
                                                     @Part("name") RequestBody name,
                                                     @Part("phone_code") RequestBody phone_code,
                                                     @Part("phone") RequestBody phone,
+                                                    @Part("latitude") RequestBody latitude,
+                                                    @Part("longitude") RequestBody longitude,
+                                                    @Part("address") RequestBody address,
                                                     @Part("software_type") RequestBody software_type,
                                                     @Part MultipartBody.Part logo
 

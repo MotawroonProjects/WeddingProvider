@@ -9,7 +9,10 @@ import androidx.databinding.DataBindingUtil;
 
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.ActivitySplashBinding;
+import com.apps.weddingprovider.model.UserModel;
+import com.apps.weddingprovider.preferences.Preferences;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
+import com.apps.weddingprovider.uis.activity_login.LoginActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +26,8 @@ import io.reactivex.schedulers.Schedulers;
 public class SplashActivity extends BaseActivity {
     private ActivitySplashBinding binding;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private Preferences preferences;
+    private UserModel userModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +38,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initView() {
-
+        preferences = Preferences.getInstance();
+        userModel = preferences.getUserData(this);
         Observable.timer(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -45,7 +51,11 @@ public class SplashActivity extends BaseActivity {
 
                     @Override
                     public void onNext(@NonNull Long aLong) {
-                       navigateToHomeActivity();
+                        if(userModel!=null){
+                        navigateToHomeActivity();}
+                        else{
+                            navigateToLoginActivity();
+                        }
                     }
 
                     @Override
@@ -60,7 +70,13 @@ public class SplashActivity extends BaseActivity {
                 });
 
 
+    }
 
+    private void navigateToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
     }
 
 

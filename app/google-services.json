@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "78623681406",
+    "project_id": "weeding-ios",
+    "storage_bucket": "weeding-ios.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78623681406:android:4457f8a7a0ea763561212f",
+        "android_client_info": {
+          "package_name": "com.apps.wedding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78623681406-1o4e10kdmjftaad3j53el1ii773htifl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.wedding",
+            "certificate_hash": "02234e9655300f70fcb3d1f946434728fcb0fcea"
+          }
+        },
+        {
+          "client_id": "78623681406-uf99690ldpnrckts3bqjs03uorp78nc5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTYeiXLNYDamyfvxi6cbRHmTWKwwKIzOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78623681406-uf99690ldpnrckts3bqjs03uorp78nc5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "78623681406-lg860b9tju50ui3a6r6gf3oiq6cuepo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.motaweron.weeding"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78623681406:android:63d990c06609e43061212f",
+        "android_client_info": {
+          "package_name": "com.apps.weddingprovider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78623681406-nckhtlgur5s6sb86nejfh7k466bkp251.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.weddingprovider",
+            "certificate_hash": "02234e9655300f70fcb3d1f946434728fcb0fcea"
+          }
+        },
+        {
+          "client_id": "78623681406-uf99690ldpnrckts3bqjs03uorp78nc5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTYeiXLNYDamyfvxi6cbRHmTWKwwKIzOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78623681406-uf99690ldpnrckts3bqjs03uorp78nc5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "78623681406-lg860b9tju50ui3a6r6gf3oiq6cuepo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.motaweron.weeding"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
