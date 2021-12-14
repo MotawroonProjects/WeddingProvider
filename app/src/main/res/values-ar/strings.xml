@@ -40,4 +40,18 @@
     <string name="message">الرساله</string>
     <string name="send">ارسال</string>
     <string name="suc">تم بنجاح</string>
+    <string name="service_name">اسم الخدمه</string>
+    <string name="price">السعر</string>
+    <string name="department">القسم</string>
+    <string name="description">الوصف</string>
+    <string name="basic_items">بنود اساسيه</string>
+    <string name="additions">اضافات</string>
+    <string name="maximum_reservation">الحد الاقصى للحجز </string>
+    <string name="main_image">الصوره الرئيسيه</string>
+    <string name="video">فيديو</string>
+    <string name="add_images">اضف صور</string>
+    <string name="max_ad_photo">اقصى عدد 10 صور</string>
+    <string name="basic_item">بند اساسى</string>
+    <string name="enter_basic_item">ادخل بند اساسى</string>
+    <string name="add">اضافه</string>
 </resources>

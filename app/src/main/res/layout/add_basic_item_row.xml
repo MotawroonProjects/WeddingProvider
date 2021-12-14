@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.apps.weddingprovider.model.AddBaiscItemModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <EditText
+            error="@{model.error_name}"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="2"
+            android:background="@drawable/rounded_white_strock_gray4"
+            android:hint="@string/enter_basic_item"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:text="@={model.name}"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray7"
+            android:textSize="14sp" />
+
+        <EditText
+            error="@{model.error_detials}"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_white_strock_gray4"
+            android:hint="@string/price"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:text="@={model.detials}"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray7"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imDelete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_delete" />
+    </LinearLayout>
+</layout>

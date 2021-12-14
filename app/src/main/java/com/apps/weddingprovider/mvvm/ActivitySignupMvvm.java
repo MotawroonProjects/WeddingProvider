@@ -290,7 +290,7 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
                     if (placeMapDetailsDataResponse.body().getCandidates().size() > 0) {
 
                          address.postValue(placeMapDetailsDataResponse.body().getCandidates().get(0).getFormatted_address().replace("Unnamed Road,", ""));
-                        LocationModel locationModel = new LocationModel(placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLat(), placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLng());
+                        LocationModel locationModel = new LocationModel(placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLat(), placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLng(),true);
                         locationModelMutableLiveData.setValue(locationModel);
 
                     }
@@ -403,7 +403,7 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
     public void onLocationChanged(Location location) {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
-        LocationModel locationModel = new LocationModel(lat, lng);
+        LocationModel locationModel = new LocationModel(lat,lng,false);
         locationModelMutableLiveData.setValue(locationModel);
         if (googleApiClient != null) {
             LocationServices.getFusedLocationProviderClient(activity).removeLocationUpdates(locationCallback);

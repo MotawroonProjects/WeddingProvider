@@ -26,6 +26,7 @@ import androidx.navigation.Navigation;
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.FragmentProfileBinding;
 import com.apps.weddingprovider.mvvm.FragmentProfileMvvm;
+import com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity;
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
 import com.apps.weddingprovider.uis.activity_contact_us.ContactUsActivity;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
@@ -106,6 +107,13 @@ public class FragmentProfile extends BaseFragment {
                     }
                 }
         );
+        binding.llAddService.setOnClickListener(view -> {
+                    if (getUserModel() != null) {
+                        navigateToAddServiceActivity();
+                        //Navigation.findNavController(binding.getRoot()).navigate(R.id.editProfileFragment);
+                    }
+                }
+        );
         binding.llLogout.setOnClickListener(view -> {
             if (getUserModel() == null) {
                 logout();
@@ -114,6 +122,12 @@ public class FragmentProfile extends BaseFragment {
             }
 
         });
+    }
+
+    private void navigateToAddServiceActivity() {
+        Intent intent = new Intent(activity, AddServiceActivity.class);
+        startActivity(intent);
+
     }
 
     private void navigateToLoginActivity() {

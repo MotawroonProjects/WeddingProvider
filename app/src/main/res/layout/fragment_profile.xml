@@ -108,7 +108,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_edit_account"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/edit_profile"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
                 <View
@@ -141,7 +141,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_contactus"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/contact_us"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
 <View
@@ -174,7 +174,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_service"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -182,7 +182,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/my_services"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
                 <View
@@ -207,7 +207,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_add"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -215,7 +215,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/add_service"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
                 <View
@@ -240,7 +240,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_scan"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -248,7 +248,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/scan_qr_code"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
                 <View
@@ -273,7 +273,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_star_half"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -281,7 +281,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/rate_app"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
                 <View
@@ -306,7 +306,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_logout"
-                        app:tint="@color/black" />
+                        app:tint="@color/gray21" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -314,7 +314,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/logout"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray21"
                         android:textSize="15sp" />
                 </LinearLayout>
 

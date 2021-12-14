@@ -11,6 +11,7 @@ import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.ActivitySplashBinding;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.preferences.Preferences;
+import com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.apps.weddingprovider.uis.activity_login.LoginActivity;
@@ -74,8 +75,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void navigateToLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        Intent intent = new Intent(this, AddServiceActivity.class);
+       // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();
     }

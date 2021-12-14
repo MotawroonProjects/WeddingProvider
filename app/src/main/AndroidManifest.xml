@@ -32,6 +32,9 @@
             android:name=".uis.activity_notification.NotificationActivity"
             android:exported="false" />
         <activity
+            android:name=".uis.activity_add_service.AddServiceActivity"
+            android:exported="false" />
+        <activity
             android:name=".uis.activity_contact_us.ContactUsActivity"
             android:exported="false" />
         <activity

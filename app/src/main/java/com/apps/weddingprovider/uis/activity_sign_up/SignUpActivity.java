@@ -107,9 +107,9 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
             addMarker(locationModel.getLat(), locationModel.getLng());
             model.setLat(locationModel.getLat());
             model.setLng(locationModel.getLng());
-
-            activitySignupMvvm.getGeoData(locationModel.getLat(), locationModel.getLng(), getLang());
-
+            if (!locationModel.isSearch()) {
+                activitySignupMvvm.getGeoData(locationModel.getLat(), locationModel.getLng(), getLang());
+            }
 
         });
         activitySignupMvvm.getAddress().observe(this, new Observer<String>() {
@@ -161,8 +161,7 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
 
             if (this.userModel == null) {
                 navigateToHomeActivity();
-            }
-            else{
+            } else {
                 setResult(RESULT_OK);
                 finish();
             }
