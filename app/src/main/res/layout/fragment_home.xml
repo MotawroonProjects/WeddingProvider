@@ -12,21 +12,48 @@
         android:background="@color/gray13"
 
         >
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabBackground="@color/white"
-            app:tabIndicatorColor="@color/color1"
-            app:tabMode="fixed"
-            app:tabMaxWidth="0dp"
-            app:tabIndicatorHeight="5dp"
-            app:tabTextColor="@color/gray2"
-            app:tabSelectedTextColor="@color/color1"
-            app:tabTextAppearance="@style/tabStyle"
             android:background="@color/white"
-            />
+            android:orientation="horizontal"
+            >
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabBackground="@color/white"
+                app:tabIndicatorColor="@color/color1"
+                app:tabMode="fixed"
+                app:tabMaxWidth="0dp"
+                app:tabIndicatorHeight="5dp"
+                app:tabTextColor="@color/gray2"
+                app:tabSelectedTextColor="@color/color1"
+                app:tabTextAppearance="@style/tabStyle"
+                android:background="@color/white"
+                />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="@string/calender"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    >
+
+                </TextView>
+            </FrameLayout>
+        </LinearLayout>
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"

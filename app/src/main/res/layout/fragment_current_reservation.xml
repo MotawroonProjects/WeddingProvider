@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray13"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".uis.activity_home.fragments_home_navigaion.FragmentCurrentReservation">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cardNoData"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:cardElevation="2dp"
+               app:cardCornerRadius="5dp"
+               app:contentPadding="16sp"
+               app:cardBackgroundColor="@color/white"
+               android:layout_gravity="center"
+               android:visibility="gone"
+               android:layout_marginStart="8dp"
+               android:layout_marginTop="8dp"
+               android:layout_marginEnd="8dp"
+               android:layout_marginBottom="60dp"
+               >
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center"
+                   android:gravity="center"
+                   android:orientation="vertical"
+                   >
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="@color/black"
+                       android:textSize="36sp"
+                       android:text="@string/sorry"
+                       android:textStyle="bold"
+                       android:layout_gravity="center"
+                       />
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="@color/black"
+                       android:textSize="16sp"
+                       android:text="@string/no_reservation_to_show"
+                       android:layout_gravity="center"
+                       android:layout_marginTop="12dp"
+                       />
+               </LinearLayout>
+           </androidx.cardview.widget.CardView>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</layout>

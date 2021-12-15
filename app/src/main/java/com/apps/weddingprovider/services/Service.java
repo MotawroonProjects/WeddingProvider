@@ -1,8 +1,8 @@
 package com.apps.weddingprovider.services;
 
 
-
-
+import com.apps.weddingprovider.model.DatesDataModel;
+import com.apps.weddingprovider.model.ReservionDataModel;
 import com.apps.weddingprovider.model.PlaceGeocodeData;
 import com.apps.weddingprovider.model.PlaceMapDetailsData;
 import com.apps.weddingprovider.model.StatusResponse;
@@ -35,7 +35,6 @@ public interface Service {
                                                       @Query(value = "fields") String fields,
                                                       @Query(value = "language") String language,
                                                       @Query(value = "key") String key);
-
 
 
     @FormUrlEncoded
@@ -121,16 +120,47 @@ public interface Service {
 
 
     );
+
     @FormUrlEncoded
     @POST("api/contact-us")
     Single<Response<StatusResponse>> contactUs(@Field("api_key") String api_key,
                                                @Field("name") String name,
                                                @Field("email") String email,
-                                               @Field("phone") String phone,
+                                               @Field("subject") String phone,
                                                @Field("message") String message
 
 
     );
 
+    @FormUrlEncoded
+    @POST("api/change-status")
+    Single<Response<StatusResponse>> deleteReservation(@Header("AUTHORIZATION") String token,
+                                                       @Field("api_key") String api_key,
+                                                       @Field("user_id") String user_id,
+                                                       @Field("reservation_id") String reservation_id,
+                                                       @Field("status") String status
+
+    );
+
+    @GET("api/new-provider-reservations")
+    Single<Response<ReservionDataModel>> getCurrentReservation(@Header("AUTHORIZATION") String token,
+                                                               @Query(value = "api_key") String api_key,
+                                                               @Query(value = "user_id") String user_id
+    );
+
+    @GET("api/confirmed-provider-reservations")
+    Single<Response<ReservionDataModel>> getPreviousReservation(@Header("AUTHORIZATION") String token,
+                                                                @Query(value = "api_key") String api_key,
+                                                                @Query(value = "user_id") String user_id
+    );
+
+    @GET("api/list-of-reservation-dates")
+    Single<Response<DatesDataModel>> getReservationDates(@Header("AUTHORIZATION") String token,
+                                                         @Query(value = "api_key") String api_key,
+                                                         @Query(value = "user_id") String user_id,
+                                                         @Query(value = "service_id") String service_id
+
+
+    );
 
 }

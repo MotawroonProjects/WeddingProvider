@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="lang"
+            type="String" />
+
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/llData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone"
+            >
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="31dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:rotation='@{lang.equals("en")?180:0}'
+                            android:src="@drawable/ic_menu" />
+
+                        <TextView
+                            android:id="@+id/tvDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+
+                    <com.applandeo.materialcalendarview.CalendarView
+                        android:id="@+id/calendarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:abbreviationsBarColor="@color/white"
+                        app:abbreviationsLabelsColor="@color/black"
+                        app:anotherMonthsDaysLabelsColor="@color/gray8"
+                        app:daysLabelsColor="@color/black"
+                        app:disabledDaysLabelsColor="@color/gray8"
+                        app:eventsEnabled="true"
+                        app:headerColor="@color/white"
+                        app:headerLabelColor="@color/white"
+                        app:pagesColor="@color/white"
+                        app:selectionColor="@color/colorPrimary"
+                        app:selectionLabelColor="@color/white"
+                        app:swipeEnabled="true"
+                        app:todayLabelColor="@color/gray4"
+                        app:type="classic"
+
+                        />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+</layout>

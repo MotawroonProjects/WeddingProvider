@@ -22,7 +22,8 @@
         >
 
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
@@ -65,17 +66,9 @@
                             android:longClickable="false"
                             app:civ_border_color="@color/white"
                             app:civ_border_width="1dp"
+                            android:src="@drawable/circle_avatar"
                             app:civ_circle_background_color="@color/white" />
 
-                        <ImageView
-                            android:id="@+id/icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/circle_white"
-                            android:clickable="false"
-                            android:longClickable="false"
-                            android:padding="8dp"
-                            android:src="@drawable/circle_avatar" />
 
 
                     </FrameLayout>
@@ -110,71 +103,51 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
 
+                    >
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/gray6"
 
-                        <EditText
-                            error="@{model.error_name}"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:background="@color/transparent"
-                            android:hint="@string/provider_name"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="8dp"
-                            android:singleLine="true"
-                            android:text="@={model.name}"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/gray10"
-                            android:textSize="14sp"
-                            tools:ignore="TextFields" />
+                        />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:background="@color/gray11" />
-                    </LinearLayout>
+                    <EditText
+                        error="@{model.error_name}"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/transparent"
+                        android:hint="@string/provider_name"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:text="@={model.name}"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray10"
+                        android:textSize="14sp"
+                        tools:ignore="TextFields" />
+
 
                 </LinearLayout>
 
-
-
-                <EditText
-                    android:id="@+id/editSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:hint="@string/location"
-                    android:paddingStart="10dp"
-                    android:background="@color/white"
-                    android:paddingEnd="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    error="@{model.error_address}"
-                    android:text="@={model.address}"
-
-
-                    />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
-                    android:background="@color/gray11" />
+                    android:background="@color/gray7" />
+
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -183,65 +156,57 @@
                     app:cardCornerRadius="10dp"
 
                     app:cardElevation="4dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            >
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:padding="3dp"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="8dp"
-                                android:src="@drawable/ic_pin"
-                                app:tint="@color/color4" />
+                                android:src="@drawable/places_ic_search"
+                                app:tint="@color/gray6" />
 
-                            <TextView
-                                android:id="@+id/tvAddress"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="start"
-                                android:maxLines="2"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:text="شارع المصنع شبين الكوم"
-                                android:textAlignment="viewStart"
-                                android:textColor="@color/gray2"
-                                android:textSize="14sp" />
-<Space
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:gravity="start"
-                                android:maxLines="2"
-                                android:visibility="gone"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-android:text="@string/k_m"                                android:textAlignment="viewStart"
-                                android:textColor="@color/gray2"
-                                android:textSize="14sp" />
+                            <EditText
+                                android:id="@+id/editSearch"
+                                error="@{model.error_address}"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@color/white"
+                                android:gravity="center_vertical"
+                                android:hint="@string/search_for_location"
+                                android:imeOptions="actionSearch"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:singleLine="true"
+                                android:text="@={model.address}"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+
+
+                                />
+
                         </LinearLayout>
+
                         <fragment
                             android:id="@+id/map"
-                            android:layout_marginTop="8dp"
-                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:name="com.apps.weddingprovider.uis.activity_base.FragmentMapTouchListener"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp" />
+                            android:layout_height="250dp"
+                            android:layout_marginTop="8dp" />
 
                     </LinearLayout>
 
@@ -258,12 +223,12 @@ android:text="@string/k_m"                                android:textAlignment=
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/rounded_primary"
                     android:minWidth="180dp"
-                    android:text="@string/save"
+                    android:text="@string/sign_up"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
         <net.cachapa.expandablelayout.ExpandableLayout
             android:id="@+id/expandLayout"

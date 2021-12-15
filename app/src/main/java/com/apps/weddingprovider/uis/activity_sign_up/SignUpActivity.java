@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
@@ -33,7 +34,9 @@ import com.apps.weddingprovider.mvvm.ActivitySignupMvvm;
 import com.apps.weddingprovider.preferences.Preferences;
 import com.apps.weddingprovider.share.Common;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
+import com.apps.weddingprovider.uis.activity_base.FragmentMapTouchListener;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -61,7 +64,6 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
     private int selectedReq = 0;
     private Uri uri = null;
     private GoogleMap mMap;
-    private Marker marker;
     private float zoom = 15.0f;
     private ActivityResultLauncher<String> permissionLauncher;
 
@@ -83,47 +85,34 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
     }
 
     private void initView() {
-        preferences = Preferences.getInstance();
-        userModel = preferences.getUserData(this);
-        model = new SignUpModel();
-        if (userModel != null) {
-            binding.btnSignup.setText(getResources().getString(R.string.edit_profile));
-            model.setAddress(userModel.getData().getAddress());
-            model.setLat(userModel.getData().getLatitude());
-            model.setLng(userModel.getData().getLongitude());
-            model.setName(userModel.getData().getName());
-            if (userModel.getData().getLogo() != null) {
-                Picasso.get().load(userModel.getData().getLogo()).into(binding.image);
-            }
-        }
-        binding.setModel(model);
-
-
         activitySignupMvvm = ViewModelProviders.of(this).get(ActivitySignupMvvm.class);
         activitySignupMvvm.setContext(this);
-
+        activitySignupMvvm.setLang(getLang());
         activitySignupMvvm.getLocationData().observe(this, locationModel -> {
 
             addMarker(locationModel.getLat(), locationModel.getLng());
             model.setLat(locationModel.getLat());
             model.setLng(locationModel.getLng());
-            if (!locationModel.isSearch()) {
-                activitySignupMvvm.getGeoData(locationModel.getLat(), locationModel.getLng(), getLang());
-            }
+
 
         });
-        activitySignupMvvm.getAddress().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                model.setAddress(s);
-                binding.tvAddress.setText(s);
-            }
+
+        activitySignupMvvm.userModelMutableLiveData.observe(this, userModel -> {
+            setUserModel(userModel);
+            setResult(RESULT_OK);
+            finish();
+
         });
+
+        preferences = Preferences.getInstance();
+        userModel = preferences.getUserData(this);
+        model = new SignUpModel();
+        binding.setModel(model);
+
 
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 if (selectedReq == READ_REQ) {
-                    binding.icon.setVisibility(View.GONE);
 
                     uri = result.getData().getData();
                     File file = new File(Common.getImagePath(this, uri));
@@ -131,7 +120,6 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
 
                 } else if (selectedReq == CAMERA_REQ) {
                     Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
-                    binding.icon.setVisibility(View.GONE);
                     uri = getUriFromBitmap(bitmap);
                     if (uri != null) {
                         String path = Common.getImagePath(this, uri);
@@ -155,17 +143,6 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
 
             }
-        });
-        activitySignupMvvm.userModelMutableLiveData.observe(this, userModel -> {
-            setUserModel(userModel);
-
-            if (this.userModel == null) {
-                navigateToHomeActivity();
-            } else {
-                setResult(RESULT_OK);
-                finish();
-            }
-
         });
 
         binding.flImage.setOnClickListener(view -> openSheet());
@@ -204,11 +181,14 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 String query = binding.editSearch.getText().toString().trim();
                 if (!TextUtils.isEmpty(query)) {
+                    Log.e("q", query);
                     activitySignupMvvm.Search(query, getLang());
                 }
             }
             return false;
         });
+
+
         updateUI();
         checkPermission();
     }
@@ -228,6 +208,9 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
         getSupportFragmentManager().beginTransaction().replace(R.id.map, supportMapFragment).commit();
         supportMapFragment.getMapAsync(this);
 
+        FragmentMapTouchListener fragmentMapTouchListener = (FragmentMapTouchListener) getSupportFragmentManager().findFragmentById(R.id.map);
+        fragmentMapTouchListener.setListener(() -> binding.scrollView.requestDisallowInterceptTouchEvent(true));
+
 
     }
 
@@ -244,6 +227,20 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
 
             }
 
+
+            if (userModel != null) {
+                binding.btnSignup.setText(getResources().getString(R.string.edit_profile));
+                model.setAddress(userModel.getData().getAddress());
+                model.setLat(userModel.getData().getLatitude());
+                model.setLng(userModel.getData().getLongitude());
+                model.setName(userModel.getData().getName());
+                if (userModel.getData().getLogo() != null) {
+                    Picasso.get().load(userModel.getData().getLogo()).into(binding.image);
+                }
+                addMarker(userModel.getData().getLatitude(), userModel.getData().getLongitude());
+            }
+            binding.setModel(model);
+
         }
     }
 
@@ -251,11 +248,10 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
         if (activitySignupMvvm.getGoogleMap().getValue() != null) {
             mMap = activitySignupMvvm.getGoogleMap().getValue();
         }
-        // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), zoom));
-        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), zoom));
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

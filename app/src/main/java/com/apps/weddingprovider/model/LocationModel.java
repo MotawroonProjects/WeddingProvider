@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class LocationModel implements Serializable {
     private double lat;
     private double lng;
-    private boolean search;
+    private String address;
 
-    public LocationModel(double lat, double lng, boolean search) {
+    public LocationModel(double lat, double lng, String address) {
         this.lat = lat;
         this.lng = lng;
-        this.search = search;
+        this.address = address;
     }
 
     public double getLat() {
@@ -29,11 +29,11 @@ public class LocationModel implements Serializable {
         this.lng = lng;
     }
 
-    public boolean isSearch() {
-        return search;
+    public String getAddress() {
+        return address;
     }
 
-    public void setSearch(boolean search) {
-        this.search = search;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -54,28 +54,32 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 
-public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private Context context;
     public MutableLiveData<UserModel> userModelMutableLiveData = new MutableLiveData<>();
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private MutableLiveData<LocationModel> locationModelMutableLiveData;
-    private MutableLiveData<String> address;
     private MutableLiveData<GoogleMap> mMap;
     private CompositeDisposable disposable = new CompositeDisposable();
     private SignUpActivity activity;
+    private String lang = "ar";
 
     public ActivitySignupMvvm(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
     }
 
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     public void signupWithOutImage(Context context, SignUpModel model, String phone_code, String phone) {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
-        Api.getService(Tags.base_url).signUp(Tags.api_key,  model.getName(), phone_code.replace("+", ""), phone,model.getLat()+"",model.getLng()+"",model.getAddress(), "android").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
+        Api.getService(Tags.base_url).signUp(Tags.api_key, model.getName(), phone_code.replace("+", ""), phone, model.getLat() + "", model.getLng() + "", model.getAddress(), "android").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -110,11 +114,11 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
         dialog.setCancelable(false);
         dialog.show();
         RequestBody api_part = Common.getRequestBodyText(Tags.api_key);
-        RequestBody name_part = Common.getRequestBodyText( model.getName());
+        RequestBody name_part = Common.getRequestBodyText(model.getName());
         RequestBody soft_part = Common.getRequestBodyText("android");
         RequestBody phone_part = Common.getRequestBodyText(phone);
-        RequestBody lat_part = Common.getRequestBodyText( model.getLat()+"");
-        RequestBody lng_part = Common.getRequestBodyText(model.getLng()+"");
+        RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
+        RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
         RequestBody phone_code_part = Common.getRequestBodyText(phone_code.replace("+", ""));
 
@@ -122,7 +126,7 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
         MultipartBody.Part image = Common.getMultiPart(context, uri, "logo");
 
 
-        Api.getService(Tags.base_url).signUpwithImage(api_part, name_part, phone_code_part, phone_part,lat_part,lng_part,address_part, soft_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
+        Api.getService(Tags.base_url).signUpwithImage(api_part, name_part, phone_code_part, phone_part, lat_part, lng_part, address_part, soft_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -159,7 +163,7 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
-        Api.getService(Tags.base_url).editProfile("Bearer " + userModel.getData().getToken(),Tags.api_key, model.getName() ,model.getLat()+"",model.getLng()+"",model.getAddress(), userModel.getData().getId()+"").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
+        Api.getService(Tags.base_url).editProfile("Bearer " + userModel.getData().getToken(), Tags.api_key, model.getName(), model.getLat() + "", model.getLng() + "", model.getAddress(), userModel.getData().getId() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -189,24 +193,23 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
         });
     }
 
-    public void updateProfileWithImage(Context context, SignUpModel model, Uri uri,UserModel userModel) {
+    public void updateProfileWithImage(Context context, SignUpModel model, Uri uri, UserModel userModel) {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         RequestBody api_part = Common.getRequestBodyText(Tags.api_key);
-        RequestBody name_part = Common.getRequestBodyText( model.getName());
+        RequestBody name_part = Common.getRequestBodyText(model.getName());
 
-        RequestBody lat_part = Common.getRequestBodyText( model.getLat()+"");
-        RequestBody lng_part = Common.getRequestBodyText(model.getLng()+"");
+        RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
+        RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
-        RequestBody user_part = Common.getRequestBodyText(userModel.getData().getId()+"");
-
+        RequestBody user_part = Common.getRequestBodyText(userModel.getData().getId() + "");
 
 
         MultipartBody.Part image = Common.getMultiPart(context, uri, "logo");
 
 
-        Api.getService(Tags.base_url).editProfilewithImage("Bearer " + userModel.getData().getToken(),api_part, name_part,user_part,lat_part,lng_part,address_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
+        Api.getService(Tags.base_url).editProfilewithImage("Bearer " + userModel.getData().getToken(), api_part, name_part, user_part, lat_part, lng_part, address_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -215,6 +218,7 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
             @Override
             public void onNext(@NonNull Response<UserModel> userModelResponse) {
                 dialog.dismiss();
+
                 if (userModelResponse.isSuccessful()) {
                     if (userModelResponse.body().getStatus() == 200) {
 
@@ -240,7 +244,6 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
     }
 
 
-
     public LiveData<LocationModel> getLocationData() {
         if (locationModelMutableLiveData == null) {
             locationModelMutableLiveData = new MutableLiveData<>();
@@ -248,7 +251,6 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
 
         return locationModelMutableLiveData;
     }
-
 
 
     public LiveData<GoogleMap> getGoogleMap() {
@@ -259,24 +261,21 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
         return mMap;
     }
 
-    public MutableLiveData<String> getAddress() {
-        if(address==null){
-            address=new MutableLiveData<>();
-        }
-        return address;
-    }
 
     public void setmMap(GoogleMap googleMap) {
         mMap.setValue(googleMap);
     }
-    public void Search(String query,String lang) {
 
-       // binding.progBar.setVisibility(View.VISIBLE);
+    public void Search(String query, String lang) {
+
 
         String fields = "id,place_id,name,geometry,formatted_address";
 
         Api.getService("https://maps.googleapis.com/maps/api/")
-                .searchOnMap("textquery", query, fields, lang, context.getResources().getString(R.string.search_key)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<PlaceMapDetailsData>>() {
+                .searchOnMap("textquery", query, fields, lang, context.getResources().getString(R.string.search_key))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<PlaceMapDetailsData>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -284,13 +283,13 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
 
             @Override
             public void onSuccess(@NonNull Response<PlaceMapDetailsData> placeMapDetailsDataResponse) {
+
                 if (placeMapDetailsDataResponse.isSuccessful() && placeMapDetailsDataResponse.body() != null) {
 
 
                     if (placeMapDetailsDataResponse.body().getCandidates().size() > 0) {
-
-                         address.postValue(placeMapDetailsDataResponse.body().getCandidates().get(0).getFormatted_address().replace("Unnamed Road,", ""));
-                        LocationModel locationModel = new LocationModel(placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLat(), placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLng(),true);
+                        String address = placeMapDetailsDataResponse.body().getCandidates().get(0).getFormatted_address();
+                        LocationModel locationModel = new LocationModel(placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLat(), placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLng(), address);
                         locationModelMutableLiveData.setValue(locationModel);
 
                     }
@@ -301,11 +300,16 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
             public void onError(@NonNull Throwable e) {
 
             }
-        });}
-    public void getGeoData(final double lat, double lng,String lang) {
+        });
+    }
+
+    public void getGeoData(final double lat, double lng, String lang) {
         String location = lat + "," + lng;
         Api.getService("https://maps.googleapis.com/maps/api/")
-                .getGeoData(location, lang,context.getResources().getString(R.string.search_key)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<PlaceGeocodeData>>() {
+                .getGeoData(location, lang, context.getResources().getString(R.string.search_key))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<PlaceGeocodeData>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -313,12 +317,17 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
 
             @Override
             public void onSuccess(@NonNull Response<PlaceGeocodeData> placeGeocodeDataResponse) {
-                if(placeGeocodeDataResponse.isSuccessful()){
-                if (placeGeocodeDataResponse.body().getResults().size() > 0) {
-                   // binding.btnSelect.setVisibility(View.VISIBLE);
-                    address.postValue(placeGeocodeDataResponse.body().getResults().get(0).getFormatted_address().replace("Unnamed Road,", ""));
+                if (placeGeocodeDataResponse.isSuccessful()) {
+                    if (placeGeocodeDataResponse.body().getResults().size() > 0) {
+                        String address = placeGeocodeDataResponse.body().getResults().get(0).getFormatted_address().replace("Unnamed Road,", "");
+                        double lat = placeGeocodeDataResponse.body().getResults().get(0).getGeometry().getLocation().getLat();
+                        double lng = placeGeocodeDataResponse.body().getResults().get(0).getGeometry().getLocation().getLng();
 
-                }}
+                        LocationModel locationModel = new LocationModel(lat, lng, address);
+                        locationModelMutableLiveData.setValue(locationModel);
+
+                    }
+                }
             }
 
             @Override
@@ -326,10 +335,12 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
 
             }
         });
-}
-    public void setContext(Context context){
+    }
+
+    public void setContext(Context context) {
         activity = (SignUpActivity) context;
     }
+
     public void initGoogleApi() {
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
@@ -403,8 +414,7 @@ public class ActivitySignupMvvm extends AndroidViewModel  implements  GoogleApiC
     public void onLocationChanged(Location location) {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
-        LocationModel locationModel = new LocationModel(lat,lng,false);
-        locationModelMutableLiveData.setValue(locationModel);
+        getGeoData(lat, lng, lang);
         if (googleApiClient != null) {
             LocationServices.getFusedLocationProviderClient(activity).removeLocationUpdates(locationCallback);
             googleApiClient.disconnect();

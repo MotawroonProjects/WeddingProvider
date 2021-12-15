@@ -28,9 +28,9 @@
     <string name="scan_qr_code">مسح QR CODE</string>
     <string name="rate_app">قييم التطبيق</string>
     <string name="logout">تسجيل الخروج</string>
-    <string name="home">الرئيسيه</string>
+    <string name="home">الرئيسية</string>
     <string name="profile">حسابى</string>
-    <string name="sorry">اسف</string>
+    <string name="sorry">عذرا!</string>
     <string name="no_notifications_to_show">لا يوجد اشعارات</string>
     <string name="notifications">اشعارات</string>
     <string name="inv_email">بريدالكترونى خاطئ</string>
@@ -47,11 +47,19 @@
     <string name="basic_items">بنود اساسيه</string>
     <string name="additions">اضافات</string>
     <string name="maximum_reservation">الحد الاقصى للحجز </string>
-    <string name="main_image">الصوره الرئيسيه</string>
+    <string name="main_image">الصوره الرئيسية</string>
     <string name="video">فيديو</string>
     <string name="add_images">اضف صور</string>
     <string name="max_ad_photo">اقصى عدد 10 صور</string>
     <string name="basic_item">بند اساسى</string>
     <string name="enter_basic_item">ادخل بند اساسى</string>
-    <string name="add">اضافه</string>
+    <string name="add">اضافة</string>
+    <string name="plz_login_provider_phone">من فضلك قم بتسجيل برقم جوال مقدم الخدمة</string>
+    <string name="search_for_location">ابحث عن موقعك...</string>
+    <string name="reservations">حجوزاتي</string>
+    <string name="calender">كاليندر</string>
+    <string name="no_reservation_to_show">لا توجد حجوزات لعرضها</string>
+    <string name="details">تفاصيل الحجز</string>
+    <string name="current">الحالية</string>
+    <string name="prev">السابقة</string>
 </resources>

@@ -44,7 +44,6 @@ public class FragmentProfile extends BaseFragment {
     private boolean login;
     private FragmentProfileMvvm fragmentProfileMvvm;
     private ActivityResultLauncher<Intent> launcher;
-
     private int req = 1;
 
     @Override
@@ -103,14 +102,12 @@ public class FragmentProfile extends BaseFragment {
         binding.llEditProfile.setOnClickListener(view -> {
                     if (getUserModel() != null) {
                         navigateToSignUpActivity();
-                        //Navigation.findNavController(binding.getRoot()).navigate(R.id.editProfileFragment);
                     }
                 }
         );
         binding.llAddService.setOnClickListener(view -> {
                     if (getUserModel() != null) {
                         navigateToAddServiceActivity();
-                        //Navigation.findNavController(binding.getRoot()).navigate(R.id.editProfileFragment);
                     }
                 }
         );
@@ -141,6 +138,9 @@ public class FragmentProfile extends BaseFragment {
         clearUserModel(activity);
         binding.setModel(null);
         binding.image.setImageResource(R.drawable.circle_avatar);
+        Intent intent = new Intent(activity,LoginActivity.class);
+        startActivity(intent);
+        activity.finish();
     }
 
     private void rateApp() {

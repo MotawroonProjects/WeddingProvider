@@ -28,8 +28,6 @@ import io.reactivex.schedulers.Schedulers;
 public class SplashActivity extends BaseActivity {
     private ActivitySplashBinding binding;
     private CompositeDisposable disposable = new CompositeDisposable();
-    private Preferences preferences;
-    private UserModel userModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,8 +38,6 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initView() {
-        preferences = Preferences.getInstance();
-        userModel = preferences.getUserData(this);
         Observable.timer(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -53,7 +49,7 @@ public class SplashActivity extends BaseActivity {
 
                     @Override
                     public void onNext(@NonNull Long aLong) {
-                        if(userModel!=null){
+                        if(getUserModel()!=null){
                         navigateToHomeActivity();}
                         else{
                             navigateToLoginActivity();
@@ -75,8 +71,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void navigateToLoginActivity() {
-        Intent intent = new Intent(this, AddServiceActivity.class);
-       // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();
     }
@@ -84,7 +80,7 @@ public class SplashActivity extends BaseActivity {
 
     private void navigateToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();
     }

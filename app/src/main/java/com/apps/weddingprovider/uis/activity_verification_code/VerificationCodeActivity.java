@@ -1,5 +1,7 @@
 package com.apps.weddingprovider.uis.activity_verification_code;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
@@ -10,6 +12,7 @@ import androidx.navigation.Navigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.ActivityVerificationCodeBinding;
@@ -23,6 +26,8 @@ public class VerificationCodeActivity extends BaseActivity {
     private String phone_code = "";
     private String phone = "";
     private ActivityVerificationMvvm activityVerificationMvvm;
+    private ActivityResultLauncher<Intent> launcher;
+    private int req;
 
 
     @Override
@@ -59,8 +64,14 @@ public class VerificationCodeActivity extends BaseActivity {
             binding.tvCounter.setText(time);
         });
         activityVerificationMvvm.userModelMutableLiveData.observe(this, userModel -> {
-            setUserModel(userModel);
-           navigateToHomeActivity();
+            if (userModel.getData().getUser_type().equals("provider")) {
+                setUserModel(userModel);
+                setResult(RESULT_OK);
+                finish();
+            } else {
+                Toast.makeText(this, R.string.plz_login_provider_phone, Toast.LENGTH_SHORT).show();
+            }
+
         });
         activityVerificationMvvm.found.observe(this, s -> {
             if (s != null) {
@@ -78,20 +89,26 @@ public class VerificationCodeActivity extends BaseActivity {
             }
         });
 
-
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (req == 1 && result.getResultCode() == RESULT_OK) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
 
     }
 
     private void navigateToSignUpActivity() {
+        req = 1;
         Intent intent = new Intent(this, SignUpActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra("phone_code", phone_code);
         intent.putExtra("phone", phone);
-        startActivity(intent);
+        launcher.launch(intent);
     }
-    private void navigateToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        finish();
-    }
+
+
 }

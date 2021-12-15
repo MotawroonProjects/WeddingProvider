@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_home" />
    
     <fragment
-        android:id="@+id/reservation"
+        android:id="@+id/myService"
         android:name="com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentMyService"
         android:label=""
         tools:layout="@layout/fragment_my_services" />
@@ -22,8 +22,11 @@
         android:name="com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentProfile"
         android:label=""
         tools:layout="@layout/fragment_profile" />
-
-
+    <fragment
+        android:id="@+id/fragmentCalender"
+        android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentCalender"
+        android:label=""
+        tools:layout="@layout/fragment_calender" />
 
 
 </navigation>

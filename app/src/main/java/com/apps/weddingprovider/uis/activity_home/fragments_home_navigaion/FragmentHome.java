@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.apps.weddingprovider.R;
 
+import com.apps.weddingprovider.adapter.MyPagerAdapter;
 import com.apps.weddingprovider.databinding.FragmentHomeBinding;
 
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
@@ -22,7 +25,9 @@ import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -37,7 +42,9 @@ public class FragmentHome extends BaseFragment {
     private static final String TAG = FragmentHome.class.getName();
     private HomeActivity activity;
     private FragmentHomeBinding binding;
-
+    private List<String> titles;
+    private List<Fragment> fragments;
+    private MyPagerAdapter adapter;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -57,41 +64,25 @@ public class FragmentHome extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Observable.timer(130, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        disposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Long aLong) {
-                        initView();
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        initView();
 
     }
 
     private void initView() {
+        titles = new ArrayList<>();
+        fragments = new ArrayList<>();
+        titles.add(getString(R.string.current));
+        titles.add(getString(R.string.prev));
 
+        fragments.add(FragmentCurrentReservation.newInstance());
+        fragments.add(FragmentPreviousReservation.newInstance());
 
+        adapter = new MyPagerAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, titles);
+        binding.pager.setAdapter(adapter);
+        binding.tab.setupWithViewPager(binding.pager);
+        binding.pager.setOffscreenPageLimit(fragments.size());
 
     }
-
-
 
 
     @Override
