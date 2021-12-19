@@ -28,5 +28,10 @@
         android:label=""
         tools:layout="@layout/fragment_calender" />
 
+    <fragment
+        android:id="@+id/fragmentService"
+        android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentService"
+        android:label=""
+        tools:layout="@layout/fragment_my_services" />
 
 </navigation>

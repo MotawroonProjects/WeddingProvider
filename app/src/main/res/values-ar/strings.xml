@@ -62,4 +62,6 @@
     <string name="details">تفاصيل الحجز</string>
     <string name="current">الحالية</string>
     <string name="prev">السابقة</string>
+    <string name="welcome_in_wedding">مرحبا بك في تطبيق زفاف</string>
+    <string name="add_your_service_by_press_this_icon">أضف خدمتك بالضغط على الايقونة</string>
 </resources>

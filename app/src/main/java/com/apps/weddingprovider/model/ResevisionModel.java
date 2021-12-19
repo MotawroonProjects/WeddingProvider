@@ -1,7 +1,5 @@
 package com.apps.weddingprovider.model;
 
-import com.apps.weddingprovider.model.WeddingHallModel;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,8 +17,9 @@ public class ResevisionModel  implements Serializable {
     private String bar_code_image;
     private String day;
     private String hour;
+    private String price;
     private String status;
-    private WeddingHallModel service;
+    private ServiceModel service;
     private List<ResevisionExtraItems> reservation_extra_items;
 
     public int getId() {
@@ -79,12 +78,16 @@ public class ResevisionModel  implements Serializable {
         return status;
     }
 
-    public WeddingHallModel getService() {
+    public ServiceModel getService() {
         return service;
     }
 
     public List<ResevisionExtraItems> getReservation_extra_items() {
         return reservation_extra_items;
+    }
+
+    public String getPrice() {
+        return price;
     }
 
     public class ResevisionExtraItems implements Serializable{

@@ -3,7 +3,7 @@ package com.apps.weddingprovider.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class WeddingHallModel implements Serializable {
+public class ServiceModel implements Serializable {
     private String id;
     private String name;
     private String price;

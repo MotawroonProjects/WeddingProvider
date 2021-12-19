@@ -81,6 +81,10 @@ public class FragmentHome extends BaseFragment {
         binding.pager.setAdapter(adapter);
         binding.tab.setupWithViewPager(binding.pager);
         binding.pager.setOffscreenPageLimit(fragments.size());
+        binding.flCalender.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.fragmentService);
+
+        });
 
     }
 

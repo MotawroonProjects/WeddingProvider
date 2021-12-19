@@ -2,23 +2,18 @@ package com.apps.weddingprovider.mvvm;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.model.DatesDataModel;
-import com.apps.weddingprovider.model.ReservionDataModel;
-import com.apps.weddingprovider.model.ResevisionModel;
-import com.apps.weddingprovider.model.StatusResponse;
+import com.apps.weddingprovider.model.ServiceDataModel;
+import com.apps.weddingprovider.model.ServiceModel;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.remote.Api;
-import com.apps.weddingprovider.share.Common;
 import com.apps.weddingprovider.tags.Tags;
 
 import java.text.ParseException;
@@ -36,17 +31,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-public class FragmentCalenderMvvm extends AndroidViewModel {
-    private static final String TAG = "FragmentCalMvvm";
+public class FragmentServiceMvvm extends AndroidViewModel {
+    private static final String TAG = "FragmentServMvvm";
 
     private Context context;
     private MutableLiveData<Boolean> isLoadingLivData;
-    private MutableLiveData<List<Calendar>> reservedDatesLiveData;
-    private MutableLiveData<List<String>> datesLiveData;
-
+    private MutableLiveData<List<ServiceModel>> serviceLiveData;
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    public FragmentCalenderMvvm(@NonNull Application application) {
+    public FragmentServiceMvvm(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
     }
@@ -59,45 +52,39 @@ public class FragmentCalenderMvvm extends AndroidViewModel {
         return isLoadingLivData;
     }
 
-    public MutableLiveData<List<Calendar>> getReservedDatesLiveData() {
-        if (reservedDatesLiveData == null) {
-            reservedDatesLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<ServiceModel>> getServiceLiveData() {
+        if (serviceLiveData == null) {
+            serviceLiveData = new MutableLiveData<>();
         }
-        return reservedDatesLiveData;
-    }
-
-    public MutableLiveData<List<String>> getDatesLiveData() {
-        if (datesLiveData == null) {
-            datesLiveData = new MutableLiveData<>();
-        }
-        return datesLiveData;
+        return serviceLiveData;
     }
 
 
     //_________________________hitting api_________________________________
 
 
-    public void getDatesData(UserModel userModel, String service_id) {
+    public void getServiceData(UserModel userModel) {
+
         isLoadingLivData.setValue(true);
         Api.getService(Tags.base_url)
-                .getReservationDates("Bearer " + userModel.getData().getToken(), Tags.api_key, userModel.getData().getId() + "", service_id)
+                .getService("Bearer " + userModel.getData().getToken(), Tags.api_key, userModel.getData().getId() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
-                .subscribe(new SingleObserver<Response<DatesDataModel>>() {
+                .subscribe(new SingleObserver<Response<ServiceDataModel>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposable.add(d);
                     }
 
                     @Override
-                    public void onSuccess(@NonNull Response<DatesDataModel> response) {
+                    public void onSuccess(@NonNull Response<ServiceDataModel> response) {
                         isLoadingLivData.postValue(false);
 
                         if (response.isSuccessful() && response.body() != null) {
                             if (response.body().getStatus() == 200) {
-                                List<String> list = response.body().getData();
-                                updateDates(list);
+                                List<ServiceModel> list = response.body().getData();
+                                serviceLiveData.setValue(list);
                             }
                         }
                     }
@@ -113,29 +100,6 @@ public class FragmentCalenderMvvm extends AndroidViewModel {
     }
 
     //_____________________________________________________________________
-    private void updateDates(List<String> list) {
-        List<Calendar> calendars = new ArrayList<>();
-        for (String date : list) {
-            Calendar calendar = getCalenderFromDate(date);
-            calendars.add(calendar);
-
-        }
-        datesLiveData.setValue(list);
-        reservedDatesLiveData.setValue(calendars);
-    }
-
-    private Calendar getCalenderFromDate(String date) {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        try {
-            Date d = simpleDateFormat.parse(date);
-            calendar.setTime(d);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return calendar;
-    }
-
 
     @Override
     protected void onCleared() {

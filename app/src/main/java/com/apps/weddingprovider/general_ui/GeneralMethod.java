@@ -1,6 +1,7 @@
 package com.apps.weddingprovider.general_ui;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
@@ -34,6 +35,60 @@ public class GeneralMethod {
 
 
         }
+    }
+
+    @BindingAdapter("image")
+    public static void image(View view, String imageUrl) {
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+
+                if (view instanceof CircleImageView) {
+                    CircleImageView imageView = (CircleImageView) view;
+                    if (imageUrl != null) {
+                        RequestOptions options = new RequestOptions().override(view.getWidth(), view.getHeight());
+                        Glide.with(view.getContext()).asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .load(imageUrl)
+                                .centerCrop()
+                                .apply(options)
+                                .into(imageView);
+                    }
+                } else if (view instanceof RoundedImageView) {
+                    RoundedImageView imageView = (RoundedImageView) view;
+
+                    if (imageUrl != null) {
+
+                        RequestOptions options = new RequestOptions().override(view.getWidth(), view.getHeight());
+                        Glide.with(view.getContext()).asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .load(imageUrl)
+                                .centerCrop()
+                                .apply(options)
+                                .into(imageView);
+
+                    }
+                } else if (view instanceof ImageView) {
+                    ImageView imageView = (ImageView) view;
+
+                    if (imageUrl != null) {
+                        RequestOptions options = new RequestOptions().override(view.getWidth(), view.getHeight());
+                        Glide.with(view.getContext()).asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .load(imageUrl)
+                                .centerCrop()
+                                .apply(options)
+                                .into(imageView);
+                    }
+                }
+
+            }
+        });
+
+
     }
 
     @BindingAdapter("user_image")

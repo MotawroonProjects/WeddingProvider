@@ -5,18 +5,22 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.FragmentCalenderBinding;
 import com.apps.weddingprovider.mvvm.FragmentCalenderMvvm;
@@ -37,7 +41,8 @@ public class FragmentCalender extends BaseFragment {
     private HomeActivity activity;
     private FragmentCalenderMvvm fragmentCalenderMvvm;
     private String service_id = "";
-    private List<Calendar> reservedDatesList;
+    private String selectedDate = "";
+    private List<String> datesList = new ArrayList<>();
 
 
     @Override
@@ -51,7 +56,7 @@ public class FragmentCalender extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        if (bundle!=null){
+        if (bundle != null) {
             service_id = bundle.getString("data");
 
         }
@@ -74,29 +79,58 @@ public class FragmentCalender extends BaseFragment {
 
     private void initView() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Calendar currentPageDate = binding.calendarView.getCurrentPageDate();
+        String date = simpleDateFormat.format(new Date(currentPageDate.getTimeInMillis()));
+        binding.tvDate.setText(date);
 
         fragmentCalenderMvvm = ViewModelProviders.of(this).get(FragmentCalenderMvvm.class);
         fragmentCalenderMvvm.getIsLoading().observe(activity, isLoading -> {
-            if (isLoading){
-                binding.progBar.setVisibility(View.VISIBLE);
-                binding.llData.setVisibility(View.GONE);
-            }else {
-                binding.progBar.setVisibility(View.GONE);
-                binding.llData.setVisibility(View.VISIBLE);
-            }
+            binding.swipeRefresh.setRefreshing(isLoading);
         });
-        fragmentCalenderMvvm.getReservedDatesLiveData().observe(activity, datesList->{
+        fragmentCalenderMvvm.getDatesLiveData().observe(activity, datesList -> {
+            this.datesList.clear();
+            this.datesList.addAll(datesList);
 
+        });
+
+        fragmentCalenderMvvm.getReservedDatesLiveData().observe(activity, datesList -> {
+            List<EventDay> list = new ArrayList<>();
+            for (Calendar calendar : datesList) {
+                EventDay eventDay = new EventDay(calendar, R.drawable.circle_primary, ContextCompat.getColor(activity, R.color.colorPrimary));
+                list.add(eventDay);
+            }
+            binding.calendarView.setEvents(list);
         });
 
 
         binding.calendarView.setOnDayClickListener(eventDay -> {
             Calendar clickedDayCalendar = eventDay.getCalendar();
-            String date = simpleDateFormat.format(new Date(clickedDayCalendar.getTimeInMillis()));
-            binding.tvDate.setText(date);
+            selectedDate = simpleDateFormat.format(new Date(clickedDayCalendar.getTimeInMillis()));
+            if (isDateValid(selectedDate)){
+
+            }
 
         });
-        fragmentCalenderMvvm.getDatesData(getUserModel(), "");
+        binding.swipeRefresh.setOnRefreshListener(() -> fragmentCalenderMvvm.getDatesData(getUserModel(), service_id));
+        fragmentCalenderMvvm.getDatesData(getUserModel(), service_id);
+        binding.calendarView.setOnForwardPageChangeListener(() -> {
+            Calendar pageDate = binding.calendarView.getCurrentPageDate();
+            String d = simpleDateFormat.format(new Date(pageDate.getTimeInMillis()));
+            binding.tvDate.setText(d);
+
+        });
+
+        binding.calendarView.setOnPreviousPageChangeListener(() -> {
+            Calendar pageDate = binding.calendarView.getCurrentPageDate();
+            String d = simpleDateFormat.format(new Date(pageDate.getTimeInMillis()));
+            binding.tvDate.setText(d);
+        });
+
+
+    }
+
+    private boolean isDateValid(String date){
+        return datesList.contains(date);
     }
 
 

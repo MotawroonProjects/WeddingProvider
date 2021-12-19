@@ -5,6 +5,7 @@ import com.apps.weddingprovider.model.DatesDataModel;
 import com.apps.weddingprovider.model.ReservionDataModel;
 import com.apps.weddingprovider.model.PlaceGeocodeData;
 import com.apps.weddingprovider.model.PlaceMapDetailsData;
+import com.apps.weddingprovider.model.ServiceDataModel;
 import com.apps.weddingprovider.model.StatusResponse;
 import com.apps.weddingprovider.model.UserModel;
 
@@ -162,5 +163,14 @@ public interface Service {
 
 
     );
+
+    @GET("api/show-services")
+    Single<Response<ServiceDataModel>> getService(@Header("AUTHORIZATION") String token,
+                                                  @Query(value = "api_key") String api_key,
+                                                  @Query(value = "user_id") String user_id
+
+
+    );
+
 
 }

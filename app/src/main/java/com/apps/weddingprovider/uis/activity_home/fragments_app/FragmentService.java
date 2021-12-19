@@ -1,40 +1,27 @@
-package com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion;
+package com.apps.weddingprovider.uis.activity_home.fragments_app;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-
 import com.apps.weddingprovider.R;
-import com.apps.weddingprovider.adapter.MyPagerAdapter;
 import com.apps.weddingprovider.adapter.ServiceAdapter;
 import com.apps.weddingprovider.databinding.FragmentMyServicesBinding;
-import com.apps.weddingprovider.model.ServiceModel;
 import com.apps.weddingprovider.mvvm.FragmentServiceMvvm;
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class FragmentMyService extends BaseFragment {
+public class FragmentService extends BaseFragment {
     private FragmentMyServicesBinding binding;
     private HomeActivity activity;
     private FragmentServiceMvvm fragmentServiceMvvm;
@@ -74,14 +61,13 @@ public class FragmentMyService extends BaseFragment {
         fragmentServiceMvvm.getServiceLiveData().observe(activity, serviceModelList -> {
             if (serviceModelList.size() > 0) {
                 adapter.updateList(serviceModelList);
-                adapter.notifyDataSetChanged();
                 binding.llNoData.setVisibility(View.GONE);
+
             } else {
                 binding.llNoData.setVisibility(View.VISIBLE);
 
             }
         });
-
 
         fragmentServiceMvvm.getServiceData(getUserModel());
 
@@ -89,6 +75,8 @@ public class FragmentMyService extends BaseFragment {
     }
 
     public void setItemServiceDetails(String serviceId) {
-
+        Bundle bundle = new Bundle();
+        bundle.putString("data", serviceId);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentCalender, bundle);
     }
 }

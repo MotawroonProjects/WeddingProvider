@@ -16,8 +16,11 @@
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/WeddingProvider/app/src/main/res/layout/fragment_my_services.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/WeddingProvider/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/WeddingProvider/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/drawable/circle_primary.xml" value="0.2203125" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/drawable/ic_store.xml" value="0.2203125" />
+        <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/drawable/ic_upload.xml" value="0.2203125" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/drawable/rounded_color4.xml" value="0.2203125" />
+        <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/drawable/stroke_discreate_bg.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/activity_add_service.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/fragment_calender.xml" value="0.25" />
@@ -27,6 +30,8 @@
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/fragment_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/order_row.xml" value="0.33" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/previous_order_row.xml" value="0.33" />
+        <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/reservation_row.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/layout/service_row.xml" value="0.33" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/WeddingProvider/app/src/main/res/menu/menu.xml" value="0.5941747572815534" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/WeddingProvider/app/src/main/res/drawable/circle_white.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/WeddingProvider/app/src/main/res/drawable/ic_call.xml" value="0.15885416666666666" />
