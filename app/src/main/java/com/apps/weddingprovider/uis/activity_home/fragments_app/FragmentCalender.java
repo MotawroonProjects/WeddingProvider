@@ -107,7 +107,12 @@ public class FragmentCalender extends BaseFragment {
             Calendar clickedDayCalendar = eventDay.getCalendar();
             selectedDate = simpleDateFormat.format(new Date(clickedDayCalendar.getTimeInMillis()));
             if (isDateValid(selectedDate)){
-
+                Bundle bundle = new Bundle();
+                bundle.putString("service_id",service_id);
+                bundle.putString("date",selectedDate);
+                Navigation.findNavController(binding.calendarView).navigate(R.id.fragmentCalenderReservation,bundle);
+            }else {
+                Toast.makeText(activity, R.string.no_reserv_on_day, Toast.LENGTH_SHORT).show();
             }
 
         });

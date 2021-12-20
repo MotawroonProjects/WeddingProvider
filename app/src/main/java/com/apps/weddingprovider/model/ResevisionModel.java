@@ -17,7 +17,7 @@ public class ResevisionModel  implements Serializable {
     private String bar_code_image;
     private String day;
     private String hour;
-    private String price;
+    private double price;
     private String status;
     private ServiceModel service;
     private List<ResevisionExtraItems> reservation_extra_items;
@@ -86,7 +86,7 @@ public class ResevisionModel  implements Serializable {
         return reservation_extra_items;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 

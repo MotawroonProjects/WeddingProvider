@@ -155,19 +155,18 @@
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
+
                 <Button
+                    android:id="@+id/btnDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:background="@drawable/rounded_color4"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
                     android:text="@string/details"
-                    />
-
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
 
             </LinearLayout>
@@ -175,39 +174,38 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray7"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                />
+                android:background="@color/gray7" />
 
             <FrameLayout
                 android:id="@+id/flCancel"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
+                android:layout_height="40dp">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    >
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_cancel2"
                         android:padding="3dp"
-                        />
+                        android:src="@drawable/ic_cancel2" />
+
                     <androidx.legacy.widget.Space
                         android:layout_width="8dp"
-                        android:layout_height="0dp"/>
+                        android:layout_height="0dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color4"
-                        android:textSize="14sp"
                         android:text="@string/cancel"
-                        />
+                        android:textColor="@color/color4"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </FrameLayout>
 

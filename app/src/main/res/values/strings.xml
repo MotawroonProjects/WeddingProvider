@@ -62,8 +62,8 @@
     <string name="details">details</string>
     <string name="current">Current</string>
     <string name="prev">Previous</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_in_wedding">Welcome in Wedding</string>
     <string name="add_your_service_by_press_this_icon">Add your service by press this icon</string>
+    <string name="no_reserv_on_day">No reservation on this day</string>
+    <string name="cancel_reservation">Cancel reservation</string>
 </resources>

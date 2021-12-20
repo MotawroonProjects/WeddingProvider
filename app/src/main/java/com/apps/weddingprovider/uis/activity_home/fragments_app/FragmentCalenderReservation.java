@@ -1,39 +1,40 @@
-package com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion;
+package com.apps.weddingprovider.uis.activity_home.fragments_app;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.adapter.ReservionAdapter;
 import com.apps.weddingprovider.databinding.BottomSheetServiceDetailsBinding;
-import com.apps.weddingprovider.model.ResevisionModel;
+import com.apps.weddingprovider.databinding.FragmentCalenderReservationBinding;
 import com.apps.weddingprovider.databinding.FragmentCurrentReservationBinding;
+import com.apps.weddingprovider.model.ResevisionModel;
+import com.apps.weddingprovider.mvvm.FragmentCalenderReservisonMvvm;
 import com.apps.weddingprovider.mvvm.FragmentCurrentReservisonMvvm;
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
+import com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentCurrentReservation;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 
-public class FragmentCurrentReservation extends BaseFragment {
-    private FragmentCurrentReservationBinding binding;
+public class FragmentCalenderReservation extends BaseFragment {
+    private FragmentCalenderReservationBinding binding;
     private HomeActivity activity;
     private ReservionAdapter reservionAdapter;
-    private FragmentCurrentReservisonMvvm fragmentCurrentReservisonMvvm;
-
-    public static FragmentCurrentReservation newInstance() {
-        FragmentCurrentReservation fragment = new FragmentCurrentReservation();
-        return fragment;
-    }
+    private FragmentCalenderReservisonMvvm fragmentCalenderReservisonMvvm;
+    private String service_id = "";
+    private String selectedDate = "";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,9 +43,19 @@ public class FragmentCurrentReservation extends BaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            service_id = bundle.getString("service_id");
+            selectedDate = bundle.getString("date");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_current_reservation, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calender_reservation, container, false);
         return binding.getRoot();
     }
 
@@ -56,8 +67,8 @@ public class FragmentCurrentReservation extends BaseFragment {
     }
 
     private void initView() {
-        fragmentCurrentReservisonMvvm = ViewModelProviders.of(this).get(FragmentCurrentReservisonMvvm.class);
-        fragmentCurrentReservisonMvvm.getIsLoading().observe(activity, isLoading -> {
+        fragmentCalenderReservisonMvvm = ViewModelProviders.of(this).get(FragmentCalenderReservisonMvvm.class);
+        fragmentCalenderReservisonMvvm.getIsLoading().observe(activity, isLoading -> {
             if (isLoading) {
                 binding.cardNoData.setVisibility(View.GONE);
 
@@ -67,9 +78,9 @@ public class FragmentCurrentReservation extends BaseFragment {
         });
 
 
-        fragmentCurrentReservisonMvvm.getReservionList().observe(activity, weddingHallModels -> {
-            if (weddingHallModels.size() > 0) {
-                reservionAdapter.updateList(fragmentCurrentReservisonMvvm.getReservionList().getValue());
+        fragmentCalenderReservisonMvvm.getReservation().observe(activity, list -> {
+            if (list.size() > 0) {
+                reservionAdapter.updateList(fragmentCalenderReservisonMvvm.getReservation().getValue());
                 binding.cardNoData.setVisibility(View.GONE);
 
             } else {
@@ -81,16 +92,15 @@ public class FragmentCurrentReservation extends BaseFragment {
 
         });
         binding.swipeRefresh.setOnRefreshListener(() -> {
-            fragmentCurrentReservisonMvvm.getReservionData(getUserModel());
+            fragmentCalenderReservisonMvvm.getReservionData(getUserModel(), service_id, selectedDate);
         });
 
         binding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         binding.recView.setLayoutManager(new LinearLayoutManager(activity));
         reservionAdapter = new ReservionAdapter(activity, this);
         binding.recView.setAdapter(reservionAdapter);
-        fragmentCurrentReservisonMvvm.getReservionData(getUserModel());
+        fragmentCalenderReservisonMvvm.getReservionData(getUserModel(), service_id, selectedDate);
     }
-
     public void createSheetDialog(ResevisionModel model) {
         BottomSheetDialog dialog = new BottomSheetDialog(activity);
         BottomSheetServiceDetailsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.bottom_sheet_service_details, null, false);
@@ -130,6 +140,6 @@ public class FragmentCurrentReservation extends BaseFragment {
 
 
     public void delete(ResevisionModel model) {
-        fragmentCurrentReservisonMvvm.deleteReservation(activity, model, getUserModel());
+        fragmentCalenderReservisonMvvm.deleteReservation(activity, model, getUserModel(), service_id, selectedDate);
     }
 }

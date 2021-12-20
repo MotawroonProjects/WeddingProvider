@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.apps.weddingprovider.R;
@@ -30,7 +31,7 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
     private ActivityHomeBinding binding;
     private NavController navController;
     private HomeActivityMvvm homeActivityMvvm;
-
+    private AppBarConfiguration appBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,9 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         setSupportActionBar(binding.toolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         navController = Navigation.findNavController(this, R.id.navHostFragment);
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(binding.bottomNav, navController);
-        NavigationUI.setupWithNavController(binding.toolBar, navController);
+        NavigationUI.setupWithNavController(binding.toolBar, navController,appBarConfiguration);
         NavigationUI.setupActionBarWithNavController(this, navController);
 
 
@@ -82,6 +84,10 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        return NavigationUI.navigateUp(navController,appBarConfiguration)|super.onSupportNavigateUp();
+    }
 
     public void refreshActivity(String lang) {
         Paper.book().write("lang", lang);

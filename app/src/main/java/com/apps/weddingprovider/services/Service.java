@@ -172,5 +172,13 @@ public interface Service {
 
     );
 
+    @GET("api/reservations-by-date")
+    Single<Response<ReservionDataModel>> getCalenderReservation(@Header("AUTHORIZATION") String token,
+                                                                @Query(value = "api_key") String api_key,
+                                                                @Query(value = "service_id") String service_id,
+                                                                @Query(value = "date") String date,
+                                                                @Query(value = "user_id") String user_id
+    );
+
 
 }

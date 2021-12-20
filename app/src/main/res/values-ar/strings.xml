@@ -64,4 +64,6 @@
     <string name="prev">السابقة</string>
     <string name="welcome_in_wedding">مرحبا بك في تطبيق زفاف</string>
     <string name="add_your_service_by_press_this_icon">أضف خدمتك بالضغط على الايقونة</string>
+    <string name="no_reserv_on_day">عفوا! لايوجد حجز في هذا اليوم</string>
+    <string name="cancel_reservation">إلغاء الحجز</string>
 </resources>
