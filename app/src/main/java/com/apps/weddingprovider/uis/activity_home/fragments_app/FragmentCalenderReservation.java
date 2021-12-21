@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apps.weddingprovider.R;
+import com.apps.weddingprovider.adapter.OfferExtraItemsAdapter;
 import com.apps.weddingprovider.adapter.ReservionAdapter;
 import com.apps.weddingprovider.databinding.BottomSheetServiceDetailsBinding;
 import com.apps.weddingprovider.databinding.FragmentCalenderReservationBinding;
@@ -101,6 +103,7 @@ public class FragmentCalenderReservation extends BaseFragment {
         binding.recView.setAdapter(reservionAdapter);
         fragmentCalenderReservisonMvvm.getReservionData(getUserModel(), service_id, selectedDate);
     }
+
     public void createSheetDialog(ResevisionModel model) {
         BottomSheetDialog dialog = new BottomSheetDialog(activity);
         BottomSheetServiceDetailsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.bottom_sheet_service_details, null, false);
@@ -108,24 +111,17 @@ public class FragmentCalenderReservation extends BaseFragment {
         binding.setModel(model);
         double total = model.getPrice() + model.getExtra_item_price();
         binding.setTotal(String.valueOf(total));
-        StringBuilder details = new StringBuilder();
-        if (model.getReservation_extra_items() != null && model.getReservation_extra_items().size() > 0) {
-            int index = 0;
-            for (ResevisionModel.ResevisionExtraItems items : model.getReservation_extra_items()) {
-                if (index == model.getReservation_extra_items().size() - 1) {
-                    details.append(items.getItem_name());
-                } else {
-                    details.append(items.getItem_name()).append("-");
-                }
-
-            }
-
-        } else {
-            details = new StringBuilder(model.getService().getText());
-        }
-
+        StringBuilder details;
+        details = new StringBuilder(model.getService().getText());
 
         binding.setDetails(details.toString());
+        if (model.getReservation_extra_items() != null) {
+            binding.recView.setLayoutManager(new GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false));
+            OfferExtraItemsAdapter adapter = new OfferExtraItemsAdapter(activity);
+            binding.recView.setAdapter(adapter);
+            adapter.updateList(model.getReservation_extra_items());
+        }
+
 
         binding.imageClose.setOnClickListener(v -> {
             dialog.dismiss();

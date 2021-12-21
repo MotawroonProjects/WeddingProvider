@@ -66,4 +66,6 @@
     <string name="add_your_service_by_press_this_icon">Add your service by press this icon</string>
     <string name="no_reserv_on_day">No reservation on this day</string>
     <string name="cancel_reservation">Cancel reservation</string>
+    <string name="update">Update</string>
+    <string name="offer">Offer</string>
 </resources>

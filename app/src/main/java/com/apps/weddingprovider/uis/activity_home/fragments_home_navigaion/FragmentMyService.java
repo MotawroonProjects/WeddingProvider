@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 
@@ -89,6 +90,8 @@ public class FragmentMyService extends BaseFragment {
     }
 
     public void setItemServiceDetails(String serviceId) {
-
+        Bundle bundle = new Bundle();
+        bundle.putString("data",serviceId);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentServiceDetails,bundle);
     }
 }

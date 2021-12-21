@@ -66,4 +66,6 @@
     <string name="add_your_service_by_press_this_icon">أضف خدمتك بالضغط على الايقونة</string>
     <string name="no_reserv_on_day">عفوا! لايوجد حجز في هذا اليوم</string>
     <string name="cancel_reservation">إلغاء الحجز</string>
+    <string name="update">تعديل</string>
+    <string name="offer">عروض</string>
 </resources>

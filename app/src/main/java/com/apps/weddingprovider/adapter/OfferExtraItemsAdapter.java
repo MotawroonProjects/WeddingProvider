@@ -11,25 +11,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.weddingprovider.R;
+import com.apps.weddingprovider.databinding.ExtraItemRowBinding;
 import com.apps.weddingprovider.databinding.ServiceRowBinding;
+import com.apps.weddingprovider.model.ResevisionModel;
 import com.apps.weddingprovider.model.ServiceModel;
 import com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentService;
 import com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentMyService;
 
 import java.util.List;
 
-public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OfferExtraItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<ServiceModel> list;
+    private List<ResevisionModel.ResevisionExtraItems> list;
     private Context context;
     private LayoutInflater inflater;
-    private Fragment fragment;
 
 
-    public ServiceAdapter(Context context, Fragment fragment) {
+    public OfferExtraItemsAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
-        this.fragment = fragment;
     }
 
     @androidx.annotation.NonNull
@@ -37,7 +37,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@androidx.annotation.NonNull ViewGroup parent, int viewType) {
 
 
-        ServiceRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.service_row, parent, false);
+        ExtraItemRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.extra_item_row, parent, false);
         return new MyHolder(binding);
 
 
@@ -48,18 +48,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         MyHolder myHolder = (MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
-        myHolder.itemView.setOnClickListener(v -> {
-            ServiceModel serviceModel = list.get(holder.getAdapterPosition());
-            if (fragment instanceof FragmentMyService) {
-                FragmentMyService fragmentMyService = (FragmentMyService) fragment;
-                fragmentMyService.setItemServiceDetails(serviceModel.getId());
 
-            }else  if (fragment instanceof FragmentService) {
-                FragmentService fragmentService = (FragmentService) fragment;
-                fragmentService.setItemServiceDetails(serviceModel.getId());
-
-            }
-        });
 
     }
 
@@ -73,16 +62,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class MyHolder extends RecyclerView.ViewHolder {
-        public ServiceRowBinding binding;
+        public ExtraItemRowBinding binding;
 
-        public MyHolder(ServiceRowBinding binding) {
+        public MyHolder(ExtraItemRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
         }
     }
 
-    public void updateList(List<ServiceModel> list) {
+    public void updateList(List<ResevisionModel.ResevisionExtraItems> list) {
         if (list == null) {
             if (this.list != null) {
                 this.list.clear();
