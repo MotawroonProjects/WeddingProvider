@@ -44,5 +44,10 @@
         android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.ServiceDetailsFragment"
         android:label=""
         tools:layout="@layout/fragment_service_details" />
-
+    <activity
+        android:id="@+id/activityAddService"
+        android:name="com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity"
+        android:label=""
+        tools:layout="@layout/activity_add_service"
+        />
 </navigation>

@@ -167,6 +167,8 @@ public class ServiceDetailsFragment extends BaseFragment {
 
         });
 
+
+
     }
 
     private void getVideoImage() {

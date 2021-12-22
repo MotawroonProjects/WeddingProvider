@@ -83,6 +83,9 @@ public class FragmentMyService extends BaseFragment {
             }
         });
 
+        binding.flAddService.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.activityAddService);
+        });
 
         fragmentServiceMvvm.getServiceData(getUserModel());
 
@@ -91,7 +94,7 @@ public class FragmentMyService extends BaseFragment {
 
     public void setItemServiceDetails(String serviceId) {
         Bundle bundle = new Bundle();
-        bundle.putString("data",serviceId);
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentServiceDetails,bundle);
+        bundle.putString("data", serviceId);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentServiceDetails, bundle);
     }
 }

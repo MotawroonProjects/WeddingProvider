@@ -10,24 +10,24 @@ import com.apps.weddingprovider.BR;
 import com.apps.weddingprovider.R;
 
 
-public class AddBaiscItemModel extends BaseObservable {
+public class AddAdditionalItemModel extends BaseObservable {
     private String name;
-    private String detials;
+    private String amount;
     public ObservableField<String> error_name = new ObservableField<>();
-    public ObservableField<String> error_detials = new ObservableField<>();
+    public ObservableField<String> error_amount = new ObservableField<>();
 
 
     public boolean isDataValid(Context context) {
 
         if (!name.isEmpty() &&
-                !detials.isEmpty()
+                !amount.isEmpty()
 
 
         ) {
 
 
             error_name.set(null);
-            error_detials.set(null);
+            error_amount.set(null);
 
             return true;
 
@@ -41,10 +41,10 @@ public class AddBaiscItemModel extends BaseObservable {
             }
 
 
-            if (detials.isEmpty()) {
-                error_detials.set(context.getString(R.string.field_required));
+            if (amount.isEmpty()) {
+                error_amount.set(context.getString(R.string.field_required));
             } else {
-                error_detials.set(null);
+                error_amount.set(null);
 
             }
 
@@ -55,9 +55,9 @@ public class AddBaiscItemModel extends BaseObservable {
 
     }
 
-    public AddBaiscItemModel() {
+    public AddAdditionalItemModel() {
         name = "";
-        detials = "";
+        amount = "";
     }
 
     @Bindable
@@ -71,12 +71,12 @@ public class AddBaiscItemModel extends BaseObservable {
     }
 
 
-    public String getDetials() {
-        return detials;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setDetials(String detials) {
-        this.detials = detials;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
 

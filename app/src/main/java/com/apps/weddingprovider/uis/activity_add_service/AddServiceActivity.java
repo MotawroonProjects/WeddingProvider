@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,10 +24,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.apps.weddingprovider.R;
-import com.apps.weddingprovider.adapter.BaiscItemAddServiceAdapter;
 import com.apps.weddingprovider.adapter.ImageAddServiceAdapter;
 import com.apps.weddingprovider.databinding.ActivityAddServiceBinding;
-import com.apps.weddingprovider.model.AddBaiscItemModel;
+import com.apps.weddingprovider.databinding.AddAdditionalRowBinding;
+import com.apps.weddingprovider.databinding.AddImagesRowBinding;
+import com.apps.weddingprovider.model.AddAdditionalItemModel;
 import com.apps.weddingprovider.model.AddServiceModel;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.preferences.Preferences;
@@ -65,8 +67,8 @@ public class AddServiceActivity extends BaseActivity {
     private int currentWindow = 0;
     private long currentPosition = 0;
     private boolean playWhenReady = true;
-    private List<AddBaiscItemModel> addBaiscItemModelList;
-    private BaiscItemAddServiceAdapter baiscItemAddServiceAdapter;
+    private List<AddAdditionalRowBinding> mainItemList;
+    private List<AddAdditionalRowBinding> extraItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +79,14 @@ public class AddServiceActivity extends BaseActivity {
     }
 
     private void initView() {
-        addServiceModel=new AddServiceModel();
-        addBaiscItemModelList = new ArrayList<>();
+        addServiceModel = new AddServiceModel();
+        mainItemList = new ArrayList<>();
+        extraItemList = new ArrayList<>();
+
         imagesUriList = new ArrayList<>();
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
         setUpToolbar(binding.toolbar, getString(R.string.add_service), R.color.white, R.color.black);
-        baiscItemAddServiceAdapter = new BaiscItemAddServiceAdapter(addBaiscItemModelList, this);
-        binding.recViewbaisc.setLayoutManager(new LinearLayoutManager(this));
-        binding.recViewbaisc.setAdapter(baiscItemAddServiceAdapter);
         binding.recViewimage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageAddServiceAdapter = new ImageAddServiceAdapter(imagesUriList, this);
         binding.recViewimage.setAdapter(imageAddServiceAdapter);
@@ -95,12 +96,12 @@ public class AddServiceActivity extends BaseActivity {
 
                     uri = result.getData().getData();
                     File file = new File(Common.getImagePath(this, uri));
-                    if (type.equals("main")) {
+                    if (type.equals("mainImage")) {
                         binding.icon1.setVisibility(View.GONE);
 
                         Picasso.get().load(file).fit().into(binding.image1);
                     } else {
-                        if (imagesUriList.size() < 11) {
+                        if (imagesUriList.size() < 5) {
                             imagesUriList.add(uri.toString());
                             imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
                         } else {
@@ -116,11 +117,11 @@ public class AddServiceActivity extends BaseActivity {
                         String path = Common.getImagePath(this, uri);
 
                         if (path != null) {
-                            if (type.equals("main")) {
+                            if (type.equals("mainImage")) {
                                 binding.icon1.setVisibility(View.GONE);
                                 Picasso.get().load(new File(path)).fit().into(binding.image1);
                             } else {
-                                if (imagesUriList.size() < 11) {
+                                if (imagesUriList.size() < 5) {
                                     imagesUriList.add(uri.toString());
                                     imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
                                 } else {
@@ -128,11 +129,11 @@ public class AddServiceActivity extends BaseActivity {
                                 }
                             }
                         } else {
-                            if (type.equals("main")) {
+                            if (type.equals("mainImage")) {
                                 binding.icon1.setVisibility(View.GONE);
                                 Picasso.get().load(uri).fit().into(binding.image1);
                             } else {
-                                if (imagesUriList.size() < 11) {
+                                if (imagesUriList.size() < 5) {
                                     imagesUriList.add(uri.toString());
                                     imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
                                 } else {
@@ -148,44 +149,20 @@ public class AddServiceActivity extends BaseActivity {
                 }
             }
         });
-        binding.llbasic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddBaiscItemModel addBaiscItemModel = new AddBaiscItemModel();
-                addBaiscItemModelList.add(addBaiscItemModel);
-                baiscItemAddServiceAdapter.notifyDataSetChanged();
-            }
+        binding.llAddMainItem.setOnClickListener(view -> {
+            addMainItem();
         });
-        binding.flclose2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeSheet2();
-            }
-        });
-        binding.btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = binding.edtitem.getText().toString();
-                Common.CloseKeyBoard(AddServiceActivity.this, binding.edtitem);
-                if (!name.isEmpty()) {
-                    closeSheet2();
 
-                    binding.edtitem.setError(null);
-                    AddBaiscItemModel addBaiscItemModel = new AddBaiscItemModel();
-                    addBaiscItemModelList.add(addBaiscItemModel);
-                    baiscItemAddServiceAdapter.notifyDataSetChanged();
-                    binding.edtitem.setText("");
-                } else {
-                    binding.edtitem.setError(getResources().getString(R.string.field_required));
-                }
-            }
+        binding.llAddExtraItem.setOnClickListener(view -> {
+            addExtraItem();
         });
+
         binding.fluploadImage.setOnClickListener(view -> {
-            type = "main";
+            type = "mainImage";
             openSheet();
         });
         binding.flAddImage.setOnClickListener(view -> {
-            type = "add";
+            type = "gallery";
             openSheet();
         });
         binding.fluploadVideo.setOnClickListener(view -> {
@@ -202,26 +179,26 @@ public class AddServiceActivity extends BaseActivity {
         });
 
         binding.btnCancel.setOnClickListener(view -> closeSheet());
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int check=-1;
-                for(int i=0;i<addBaiscItemModelList.size();i++){
-                    if(addBaiscItemModelList.get(i).isDataValid(AddServiceActivity.this)){
+    }
 
-                        check=0;
-                    }
-                    else {
-                        check=-1;
-
-                    }
-
-                }
-                if(check!=-1&&addServiceModel.isDataValid(AddServiceActivity.this)){
-
-                }
-            }
+    private void addMainItem() {
+        AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+        mainItemList.add(rowBinding);
+        binding.llMainItem.addView(rowBinding.getRoot());
+        rowBinding.imDelete.setOnClickListener(v -> {
+            binding.llMainItem.removeView(rowBinding.getRoot());
         });
+
+    }
+
+    private void addExtraItem() {
+        AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+        extraItemList.add(rowBinding);
+        binding.llExtraItem.addView(rowBinding.getRoot());
+        rowBinding.imDelete.setOnClickListener(v -> {
+            binding.llExtraItem.removeView(rowBinding.getRoot());
+        });
+
     }
 
     public void openSheet() {
@@ -233,14 +210,6 @@ public class AddServiceActivity extends BaseActivity {
 
     }
 
-    public void openSheet2() {
-        binding.expandLayout2.setExpanded(true, true);
-    }
-
-    public void closeSheet2() {
-        binding.expandLayout2.collapse(true);
-
-    }
 
     public void checkReadPermission() {
         closeSheet();
@@ -461,12 +430,6 @@ public class AddServiceActivity extends BaseActivity {
         super.onResume();
         initPlayer(videouri);
     }
-
-    public void delete(int position) {
-        addBaiscItemModelList.remove(position);
-        baiscItemAddServiceAdapter.notifyItemRemoved(position);
-    }
-
 
 
 }

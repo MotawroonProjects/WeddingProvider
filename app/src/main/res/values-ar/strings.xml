@@ -50,7 +50,7 @@
     <string name="main_image">الصوره الرئيسية</string>
     <string name="video">فيديو</string>
     <string name="add_images">اضف صور</string>
-    <string name="max_ad_photo">اقصى عدد 10 صور</string>
+    <string name="max_ad_photo">اقصى عدد 5 صور</string>
     <string name="basic_item">بند اساسى</string>
     <string name="enter_basic_item">ادخل بند اساسى</string>
     <string name="add">اضافة</string>
@@ -68,4 +68,6 @@
     <string name="cancel_reservation">إلغاء الحجز</string>
     <string name="update">تعديل</string>
     <string name="offer">عروض</string>
+    <string name="title">اسم البند</string>
+    <string name="amount">الكمية</string>
 </resources>
