@@ -47,7 +47,6 @@
     <activity
         android:id="@+id/activityAddService"
         android:name="com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity"
-        android:label=""
         tools:layout="@layout/activity_add_service"
         />
 </navigation>

@@ -83,7 +83,7 @@ public class FragmentMyService extends BaseFragment {
             }
         });
 
-        binding.flAddService.setOnClickListener(v -> {
+        binding.fab.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.activityAddService);
         });
 

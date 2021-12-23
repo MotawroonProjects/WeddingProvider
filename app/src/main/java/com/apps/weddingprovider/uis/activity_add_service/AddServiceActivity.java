@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -82,11 +83,12 @@ public class AddServiceActivity extends BaseActivity {
         addServiceModel = new AddServiceModel();
         mainItemList = new ArrayList<>();
         extraItemList = new ArrayList<>();
-
+        addServiceModel = new AddServiceModel();
         imagesUriList = new ArrayList<>();
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
         setUpToolbar(binding.toolbar, getString(R.string.add_service), R.color.white, R.color.black);
+        binding.setModel(addServiceModel);
         binding.recViewimage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageAddServiceAdapter = new ImageAddServiceAdapter(imagesUriList, this);
         binding.recViewimage.setAdapter(imageAddServiceAdapter);
@@ -157,7 +159,7 @@ public class AddServiceActivity extends BaseActivity {
             addExtraItem();
         });
 
-        binding.fluploadImage.setOnClickListener(view -> {
+        binding.flUploadImage.setOnClickListener(view -> {
             type = "mainImage";
             openSheet();
         });
@@ -165,7 +167,7 @@ public class AddServiceActivity extends BaseActivity {
             type = "gallery";
             openSheet();
         });
-        binding.fluploadVideo.setOnClickListener(view -> {
+        binding.llAddVideo.setOnClickListener(view -> {
             checkVideoPermission();
         });
         binding.flGallery.setOnClickListener(view -> {
@@ -178,10 +180,16 @@ public class AddServiceActivity extends BaseActivity {
             checkCameraPermission();
         });
 
+        binding.btnSave.setOnClickListener(view -> {
+            if (addServiceModel.isDataValid(this)) {
+
+            }
+        });
         binding.btnCancel.setOnClickListener(view -> closeSheet());
     }
 
     private void addMainItem() {
+
         AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
         mainItemList.add(rowBinding);
         binding.llMainItem.addView(rowBinding.getRoot());
@@ -192,7 +200,9 @@ public class AddServiceActivity extends BaseActivity {
     }
 
     private void addExtraItem() {
+        AddAdditionalItemModel model = new AddAdditionalItemModel();
         AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+        rowBinding.setModel(model);
         extraItemList.add(rowBinding);
         binding.llExtraItem.addView(rowBinding.getRoot());
         rowBinding.imDelete.setOnClickListener(v -> {
@@ -357,10 +367,15 @@ public class AddServiceActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Long duration) {
             super.onPostExecute(duration);
-
-            videouri = uri;
-            // model.setVideo_url(videoUri.toString());
-            initPlayer(videouri);
+            Log.e("duration", duration + "__");
+            if (duration <= 90) {
+                videouri = uri;
+                Log.e("uri",uri+"");
+                addServiceModel.setVideoUri(uri.toString());
+                initPlayer(videouri);
+            } else {
+                Toast.makeText(AddServiceActivity.this, R.string.vid_du_less, Toast.LENGTH_SHORT).show();
+            }
 
 
         }
@@ -370,9 +385,7 @@ public class AddServiceActivity extends BaseActivity {
 
 
         if (uri != null) {
-            binding.flPlayerView.setVisibility(View.GONE);
 
-            binding.player.setVisibility(View.VISIBLE);
             DataSource.Factory factory = new DefaultDataSourceFactory(this, "Wedding");
 
 

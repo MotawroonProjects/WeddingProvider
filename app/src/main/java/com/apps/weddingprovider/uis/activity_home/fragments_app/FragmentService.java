@@ -69,9 +69,14 @@ public class FragmentService extends BaseFragment {
             }
         });
 
+        binding.fab.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.activityAddService);
+        });
         fragmentServiceMvvm.getServiceData(getUserModel());
 
         binding.swipeRefresh.setOnRefreshListener(() -> fragmentServiceMvvm.getServiceData(getUserModel()));
+
+
     }
 
     public void setItemServiceDetails(String serviceId) {

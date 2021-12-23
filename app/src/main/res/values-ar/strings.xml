@@ -70,4 +70,9 @@
     <string name="offer">عروض</string>
     <string name="title">اسم البند</string>
     <string name="amount">الكمية</string>
+    <string name="ch_main_image">إختر الصورة الرئيسية</string>
+    <string name="vid_req">الفيديو مطلوب</string>
+    <string name="sel_main_items">قم بتحديد البنود الرئيسية</string>
+    <string name="vid_du_less">يجب ان تكون مدة الفيديو اقل من 90 ثانية</string>
+    <string name="choose_video">إختر فيديو</string>
 </resources>

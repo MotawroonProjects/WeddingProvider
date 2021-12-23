@@ -70,4 +70,9 @@
     <string name="offer">Offer</string>
     <string name="title">Title</string>
     <string name="amount">Amount</string>
+    <string name="ch_main_image">Choose main image</string>
+    <string name="vid_req">Video required</string>
+    <string name="sel_main_items">Select main items</string>
+    <string name="vid_du_less">Video duration should be less than 90 seconds</string>
+    <string name="choose_video">Choose video</string>
 </resources>

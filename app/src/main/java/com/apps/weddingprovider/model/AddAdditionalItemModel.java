@@ -80,6 +80,4 @@ public class AddAdditionalItemModel extends BaseObservable {
     }
 
 
-
-
 }
