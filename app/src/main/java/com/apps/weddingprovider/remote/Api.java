@@ -30,9 +30,9 @@ public class Api {
         };
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(90, TimeUnit.SECONDS)
-                .writeTimeout(90,TimeUnit.SECONDS)
-                .readTimeout(90,TimeUnit.SECONDS)
+                .connectTimeout(180, TimeUnit.SECONDS)
+                .writeTimeout(5,TimeUnit.MINUTES)
+                .readTimeout(180,TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .addInterceptor(interceptor)
                 .build();

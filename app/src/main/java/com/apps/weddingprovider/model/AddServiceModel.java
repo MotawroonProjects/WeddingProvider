@@ -277,7 +277,7 @@ public class AddServiceModel extends BaseObservable {
     private boolean isMainValid(Context context) {
         boolean isDataValid = true;
         for (AddAdditionalRowBinding binding : mainItemList) {
-            if (!binding.getModel().isDataValid(context)) {
+            if (!binding.getModel().isMainDataValid(context)) {
                 isDataValid = false;
             }
         }
@@ -287,7 +287,7 @@ public class AddServiceModel extends BaseObservable {
     private boolean isExtraValid(Context context) {
         boolean isDataValid = true;
         for (AddAdditionalRowBinding binding : extraItemList) {
-            if (!binding.getModel().isDataValid(context)) {
+            if (!binding.getModel().isExtraDataValid(context)) {
                 isDataValid = false;
             }
         }

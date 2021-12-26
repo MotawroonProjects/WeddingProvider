@@ -17,7 +17,28 @@ public class AddAdditionalItemModel extends BaseObservable {
     public ObservableField<String> error_name = new ObservableField<>();
     public ObservableField<String> error_amount = new ObservableField<>();
 
-    public boolean isDataValid(Context context) {
+    public boolean isMainDataValid(Context context) {
+
+        if (!name.isEmpty()
+
+
+        ) {
+
+
+            error_name.set(null);
+
+            return true;
+
+        } else {
+
+            error_name.set(context.getString(R.string.field_required));
+
+            return false;
+
+        }
+
+    }
+    public boolean isExtraDataValid(Context context) {
 
         if (!name.isEmpty() &&
                 !amount.isEmpty()
@@ -25,7 +46,6 @@ public class AddAdditionalItemModel extends BaseObservable {
 
         ) {
 
-            Log.e("ssssssss","sllklsksk");
 
             error_name.set(null);
             error_amount.set(null);
@@ -33,7 +53,6 @@ public class AddAdditionalItemModel extends BaseObservable {
             return true;
 
         } else {
-            Log.e("dldlldld","sllklsksk");
 
             if (name.isEmpty()) {
                 error_name.set(context.getString(R.string.field_required));

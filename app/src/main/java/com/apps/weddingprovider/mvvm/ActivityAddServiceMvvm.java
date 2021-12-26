@@ -21,6 +21,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.apps.weddingprovider.R;
+import com.apps.weddingprovider.databinding.AddAdditionalRowBinding;
 import com.apps.weddingprovider.model.AddAdditionalItemModel;
 import com.apps.weddingprovider.model.AddServiceModel;
 import com.apps.weddingprovider.model.DepartmentDataModel;
@@ -348,27 +349,17 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
         RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
-        List<RequestBody> service_main_items = new ArrayList<>();
-        List<RequestBody> service_main_items_detials = new ArrayList<>();
-        List<RequestBody> service_extra_items = new ArrayList<>();
-        List<RequestBody> service_extra_items_price = new ArrayList<>();
-        for (int i = 0; i < model.getMainItemList().size(); i++) {
-            AddAdditionalItemModel addAdditionalItemModel = model.getMainItemList().get(i).getModel();
-            service_main_items.add(Common.getRequestBodyText(addAdditionalItemModel.getName()));
-            service_main_items_detials.add(Common.getRequestBodyText(addAdditionalItemModel.getAmount()));
 
-        }
-        for (int i = 0; i < model.getExtraItemList().size(); i++) {
-            AddAdditionalItemModel addAdditionalItemModel = model.getExtraItemList().get(i).getModel();
-            service_extra_items.add(Common.getRequestBodyText(addAdditionalItemModel.getName()));
-            service_extra_items_price.add(Common.getRequestBodyText(addAdditionalItemModel.getAmount()));
+        List<MultipartBody.Part> service_main_items = new ArrayList<>(getMainAttribute(model));
+        List<MultipartBody.Part> service_extra_items = new ArrayList<>(getExtraAttribute(model));
 
-        }
         MultipartBody.Part main_image = Common.getMultiPart(context, Uri.parse(model.getMainImage()), "main_image");
-        MultipartBody.Part video_part = Common.getMultiPart(context, Uri.parse(model.getVideoUri()), "video");
+        MultipartBody.Part video_part = Common.getMultiPartVideo(context, Uri.parse(model.getVideoUri()), "video");
         List<MultipartBody.Part> partimageList = getMultipartBodyList(model.getGalleryImages(), "images[]", context);
 
-        Api.getService(Tags.base_url).addServices("Bearer " + userModel.getData().getToken(), api_part, user_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_main_items_detials, service_extra_items, service_extra_items_price, lat_part, lng_part, address_part, main_image, video_part, partimageList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<SingleServiceDataModel>>() {
+        Api.getService(Tags.base_url).addServices("Bearer " + userModel.getData().getToken(), api_part, user_part, name_part, price_part, text_part, max_part, depart_part, service_main_items,service_extra_items , lat_part, lng_part, address_part, main_image, video_part, partimageList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<SingleServiceDataModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -379,8 +370,10 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
                 dialog.dismiss();
 
                 if (serviceDataModelResponse.isSuccessful()) {
-                    if (serviceDataModelResponse.body().getStatus() == 200) {
-                        singleServiceDataModelMutableLiveData.postValue(serviceDataModelResponse.body());
+                    Log.e("code",serviceDataModelResponse.body().getStatus()+"__");
+
+                    if (serviceDataModelResponse.body()!=null&&serviceDataModelResponse.body().getStatus() == 200) {
+                        singleServiceDataModelMutableLiveData.setValue(serviceDataModelResponse.body());
                     }
                 } else {
 
@@ -389,6 +382,7 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
 
             @Override
             public void onError(@NonNull Throwable throwable) {
+                Log.e("onError",throwable.getMessage());
                 dialog.dismiss();
             }
 
@@ -407,5 +401,46 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
             partList.add(part);
         }
         return partList;
+    }
+
+    private List<MultipartBody.Part> getMainAttribute(AddServiceModel model) {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        for (int index = 0; index < model.getMainItemList().size(); index++) {
+            AddAdditionalRowBinding binding = model.getMainItemList().get(index);
+            String title = binding.getModel().getName();
+            String amount = binding.getModel().getAmount();
+
+
+            String partName1 = "service_main_items[" + index + "][name]";
+            String partName2 = "service_main_items[" + index + "][details]";
+
+            MultipartBody.Part part1 = Common.getMultiPartText(title, partName1);
+            MultipartBody.Part part2 = Common.getMultiPartText(amount, partName2);
+
+            parts.add(part1);
+            parts.add(part2);
+
+        }
+        return parts;
+    }
+
+    private List<MultipartBody.Part> getExtraAttribute(AddServiceModel model) {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        for (int index = 0; index < model.getExtraItemList().size(); index++) {
+            AddAdditionalRowBinding binding = model.getExtraItemList().get(index);
+            String title = binding.getModel().getName();
+            String amount = binding.getModel().getAmount();
+
+            String partName1 = "service_extra_items[" + index + "][name]";
+            String partName2 = "service_extra_items[" + index + "][price]";
+
+            MultipartBody.Part part1 = Common.getMultiPartText(title, partName1);
+            MultipartBody.Part part2 = Common.getMultiPartText(amount, partName2);
+
+            parts.add(part1);
+            parts.add(part2);
+
+        }
+        return parts;
     }
 }

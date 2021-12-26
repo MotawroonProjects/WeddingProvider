@@ -432,6 +432,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:ellipsize="end"
                         android:gravity="start"
                         android:maxLines="2"
@@ -447,20 +448,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <FrameLayout
-                            android:id="@+id/flAddImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_white_strock_gap_gray4">
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardViewAddImage"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="3dp"
 
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:id="@+id/image3"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:clickable="false"
-                                android:longClickable="false"
-                                app:riv_border_color="@color/gray4"
-                                app:riv_border_width="0dp" />
+                            >
 
                             <ImageView
                                 android:id="@+id/icon3"
@@ -471,7 +470,7 @@
                                 android:longClickable="false"
                                 android:padding="5dp"
                                 android:src="@drawable/ic_add_photo" />
-                        </FrameLayout>
+                        </androidx.cardview.widget.CardView>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recViewimage"

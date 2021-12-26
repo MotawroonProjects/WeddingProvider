@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -100,6 +101,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_service);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initView();
 
     }
@@ -114,9 +116,8 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             @Override
             public void onChanged(SingleServiceDataModel singleServiceDataModel) {
                 if (singleServiceDataModel != null) {
-                    Intent intent = getIntent();
-                    intent.putExtra("service_id", singleServiceDataModel.getData().getId());
-                    setResult(RESULT_OK, intent);
+                    Toast.makeText(AddServiceActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
                     finish();
                 }
             }
@@ -256,7 +257,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             type = "mainImage";
             openSheet();
         });
-        binding.flAddImage.setOnClickListener(view -> {
+        binding.cardViewAddImage.setOnClickListener(view -> {
             type = "gallery";
             openSheet();
         });
@@ -323,6 +324,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         mainItemList.add(rowBinding);
         binding.llMainItem.addView(rowBinding.getRoot());
         rowBinding.imDelete.setOnClickListener(v -> {
+            mainItemList.remove(rowBinding);
             binding.llMainItem.removeView(rowBinding.getRoot());
         });
         addServiceModel.setMainItemList(mainItemList);
@@ -338,6 +340,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         extraItemList.add(rowBinding);
         binding.llExtraItem.addView(rowBinding.getRoot());
         rowBinding.imDelete.setOnClickListener(v -> {
+            extraItemList.remove(rowBinding);
             binding.llExtraItem.removeView(rowBinding.getRoot());
         });
         addServiceModel.setExtraItemList(extraItemList);
