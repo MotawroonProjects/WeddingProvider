@@ -11,6 +11,8 @@ import com.apps.weddingprovider.model.SingleServiceDataModel;
 import com.apps.weddingprovider.model.StatusResponse;
 import com.apps.weddingprovider.model.UserModel;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -186,7 +188,32 @@ public interface Service {
     Single<Response<SingleServiceDataModel>> getSingleService(@Query(value = "api_key") String api_key,
                                                               @Query(value = "service_id") String service_id
     );
+
     @GET("api/departments")
     Single<Response<DepartmentDataModel>> getDepartments(@Query(value = "api_key") String api_key);
+
+    @Multipart
+    @POST("api/add-service")
+    Observable<Response<SingleServiceDataModel>> addServices(@Header("AUTHORIZATION") String token,
+                                                             @Part("api_key") RequestBody api_key,
+                                                             @Part("user_id") RequestBody user_id,
+                                                             @Part("name") RequestBody name,
+                                                             @Part("price") RequestBody price,
+                                                             @Part("text") RequestBody descripsion,
+                                                             @Part("max_limit") RequestBody max_limit,
+                                                             @Part("department_id") RequestBody department_id,
+                                                             @Part("service_main_items[][name]") List<RequestBody> service_main_items,
+                                                             @Part("service_main_items[][details]") List<RequestBody> service_main_items_detials,
+                                                             @Part("service_extra_items[][name]") List<RequestBody> service_extra_items,
+                                                             @Part("service_extra_items[][price]") List<RequestBody> service_extra_items_price,
+                                                             @Part("latitude") RequestBody latitude,
+                                                             @Part("longitude") RequestBody longitude,
+                                                             @Part("address") RequestBody address,
+                                                             @Part MultipartBody.Part main_image,
+                                                             @Part MultipartBody.Part video,
+                                                             @Part List<MultipartBody.Part> images
+
+
+    );
 
 }

@@ -86,8 +86,7 @@
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="2dp"
-                        app:contentPadding="8dp"
-                        >
+                        app:contentPadding="8dp">
 
                         <LinearLayout
                             android:id="@+id/llAddVideo"
@@ -135,8 +134,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:played_color="@color/colorPrimary"
                             app:resize_mode="fill"
-                            app:use_controller="true"
-                            />
+                            app:use_controller="true" />
 
 
                     </FrameLayout>
@@ -284,6 +282,7 @@
                         android:layout_marginTop="1dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/rounded_white_strock_gray4"
+                        android:gravity="start"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:singleLine="true"

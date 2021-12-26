@@ -44,6 +44,8 @@ public class FragmentProfile extends BaseFragment {
     private boolean login;
     private FragmentProfileMvvm fragmentProfileMvvm;
     private ActivityResultLauncher<Intent> launcher;
+    private ActivityResultLauncher<Intent> addservicelauncher;
+
     private int req = 1;
 
     @Override
@@ -53,6 +55,13 @@ public class FragmentProfile extends BaseFragment {
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (req == 1 && result.getResultCode() == Activity.RESULT_OK) {
                 binding.setModel(getUserModel());
+            }
+        });
+        addservicelauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent intent = result.getData();
+                String serviceid = intent.getStringExtra("service_id");
+                setItemServiceDetails(serviceid);
             }
         });
 
@@ -88,7 +97,8 @@ public class FragmentProfile extends BaseFragment {
         binding.llContactUs.setOnClickListener(v -> {
             Intent intent = new Intent(activity, ContactUsActivity.class);
             startActivity(intent);
-           // Navigation.findNavController(v).navigate(R.id.activity_contact_us);
+
+            // Navigation.findNavController(v).navigate(R.id.activity_contact_us);
         });
 
 
@@ -123,7 +133,7 @@ public class FragmentProfile extends BaseFragment {
 
     private void navigateToAddServiceActivity() {
         Intent intent = new Intent(activity, AddServiceActivity.class);
-        startActivity(intent);
+        addservicelauncher.launch(intent);
 
     }
 
@@ -138,7 +148,7 @@ public class FragmentProfile extends BaseFragment {
         clearUserModel(activity);
         binding.setModel(null);
         binding.image.setImageResource(R.drawable.circle_avatar);
-        Intent intent = new Intent(activity,LoginActivity.class);
+        Intent intent = new Intent(activity, LoginActivity.class);
         startActivity(intent);
         activity.finish();
     }
@@ -186,5 +196,9 @@ public class FragmentProfile extends BaseFragment {
         launcher.launch(intent);
     }
 
-
+    public void setItemServiceDetails(String serviceId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("data", serviceId);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentServiceDetails, bundle);
+    }
 }

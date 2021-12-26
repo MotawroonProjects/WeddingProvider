@@ -76,4 +76,5 @@
     <string name="vid_du_less">يجب ان تكون مدة الفيديو اقل من 90 ثانية</string>
     <string name="choose_video">إختر فيديو</string>
     <string name="ch_depart">اختر القسم</string>
+    <string name="upload_service_images">ارفع صور الخدمه</string>
 </resources>

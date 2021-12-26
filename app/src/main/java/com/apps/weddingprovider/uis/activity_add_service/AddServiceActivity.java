@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -37,6 +38,8 @@ import com.apps.weddingprovider.databinding.AddImagesRowBinding;
 import com.apps.weddingprovider.model.AddAdditionalItemModel;
 import com.apps.weddingprovider.model.AddServiceModel;
 import com.apps.weddingprovider.model.DepartmentModel;
+import com.apps.weddingprovider.model.GalleryModel;
+import com.apps.weddingprovider.model.SingleServiceDataModel;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.mvvm.ActivityAddServiceMvvm;
 import com.apps.weddingprovider.preferences.Preferences;
@@ -79,7 +82,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
     private int selectedReq = 0;
     private Uri uri = null, videouri;
     private ImageAddServiceAdapter imageAddServiceAdapter;
-    private List<String> imagesUriList;
+    private List<GalleryModel> imagesUriList;
     private SimpleExoPlayer player;
     private int currentWindow = 0;
     private long currentPosition = 0;
@@ -107,6 +110,17 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         activityAddServiceMvvm = ViewModelProviders.of(this).get(ActivityAddServiceMvvm.class);
         activityAddServiceMvvm.setContext(this);
         activityAddServiceMvvm.setLang(getLang());
+        activityAddServiceMvvm.singleServiceDataModelMutableLiveData.observe(this, new Observer<SingleServiceDataModel>() {
+            @Override
+            public void onChanged(SingleServiceDataModel singleServiceDataModel) {
+                if (singleServiceDataModel != null) {
+                    Intent intent = getIntent();
+                    intent.putExtra("service_id", singleServiceDataModel.getData().getId());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            }
+        });
         activityAddServiceMvvm.getLocationData().observe(this, locationModel -> {
 
             addMarker(locationModel.getLat(), locationModel.getLng());
@@ -173,8 +187,10 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
                         binding.setModel(addServiceModel);
                     } else {
                         if (imagesUriList.size() < 5) {
-                            imagesUriList.add(uri.toString());
+                            imagesUriList.add(new GalleryModel(uri.toString(), "local"));
                             imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                            addServiceModel.setGalleryImages(imagesUriList);
+                            binding.setModel(addServiceModel);
                         } else {
                             Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
                         }
@@ -195,8 +211,10 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
                                 binding.setModel(addServiceModel);
                             } else {
                                 if (imagesUriList.size() < 5) {
-                                    imagesUriList.add(uri.toString());
+                                    imagesUriList.add(new GalleryModel(uri.toString(), "local"));
                                     imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                                    addServiceModel.setGalleryImages(imagesUriList);
+                                    binding.setModel(addServiceModel);
                                 } else {
                                     Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
                                 }
@@ -209,8 +227,10 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
                                 binding.setModel(addServiceModel);
                             } else {
                                 if (imagesUriList.size() < 5) {
-                                    imagesUriList.add(uri.toString());
+                                    imagesUriList.add(new GalleryModel(uri.toString(), "local"));
                                     imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                                    addServiceModel.setGalleryImages(imagesUriList);
+                                    binding.setModel(addServiceModel);
                                 } else {
                                     Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
                                 }
@@ -297,7 +317,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
 
     private void addMainItem() {
-AddAdditionalItemModel model=new AddAdditionalItemModel();
+        AddAdditionalItemModel model = new AddAdditionalItemModel();
         AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
         rowBinding.setModel(model);
         mainItemList.add(rowBinding);
@@ -313,6 +333,7 @@ AddAdditionalItemModel model=new AddAdditionalItemModel();
     private void addExtraItem() {
         AddAdditionalItemModel model = new AddAdditionalItemModel();
         AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+        rowBinding.edtAmount.setHint(getResources().getString(R.string.price));
         rowBinding.setModel(model);
         extraItemList.add(rowBinding);
         binding.llExtraItem.addView(rowBinding.getRoot());

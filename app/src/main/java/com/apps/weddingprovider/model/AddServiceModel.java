@@ -126,10 +126,12 @@ public class AddServiceModel extends BaseObservable {
             if (extraItemList.size() > 0) {
                 isExtraValid(context);
             }
-            if(department_id.isEmpty()){
-                Toast.makeText(context,context.getResources().getString(R.string.ch_depart),Toast.LENGTH_SHORT).show();
+            if (department_id.isEmpty()) {
+                Toast.makeText(context, context.getResources().getString(R.string.ch_depart), Toast.LENGTH_SHORT).show();
             }
-
+            if (galleryImages.size() == 0) {
+                Toast.makeText(context, context.getResources().getString(R.string.upload_service_images), Toast.LENGTH_LONG).show();
+            }
             return false;
 
         }
