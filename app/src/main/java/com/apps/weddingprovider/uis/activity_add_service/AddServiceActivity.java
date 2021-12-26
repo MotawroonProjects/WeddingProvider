@@ -275,7 +275,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
         binding.btnSave.setOnClickListener(view -> {
             if (addServiceModel.isDataValid(this)) {
-
+                activityAddServiceMvvm.addService(this, addServiceModel, userModel);
             }
         });
         binding.btnCancel.setOnClickListener(view -> closeSheet());
