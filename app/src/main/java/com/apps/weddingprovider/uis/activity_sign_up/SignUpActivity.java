@@ -93,7 +93,7 @@ public class SignUpActivity extends BaseActivity implements OnMapReadyCallback {
             addMarker(locationModel.getLat(), locationModel.getLng());
             model.setLat(locationModel.getLat());
             model.setLng(locationModel.getLng());
-
+model.setAddress(locationModel.getAddress());
 
         });
 

@@ -75,4 +75,5 @@
     <string name="sel_main_items">Select main items</string>
     <string name="vid_du_less">Video duration should be less than 90 seconds</string>
     <string name="choose_video">Choose video</string>
+    <string name="ch_depart">Choose Department</string>
 </resources>

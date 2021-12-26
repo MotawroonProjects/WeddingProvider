@@ -23,8 +23,8 @@ public class AddServiceModel extends BaseObservable {
     private String price;
     private String department_id;
     private String address;
-    private String lat;
-    private String lng;
+    private double lat;
+    private double lng;
     private String maxNumber;
     private String description;
     private List<GalleryModel> galleryImages;
@@ -126,6 +126,9 @@ public class AddServiceModel extends BaseObservable {
             if (extraItemList.size() > 0) {
                 isExtraValid(context);
             }
+            if(department_id.isEmpty()){
+                Toast.makeText(context,context.getResources().getString(R.string.ch_depart),Toast.LENGTH_SHORT).show();
+            }
 
             return false;
 
@@ -140,8 +143,8 @@ public class AddServiceModel extends BaseObservable {
         price = "";
         department_id = "";
         address = "";
-        lat = "";
-        lng = "";
+        lat = 0;
+        lng = 0;
         maxNumber = "";
         description = "";
         galleryImages = new ArrayList<>();
@@ -207,19 +210,19 @@ public class AddServiceModel extends BaseObservable {
 
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public double getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -253,9 +256,25 @@ public class AddServiceModel extends BaseObservable {
         this.galleryImages = galleryImages;
     }
 
+    public List<AddAdditionalRowBinding> getMainItemList() {
+        return mainItemList;
+    }
+
+    public void setMainItemList(List<AddAdditionalRowBinding> mainItemList) {
+        this.mainItemList = mainItemList;
+    }
+
+    public List<AddAdditionalRowBinding> getExtraItemList() {
+        return extraItemList;
+    }
+
+    public void setExtraItemList(List<AddAdditionalRowBinding> extraItemList) {
+        this.extraItemList = extraItemList;
+    }
+
     private boolean isMainValid(Context context) {
         boolean isDataValid = true;
-        for (AddAdditionalRowBinding binding : extraItemList) {
+        for (AddAdditionalRowBinding binding : mainItemList) {
             if (!binding.getModel().isDataValid(context)) {
                 isDataValid = false;
             }

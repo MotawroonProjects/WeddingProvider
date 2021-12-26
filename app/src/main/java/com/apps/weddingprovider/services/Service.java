@@ -2,6 +2,7 @@ package com.apps.weddingprovider.services;
 
 
 import com.apps.weddingprovider.model.DatesDataModel;
+import com.apps.weddingprovider.model.DepartmentDataModel;
 import com.apps.weddingprovider.model.ReservionDataModel;
 import com.apps.weddingprovider.model.PlaceGeocodeData;
 import com.apps.weddingprovider.model.PlaceMapDetailsData;
@@ -185,5 +186,7 @@ public interface Service {
     Single<Response<SingleServiceDataModel>> getSingleService(@Query(value = "api_key") String api_key,
                                                               @Query(value = "service_id") String service_id
     );
+    @GET("api/departments")
+    Single<Response<DepartmentDataModel>> getDepartments(@Query(value = "api_key") String api_key);
 
 }

@@ -75,4 +75,5 @@
     <string name="sel_main_items">قم بتحديد البنود الرئيسية</string>
     <string name="vid_du_less">يجب ان تكون مدة الفيديو اقل من 90 ثانية</string>
     <string name="choose_video">إختر فيديو</string>
+    <string name="ch_depart">اختر القسم</string>
 </resources>

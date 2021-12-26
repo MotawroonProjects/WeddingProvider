@@ -2,6 +2,7 @@ package com.apps.weddingprovider.uis.activity_add_service;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,27 +14,35 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.adapter.ImageAddServiceAdapter;
+import com.apps.weddingprovider.adapter.SpinnerDepartmentAdapter;
 import com.apps.weddingprovider.databinding.ActivityAddServiceBinding;
 import com.apps.weddingprovider.databinding.AddAdditionalRowBinding;
 import com.apps.weddingprovider.databinding.AddImagesRowBinding;
 import com.apps.weddingprovider.model.AddAdditionalItemModel;
 import com.apps.weddingprovider.model.AddServiceModel;
+import com.apps.weddingprovider.model.DepartmentModel;
 import com.apps.weddingprovider.model.UserModel;
+import com.apps.weddingprovider.mvvm.ActivityAddServiceMvvm;
 import com.apps.weddingprovider.preferences.Preferences;
 import com.apps.weddingprovider.share.Common;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
+import com.apps.weddingprovider.uis.activity_base.FragmentMapTouchListener;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -41,6 +50,13 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -48,7 +64,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddServiceActivity extends BaseActivity {
+public class AddServiceActivity extends BaseActivity implements OnMapReadyCallback {
     private ActivityAddServiceBinding binding;
 
     private UserModel userModel;
@@ -70,6 +86,12 @@ public class AddServiceActivity extends BaseActivity {
     private boolean playWhenReady = true;
     private List<AddAdditionalRowBinding> mainItemList;
     private List<AddAdditionalRowBinding> extraItemList;
+    private ActivityAddServiceMvvm activityAddServiceMvvm;
+    private GoogleMap mMap;
+    private float zoom = 15.0f;
+    private ActivityResultLauncher<String> permissionLauncher;
+    private SpinnerDepartmentAdapter spinnerDepartmentAdapter;
+    private List<DepartmentModel> departmentModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +103,51 @@ public class AddServiceActivity extends BaseActivity {
 
     private void initView() {
         addServiceModel = new AddServiceModel();
+        departmentModelList = new ArrayList<>();
+        activityAddServiceMvvm = ViewModelProviders.of(this).get(ActivityAddServiceMvvm.class);
+        activityAddServiceMvvm.setContext(this);
+        activityAddServiceMvvm.setLang(getLang());
+        activityAddServiceMvvm.getLocationData().observe(this, locationModel -> {
+
+            addMarker(locationModel.getLat(), locationModel.getLng());
+            addServiceModel.setLat(locationModel.getLat());
+            addServiceModel.setLng(locationModel.getLng());
+            addServiceModel.setAddress(locationModel.getAddress());
+            binding.setModel(addServiceModel);
+
+        });
+
+
+        activityAddServiceMvvm.getCategoryWeddingHall().observe(this, weddingHallModels -> {
+            departmentModelList.clear();
+            if (weddingHallModels.size() > 0) {
+                departmentModelList.addAll(weddingHallModels);
+                spinnerDepartmentAdapter.notifyDataSetChanged();
+            }
+        });
+        spinnerDepartmentAdapter = new SpinnerDepartmentAdapter(departmentModelList, this);
+        binding.spDepart.setAdapter(spinnerDepartmentAdapter);
+        binding.spDepart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    addServiceModel.setDepartment_id("");
+
+                } else {
+                    addServiceModel.setDepartment_id(departmentModelList.get(i).getId());
+
+
+                }
+                //  Log.e("cc",city_id);
+
+                binding.setModel(addServiceModel);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         mainItemList = new ArrayList<>();
         extraItemList = new ArrayList<>();
         addServiceModel = new AddServiceModel();
@@ -102,6 +169,8 @@ public class AddServiceActivity extends BaseActivity {
                         binding.icon1.setVisibility(View.GONE);
 
                         Picasso.get().load(file).fit().into(binding.image1);
+                        addServiceModel.setMainImage(uri.toString());
+                        binding.setModel(addServiceModel);
                     } else {
                         if (imagesUriList.size() < 5) {
                             imagesUriList.add(uri.toString());
@@ -122,6 +191,8 @@ public class AddServiceActivity extends BaseActivity {
                             if (type.equals("mainImage")) {
                                 binding.icon1.setVisibility(View.GONE);
                                 Picasso.get().load(new File(path)).fit().into(binding.image1);
+                                addServiceModel.setMainImage(uri.toString());
+                                binding.setModel(addServiceModel);
                             } else {
                                 if (imagesUriList.size() < 5) {
                                     imagesUriList.add(uri.toString());
@@ -134,6 +205,8 @@ public class AddServiceActivity extends BaseActivity {
                             if (type.equals("mainImage")) {
                                 binding.icon1.setVisibility(View.GONE);
                                 Picasso.get().load(uri).fit().into(binding.image1);
+                                addServiceModel.setMainImage(uri.toString());
+                                binding.setModel(addServiceModel);
                             } else {
                                 if (imagesUriList.size() < 5) {
                                     imagesUriList.add(uri.toString());
@@ -186,16 +259,54 @@ public class AddServiceActivity extends BaseActivity {
             }
         });
         binding.btnCancel.setOnClickListener(view -> closeSheet());
+        permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                activityAddServiceMvvm.initGoogleApi();
+
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        activityAddServiceMvvm.getDepartment(this);
+
+        updateUI();
+        checkPermission();
     }
 
-    private void addMainItem() {
+    private void checkPermission() {
+        if (ActivityCompat.checkSelfPermission(this, BaseActivity.fineLocPerm) != PackageManager.PERMISSION_GRANTED) {
+            permissionLauncher.launch(BaseActivity.fineLocPerm);
+        } else {
 
+            activityAddServiceMvvm.initGoogleApi();
+        }
+    }
+
+
+    private void updateUI() {
+        SupportMapFragment supportMapFragment = SupportMapFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.map, supportMapFragment).commit();
+        supportMapFragment.getMapAsync(this);
+
+        FragmentMapTouchListener fragmentMapTouchListener = (FragmentMapTouchListener) getSupportFragmentManager().findFragmentById(R.id.map);
+        fragmentMapTouchListener.setListener(() -> binding.nestedscroll.requestDisallowInterceptTouchEvent(true));
+
+
+    }
+
+
+    private void addMainItem() {
+AddAdditionalItemModel model=new AddAdditionalItemModel();
         AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+        rowBinding.setModel(model);
         mainItemList.add(rowBinding);
         binding.llMainItem.addView(rowBinding.getRoot());
         rowBinding.imDelete.setOnClickListener(v -> {
             binding.llMainItem.removeView(rowBinding.getRoot());
         });
+        addServiceModel.setMainItemList(mainItemList);
+        binding.setModel(addServiceModel);
 
     }
 
@@ -208,7 +319,8 @@ public class AddServiceActivity extends BaseActivity {
         rowBinding.imDelete.setOnClickListener(v -> {
             binding.llExtraItem.removeView(rowBinding.getRoot());
         });
-
+        addServiceModel.setExtraItemList(extraItemList);
+        binding.setModel(addServiceModel);
     }
 
     public void openSheet() {
@@ -370,17 +482,12 @@ public class AddServiceActivity extends BaseActivity {
             Log.e("duration", duration + "__");
             if (duration <= 90) {
                 videouri = uri;
-                Log.e("uri",uri+"");
+                Log.e("uri", uri + "");
                 addServiceModel.setVideoUri(uri.toString());
                 initPlayer(videouri);
             } else {
                 Toast.makeText(AddServiceActivity.this, R.string.vid_du_less, Toast.LENGTH_SHORT).show();
             }
-
-
-
-
-
 
 
         }
@@ -449,5 +556,41 @@ public class AddServiceActivity extends BaseActivity {
         initPlayer(videouri);
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        if (googleMap != null) {
+            mMap = googleMap;
+            mMap.setTrafficEnabled(false);
+            mMap.setBuildingsEnabled(false);
+            mMap.setIndoorEnabled(true);
+            if (activityAddServiceMvvm.getGoogleMap().getValue() == null) {
+                activityAddServiceMvvm.setmMap(mMap);
+
+            }
+
+
+        }
+    }
+
+    private void addMarker(double lat, double lng) {
+        if (activityAddServiceMvvm.getGoogleMap().getValue() != null) {
+            mMap = activityAddServiceMvvm.getGoogleMap().getValue();
+        }
+        mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), zoom));
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+
+            activityAddServiceMvvm.startLocationUpdate();
+
+        }
+    }
 
 }
