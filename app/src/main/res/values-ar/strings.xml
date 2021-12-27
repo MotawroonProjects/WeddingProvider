@@ -40,13 +40,13 @@
     <string name="message">الرساله</string>
     <string name="send">ارسال</string>
     <string name="suc">تم بنجاح</string>
-    <string name="service_name">اسم الخدمه</string>
+    <string name="service_name">اسم الخدمة</string>
     <string name="price">السعر</string>
     <string name="department">القسم</string>
     <string name="description">الوصف</string>
-    <string name="basic_items">بنود اساسيه</string>
+    <string name="basic_items">بنود اساسية</string>
     <string name="additions">اضافات</string>
-    <string name="maximum_reservation">الحد الاقصى للحجز </string>
+    <string name="maximum_reservation">الحد الاقصى للحجز (اليوم)</string>
     <string name="main_image">الصوره الرئيسية</string>
     <string name="video">فيديو</string>
     <string name="add_images">اضف صور</string>
@@ -76,5 +76,7 @@
     <string name="vid_du_less">يجب ان تكون مدة الفيديو اقل من 90 ثانية</string>
     <string name="choose_video">إختر فيديو</string>
     <string name="ch_depart">اختر القسم</string>
-    <string name="upload_service_images">ارفع صور الخدمه</string>
+    <string name="upload_service_images">ارفع صور الخدمة</string>
+    <string name="only_one_image">صورة واحدة ع الاقل</string>
+    <string name="offer_name">إسم العرض</string>
 </resources>

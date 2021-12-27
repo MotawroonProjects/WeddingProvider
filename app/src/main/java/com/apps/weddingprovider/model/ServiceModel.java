@@ -20,6 +20,7 @@ public class ServiceModel implements Serializable {
     private String is_shown;
     private String created_at;
     private String updated_at;
+    private String max_limit;
     private List<ServiceMainItem> service_main_items;
     private List<ServiceExtraItem> service_extra_items;
     private List<ServiceImage> service_images;
@@ -109,6 +110,11 @@ public class ServiceModel implements Serializable {
     public List<ServiceRate> getService_rates() {
         return service_rates;
     }
+
+    public String getMax_limit() {
+        return max_limit;
+    }
+
 
     public static class ServiceMainItem implements Serializable {
         private String id;

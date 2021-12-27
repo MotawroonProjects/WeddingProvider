@@ -1,13 +1,19 @@
 package com.apps.weddingprovider.uis.activity_home.fragments_app;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,10 +24,14 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.apps.weddingprovider.R;
+import com.apps.weddingprovider.adapter.OfferAdapter;
 import com.apps.weddingprovider.adapter.SliderAdapter;
 import com.apps.weddingprovider.databinding.FragmentServiceDetailsBinding;
+import com.apps.weddingprovider.model.ServiceModel;
 import com.apps.weddingprovider.model.SingleServiceDataModel;
 import com.apps.weddingprovider.mvvm.FragmentServiceDetialsMvvm;
+import com.apps.weddingprovider.uis.activity_add_offer.AddOfferActivity;
+import com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity;
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.bumptech.glide.Glide;
@@ -62,11 +72,22 @@ public class ServiceDetailsFragment extends BaseFragment {
     private SliderAdapter sliderAdapter;
     private SingleServiceDataModel singleServiceDataModel;
     private String service_id = "";
+    private ActivityResultLauncher<Intent> launcher;
+    private int req;
+    private OfferAdapter offerAdapter;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1 && result.getResultCode() == Activity.RESULT_OK) {
+
+                fragmentServiceDetialsMvvm.getSingleServiceData(service_id);
+
+            }
+        });
     }
 
     @Override
@@ -132,8 +153,18 @@ public class ServiceDetailsFragment extends BaseFragment {
 
         });
 
+
         fragmentServiceDetialsMvvm.getSingleService().observe(activity, s -> {
             singleServiceDataModel = s;
+            if (singleServiceDataModel != null && singleServiceDataModel.getData() != null && singleServiceDataModel.getData().getOffer().size() > 0) {
+                offerAdapter = new OfferAdapter(activity, this);
+                binding.recView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+                SnapHelper snapHelper = new PagerSnapHelper();
+                snapHelper.attachToRecyclerView(binding.recView);
+                binding.recView.setAdapter(offerAdapter);
+                offerAdapter.updateList(singleServiceDataModel.getData().getOffer());
+
+            }
             binding.setModel(singleServiceDataModel.getData());
             if (singleServiceDataModel != null && singleServiceDataModel.getData() != null) {
                 if (singleServiceDataModel.getData().getService_images() != null && singleServiceDataModel.getData().getService_images().size() > 0) {
@@ -167,6 +198,21 @@ public class ServiceDetailsFragment extends BaseFragment {
 
         });
 
+        binding.btnUpdate.setOnClickListener(v -> {
+            req = 1;
+            Intent intent = new Intent(activity, AddServiceActivity.class);
+            intent.putExtra("data", singleServiceDataModel.getData());
+            launcher.launch(intent);
+
+        });
+
+        binding.btnOffer.setOnClickListener(v -> {
+            req = 1;
+            Intent intent = new Intent(activity, AddOfferActivity.class);
+            intent.putExtra("data", singleServiceDataModel.getData());
+            launcher.launch(intent);
+
+        });
 
 
     }
@@ -269,6 +315,10 @@ public class ServiceDetailsFragment extends BaseFragment {
         }
         super.onPause();
 
+
+    }
+
+    public void updateOffer(ServiceModel.OfferModel offerModel) {
 
     }
 

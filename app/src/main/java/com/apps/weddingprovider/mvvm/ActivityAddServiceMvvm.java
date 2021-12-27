@@ -32,6 +32,7 @@ import com.apps.weddingprovider.model.PlaceGeocodeData;
 import com.apps.weddingprovider.model.PlaceMapDetailsData;
 import com.apps.weddingprovider.model.SignUpModel;
 import com.apps.weddingprovider.model.SingleServiceDataModel;
+import com.apps.weddingprovider.model.StatusResponse;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.remote.Api;
 import com.apps.weddingprovider.share.Common;
@@ -78,6 +79,7 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
     private String lang = "ar";
     private MutableLiveData<List<DepartmentModel>> departmentLivData;
     public MutableLiveData<SingleServiceDataModel> singleServiceDataModelMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> imageDeletedLivData;
 
     public ActivityAddServiceMvvm(@NonNull Application application) {
         super(application);
@@ -96,12 +98,17 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         return departmentLivData;
     }
 
+    public LiveData<Integer> onDeletedSuccess() {
+        if (imageDeletedLivData == null) {
+            imageDeletedLivData = new MutableLiveData<>();
+
+        }
+        return imageDeletedLivData;
+    }
+
     //_________________________hitting api_________________________________
 
     public void getDepartment(Context context) {
-        ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
-        dialog.setCancelable(false);
-        dialog.show();
         Api.getService(Tags.base_url)
                 .getDepartments(Tags.api_key)
                 .subscribeOn(Schedulers.io())
@@ -115,14 +122,15 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
 
                     @Override
                     public void onSuccess(@NonNull Response<DepartmentDataModel> response) {
-                        dialog.dismiss();
                         if (response.isSuccessful() && response.body() != null) {
 
                             if (response.body().getStatus() == 200) {
                                 List<DepartmentModel> list = response.body().getData();
                                 if (list.size() > 0) {
-                                    list.add(0, new DepartmentModel(null, context.getString(R.string.ch_depart), true, ""));
                                     departmentLivData.setValue(list);
+                                } else {
+                                    list.add(0, new DepartmentModel(null, context.getString(R.string.ch_depart), true, ""));
+
                                 }
 
 
@@ -132,7 +140,6 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        dialog.dismiss();
                         Log.e(TAG, "onError: ", e);
                     }
                 });
@@ -357,7 +364,7 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         MultipartBody.Part video_part = Common.getMultiPartVideo(context, Uri.parse(model.getVideoUri()), "video");
         List<MultipartBody.Part> partimageList = getMultipartBodyList(model.getGalleryImages(), "images[]", context);
 
-        Api.getService(Tags.base_url).addServices("Bearer " + userModel.getData().getToken(), api_part, user_part, name_part, price_part, text_part, max_part, depart_part, service_main_items,service_extra_items , lat_part, lng_part, address_part, main_image, video_part, partimageList)
+        Api.getService(Tags.base_url).addServices("Bearer " + userModel.getData().getToken(), api_part, user_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_extra_items, lat_part, lng_part, address_part, main_image, video_part, partimageList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<SingleServiceDataModel>>() {
             @Override
@@ -370,9 +377,9 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
                 dialog.dismiss();
 
                 if (serviceDataModelResponse.isSuccessful()) {
-                    Log.e("code",serviceDataModelResponse.body().getStatus()+"__");
+                    Log.e("code", serviceDataModelResponse.body().getStatus() + "__");
 
-                    if (serviceDataModelResponse.body()!=null&&serviceDataModelResponse.body().getStatus() == 200) {
+                    if (serviceDataModelResponse.body() != null && serviceDataModelResponse.body().getStatus() == 200) {
                         singleServiceDataModelMutableLiveData.setValue(serviceDataModelResponse.body());
                     }
                 } else {
@@ -382,7 +389,7 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
 
             @Override
             public void onError(@NonNull Throwable throwable) {
-                Log.e("onError",throwable.getMessage());
+                Log.e("onError", throwable.getMessage());
                 dialog.dismiss();
             }
 
@@ -393,12 +400,126 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         });
     }
 
+    public void updateService(Context context, AddServiceModel model, UserModel userModel, String service_id) {
+        ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        RequestBody api_part = Common.getRequestBodyText(Tags.api_key);
+        RequestBody user_part = Common.getRequestBodyText(userModel.getData().getId() + "");
+        RequestBody service_id_part = Common.getRequestBodyText(service_id);
+
+        RequestBody name_part = Common.getRequestBodyText(model.getName());
+        RequestBody price_part = Common.getRequestBodyText(model.getPrice());
+        RequestBody text_part = Common.getRequestBodyText(model.getDescription());
+        RequestBody max_part = Common.getRequestBodyText(model.getMaxNumber());
+        RequestBody depart_part = Common.getRequestBodyText(model.getDepartment_id());
+        RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
+        RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
+        RequestBody address_part = Common.getRequestBodyText(model.getAddress());
+
+        List<MultipartBody.Part> service_main_items = new ArrayList<>(getMainAttribute(model));
+        List<MultipartBody.Part> service_extra_items = new ArrayList<>(getExtraAttribute(model));
+
+        MultipartBody.Part main_image = null;
+
+        if (!model.getMainImage().startsWith("http")) {
+            main_image = Common.getMultiPart(context, Uri.parse(model.getMainImage()), "main_image");
+
+        }
+
+        MultipartBody.Part video_part = null;
+        if (!model.getVideoUri().startsWith("http")) {
+            video_part = Common.getMultiPartVideo(context, Uri.parse(model.getVideoUri()), "video");
+
+        }
+        List<MultipartBody.Part> partimageList = getMultipartBodyList(model.getGalleryImages(), "images[]", context);
+
+        Api.getService(Tags.base_url).updateServices("Bearer " + userModel.getData().getToken(), api_part, user_part, service_id_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_extra_items, lat_part, lng_part, address_part, main_image, video_part, partimageList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<SingleServiceDataModel>>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                disposable.add(d);
+            }
+
+            @Override
+            public void onNext(@NonNull Response<SingleServiceDataModel> serviceDataModelResponse) {
+                dialog.dismiss();
+
+                if (serviceDataModelResponse.isSuccessful()) {
+                    Log.e("code", serviceDataModelResponse.body().getStatus() + "__");
+
+                    if (serviceDataModelResponse.body() != null && serviceDataModelResponse.body().getStatus() == 200) {
+                        singleServiceDataModelMutableLiveData.setValue(serviceDataModelResponse.body());
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                Log.e("onError", throwable.getMessage());
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onComplete() {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void deleteServiceImage(Context context, UserModel userModel, String service_image_id, int adapter_pos) {
+        ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Api.getService(Tags.base_url).deleteServiceImage("Bearer " + userModel.getData().getToken(), Tags.api_key, service_image_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new SingleObserver<Response<StatusResponse>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Response<StatusResponse> response) {
+                        dialog.dismiss();
+                        Log.e("code", response.body().getStatus() + "_");
+
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            if (response.body().getStatus() == 200) {
+                                imageDeletedLivData.setValue(adapter_pos);
+
+                            } else {
+                                Toast.makeText(context, context.getString(R.string.only_one_image), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        dialog.dismiss();
+                        Log.e("deleteImageError", e.getMessage());
+                    }
+                });
+    }
+
+
     private List<MultipartBody.Part> getMultipartBodyList(List<GalleryModel> uriList, String name, Context context) {
         List<MultipartBody.Part> partList = new ArrayList<>();
         for (int i = 0; i < uriList.size(); i++) {
-            Uri uri = Uri.parse(uriList.get(i).getImage());
-            MultipartBody.Part part = Common.getMultiPart(context, uri, name);
-            partList.add(part);
+            if (uriList.get(i).getType().equals("local")) {
+                Uri uri = Uri.parse(uriList.get(i).getImage());
+                MultipartBody.Part part = Common.getMultiPart(context, uri, name);
+                partList.add(part);
+            }
+
         }
         return partList;
     }

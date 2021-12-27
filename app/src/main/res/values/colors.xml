@@ -12,6 +12,8 @@
 
     <color name="white">#fff</color>
     <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+
     <color name="black1">#222020</color>
 
     <color name="gray0">#29000000</color>

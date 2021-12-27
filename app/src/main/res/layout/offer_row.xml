@@ -111,8 +111,20 @@
                     android:textSize="12sp" />
 
 
-            </LinearLayout>
 
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="12dp"
+                android:minWidth="120dp"
+                android:text="@string/update"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:background="@drawable/rounded_color1"
+                />
 
 
         </LinearLayout>

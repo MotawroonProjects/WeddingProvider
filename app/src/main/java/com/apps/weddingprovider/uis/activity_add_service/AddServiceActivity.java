@@ -40,6 +40,7 @@ import com.apps.weddingprovider.model.AddAdditionalItemModel;
 import com.apps.weddingprovider.model.AddServiceModel;
 import com.apps.weddingprovider.model.DepartmentModel;
 import com.apps.weddingprovider.model.GalleryModel;
+import com.apps.weddingprovider.model.ServiceModel;
 import com.apps.weddingprovider.model.SingleServiceDataModel;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.mvvm.ActivityAddServiceMvvm;
@@ -96,13 +97,22 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
     private ActivityResultLauncher<String> permissionLauncher;
     private SpinnerDepartmentAdapter spinnerDepartmentAdapter;
     private List<DepartmentModel> departmentModelList;
+    private ServiceModel serviceModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_service);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getDataFromIntent();
         initView();
+
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        serviceModel = (ServiceModel) intent.getSerializableExtra("data");
 
     }
 
@@ -131,13 +141,27 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             binding.setModel(addServiceModel);
 
         });
+        activityAddServiceMvvm.onDeletedSuccess().observe(this, integer -> {
 
+            if (imagesUriList.size() > 0) {
+                imagesUriList.remove(integer);
+                imageAddServiceAdapter.notifyItemRemoved(integer);
+                setResult(RESULT_OK);
+                finish();
+            }
 
-        activityAddServiceMvvm.getCategoryWeddingHall().observe(this, weddingHallModels -> {
+        });
+
+        activityAddServiceMvvm.getCategoryWeddingHall().observe(this, list -> {
             departmentModelList.clear();
-            if (weddingHallModels.size() > 0) {
-                departmentModelList.addAll(weddingHallModels);
+            if (list.size() > 0) {
+                departmentModelList.addAll(list);
                 spinnerDepartmentAdapter.notifyDataSetChanged();
+                if (serviceModel != null) {
+                    int pos = getDepartmentPos(serviceModel.getDepartment_id());
+                    binding.spDepart.setSelection(pos);
+                }
+
             }
         });
         spinnerDepartmentAdapter = new SpinnerDepartmentAdapter(departmentModelList, this);
@@ -145,16 +169,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         binding.spDepart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    addServiceModel.setDepartment_id("");
-
-                } else {
-                    addServiceModel.setDepartment_id(departmentModelList.get(i).getId());
-
-
-                }
-                //  Log.e("cc",city_id);
-
+                addServiceModel.setDepartment_id(departmentModelList.get(i).getId());
                 binding.setModel(addServiceModel);
             }
 
@@ -163,6 +178,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
             }
         });
+
         mainItemList = new ArrayList<>();
         extraItemList = new ArrayList<>();
         addServiceModel = new AddServiceModel();
@@ -174,77 +190,6 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         binding.recViewimage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageAddServiceAdapter = new ImageAddServiceAdapter(imagesUriList, this);
         binding.recViewimage.setAdapter(imageAddServiceAdapter);
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                if (selectedReq == READ_REQ) {
-
-                    uri = result.getData().getData();
-                    File file = new File(Common.getImagePath(this, uri));
-                    if (type.equals("mainImage")) {
-                        binding.icon1.setVisibility(View.GONE);
-
-                        Picasso.get().load(file).fit().into(binding.image1);
-                        addServiceModel.setMainImage(uri.toString());
-                        binding.setModel(addServiceModel);
-                    } else {
-                        if (imagesUriList.size() < 5) {
-                            imagesUriList.add(new GalleryModel(uri.toString(), "local"));
-                            imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
-                            addServiceModel.setGalleryImages(imagesUriList);
-                            binding.setModel(addServiceModel);
-                        } else {
-                            Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-
-                } else if (selectedReq == CAMERA_REQ) {
-                    Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
-                    uri = getUriFromBitmap(bitmap);
-                    if (uri != null) {
-                        String path = Common.getImagePath(this, uri);
-
-                        if (path != null) {
-                            if (type.equals("mainImage")) {
-                                binding.icon1.setVisibility(View.GONE);
-                                Picasso.get().load(new File(path)).fit().into(binding.image1);
-                                addServiceModel.setMainImage(uri.toString());
-                                binding.setModel(addServiceModel);
-                            } else {
-                                if (imagesUriList.size() < 5) {
-                                    imagesUriList.add(new GalleryModel(uri.toString(), "local"));
-                                    imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
-                                    addServiceModel.setGalleryImages(imagesUriList);
-                                    binding.setModel(addServiceModel);
-                                } else {
-                                    Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        } else {
-                            if (type.equals("mainImage")) {
-                                binding.icon1.setVisibility(View.GONE);
-                                Picasso.get().load(uri).fit().into(binding.image1);
-                                addServiceModel.setMainImage(uri.toString());
-                                binding.setModel(addServiceModel);
-                            } else {
-                                if (imagesUriList.size() < 5) {
-                                    imagesUriList.add(new GalleryModel(uri.toString(), "local"));
-                                    imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
-                                    addServiceModel.setGalleryImages(imagesUriList);
-                                    binding.setModel(addServiceModel);
-                                } else {
-                                    Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        }
-                    }
-                } else if (selectedReq == VIDEO_REQ) {
-                    Uri uri = result.getData().getData();
-                    new VideoTask().execute(uri);
-                }
-            }
-        });
         binding.llAddMainItem.setOnClickListener(view -> {
             addMainItem();
         });
@@ -276,7 +221,13 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
         binding.btnSave.setOnClickListener(view -> {
             if (addServiceModel.isDataValid(this)) {
-                activityAddServiceMvvm.addService(this, addServiceModel, userModel);
+                if (serviceModel == null) {
+                    activityAddServiceMvvm.addService(this, addServiceModel, userModel);
+
+                } else {
+                    activityAddServiceMvvm.updateService(this, addServiceModel, userModel, serviceModel.getId());
+
+                }
             }
         });
         binding.btnCancel.setOnClickListener(view -> closeSheet());
@@ -291,8 +242,157 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         });
         activityAddServiceMvvm.getDepartment(this);
 
+        if (serviceModel != null) {
+            addServiceModel.setName(serviceModel.getName());
+            addServiceModel.setMainImage(serviceModel.getMain_image());
+            addServiceModel.setPrice(serviceModel.getPrice());
+            addServiceModel.setMaxNumber(serviceModel.getMax_limit());
+            addServiceModel.setDepartment_id(serviceModel.getDepartment_id());
+            addServiceModel.setDescription(serviceModel.getText());
+            addServiceModel.setAddress(serviceModel.getAddress());
+            addServiceModel.setLat(Double.parseDouble(serviceModel.getLatitude()));
+            addServiceModel.setLng(Double.parseDouble(serviceModel.getLongitude()));
+            for (ServiceModel.ServiceMainItem mainItem : serviceModel.getService_main_items()) {
+                AddAdditionalItemModel model = new AddAdditionalItemModel();
+                model.setName(mainItem.getName());
+                model.setAmount(mainItem.getDetails());
+                AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+                rowBinding.setModel(model);
+                mainItemList.add(rowBinding);
+                binding.llMainItem.addView(rowBinding.getRoot());
+
+                rowBinding.imDelete.setOnClickListener(v -> {
+                    mainItemList.remove(rowBinding);
+                    binding.llMainItem.removeView(rowBinding.getRoot());
+                });
+
+
+            }
+
+            for (ServiceModel.ServiceExtraItem extraItem : serviceModel.getService_extra_items()) {
+                AddAdditionalItemModel model = new AddAdditionalItemModel();
+                model.setName(extraItem.getName());
+                model.setAmount(extraItem.getPrice());
+                AddAdditionalRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.add_additional_row, null, false);
+                rowBinding.edtAmount.setHint(getResources().getString(R.string.price));
+                rowBinding.setModel(model);
+                extraItemList.add(rowBinding);
+                binding.llExtraItem.addView(rowBinding.getRoot());
+                rowBinding.imDelete.setOnClickListener(v -> {
+                    extraItemList.remove(rowBinding);
+                    binding.llExtraItem.removeView(rowBinding.getRoot());
+                });
+
+            }
+            addServiceModel.setMainItemList(mainItemList);
+            addServiceModel.setExtraItemList(extraItemList);
+            binding.setModel(addServiceModel);
+
+            for (ServiceModel.ServiceImage image : serviceModel.getService_images()) {
+                GalleryModel model = new GalleryModel(image.getId(), image.getImage(), "online");
+                imagesUriList.add(model);
+            }
+            imageAddServiceAdapter.notifyDataSetChanged();
+
+
+            Picasso.get().load(Uri.parse(serviceModel.getMain_image())).into(binding.image1);
+            binding.icon1.setVisibility(View.GONE);
+            addServiceModel.setGalleryImages(imagesUriList);
+            addServiceModel.setVideoUri(serviceModel.getVideo());
+            initPlayer(Uri.parse(serviceModel.getVideo()));
+
+
+        }
+
+
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                if (selectedReq == READ_REQ) {
+
+                    uri = result.getData().getData();
+                    File file = new File(Common.getImagePath(this, uri));
+                    if (type.equals("mainImage")) {
+                        binding.icon1.setVisibility(View.GONE);
+
+                        Picasso.get().load(file).fit().into(binding.image1);
+                        addServiceModel.setMainImage(uri.toString());
+                        binding.setModel(addServiceModel);
+                    } else {
+                        if (imagesUriList.size() < 5) {
+                            imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
+                            imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                            addServiceModel.setGalleryImages(imagesUriList);
+                            binding.setModel(addServiceModel);
+                        } else {
+                            Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
+                } else if (selectedReq == CAMERA_REQ) {
+                    Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                    uri = getUriFromBitmap(bitmap);
+                    if (uri != null) {
+                        String path = Common.getImagePath(this, uri);
+
+                        if (path != null) {
+                            if (type.equals("mainImage")) {
+                                binding.icon1.setVisibility(View.GONE);
+                                Picasso.get().load(new File(path)).fit().into(binding.image1);
+                                addServiceModel.setMainImage(uri.toString());
+                                binding.setModel(addServiceModel);
+                            } else {
+                                if (imagesUriList.size() < 5) {
+                                    imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
+                                    imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                                    addServiceModel.setGalleryImages(imagesUriList);
+                                    binding.setModel(addServiceModel);
+                                } else {
+                                    Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } else {
+                            if (type.equals("mainImage")) {
+                                binding.icon1.setVisibility(View.GONE);
+                                Picasso.get().load(uri).fit().into(binding.image1);
+                                addServiceModel.setMainImage(uri.toString());
+                                binding.setModel(addServiceModel);
+                            } else {
+                                if (imagesUriList.size() < 5) {
+                                    imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
+                                    imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                                    addServiceModel.setGalleryImages(imagesUriList);
+                                    binding.setModel(addServiceModel);
+                                } else {
+                                    Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    }
+                } else if (selectedReq == VIDEO_REQ) {
+                    Uri uri = result.getData().getData();
+                    new VideoTask().execute(uri);
+                }
+            }
+        });
+
         updateUI();
         checkPermission();
+    }
+
+    private int getDepartmentPos(String department_id) {
+        int pos = 0;
+
+        for (int index = 0; index < departmentModelList.size(); index++) {
+            DepartmentModel departmentModel = departmentModelList.get(index);
+            if (department_id.equals(departmentModel.getId())) {
+                pos = index;
+                return pos;
+            }
+        }
+
+        return pos;
     }
 
     private void checkPermission() {
@@ -355,7 +455,6 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         binding.expandLayout.collapse(true);
 
     }
-
 
     public void checkReadPermission() {
         closeSheet();
@@ -473,8 +572,17 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
     public void deleteImage(int adapterPosition) {
         if (imagesUriList.size() > 0) {
-            imagesUriList.remove(adapterPosition);
-            imageAddServiceAdapter.notifyItemRemoved(adapterPosition);
+            if (imagesUriList.get(adapterPosition).getType().equals("local")) {
+                imagesUriList.remove(adapterPosition);
+                imageAddServiceAdapter.notifyItemRemoved(adapterPosition);
+            } else {
+                if (imagesUriList.size() > 1) {
+                    activityAddServiceMvvm.deleteServiceImage(this, getUserModel(), imagesUriList.get(adapterPosition).getId(), adapterPosition);
+                } else {
+                    Toast.makeText(this, R.string.only_one_image, Toast.LENGTH_SHORT).show();
+                }
+            }
+
 
         }
     }
@@ -591,6 +699,10 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             if (activityAddServiceMvvm.getGoogleMap().getValue() == null) {
                 activityAddServiceMvvm.setmMap(mMap);
 
+            }
+
+            if (serviceModel != null) {
+                addMarker(Double.parseDouble(serviceModel.getLatitude()), Double.parseDouble(serviceModel.getLongitude()));
             }
 
 

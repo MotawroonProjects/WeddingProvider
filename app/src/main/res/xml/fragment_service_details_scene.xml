@@ -96,6 +96,19 @@
 
 
         <Constraint
+            android:id="@+id/recView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@id/flVideo"
+            app:layout_constraintStart_toStartOf="@id/flVideo"
+            app:layout_constraintTop_toBottomOf="@id/flVideo"
+
+            />
+
+
+        <Constraint
             android:id="@+id/cardDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,9 +118,12 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flVideo"
+            app:layout_constraintTop_toBottomOf="@id/recView"
 
             />
+
+
+
 
         <Constraint
             android:id="@+id/llActions"
@@ -214,6 +230,17 @@
             />
 
 
+        <Constraint
+            android:id="@+id/recView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/flVideo"
+            app:layout_constraintStart_toStartOf="@id/flVideo"
+            app:layout_constraintTop_toBottomOf="@id/flVideo"
+
+            />
 
 
         <Constraint
@@ -226,9 +253,10 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flVideo"
+            app:layout_constraintTop_toBottomOf="@id/recView"
 
             />
+
 
         <Constraint
             android:id="@+id/llActions"

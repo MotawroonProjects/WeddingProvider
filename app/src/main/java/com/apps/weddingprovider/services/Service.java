@@ -214,4 +214,48 @@ public interface Service {
 
     );
 
+    @Multipart
+    @POST("api/add-service-offer")
+    Observable<Response<StatusResponse>> addOffer(@Header("AUTHORIZATION") String token,
+                                                          @Part("api_key") RequestBody api_key,
+                                                          @Part("user_id") RequestBody user_id,
+                                                          @Part("service_id") RequestBody service_id,
+                                                          @Part("name") RequestBody name,
+                                                          @Part("price") RequestBody price,
+                                                          @Part("text") RequestBody descripsion,
+                                                          @Part MultipartBody.Part main_image
+
+
+    );
+
+    @Multipart
+    @POST("api/edit-service")
+    Observable<Response<SingleServiceDataModel>> updateServices(@Header("AUTHORIZATION") String token,
+                                                                @Part("api_key") RequestBody api_key,
+                                                                @Part("user_id") RequestBody user_id,
+                                                                @Part("service_id") RequestBody service_id,
+                                                                @Part("name") RequestBody name,
+                                                                @Part("price") RequestBody price,
+                                                                @Part("text") RequestBody descripsion,
+                                                                @Part("max_limit") RequestBody max_limit,
+                                                                @Part("department_id") RequestBody department_id,
+                                                                @Part List<MultipartBody.Part> main_attributes,
+                                                                @Part List<MultipartBody.Part> extra_attributes,
+                                                                @Part("latitude") RequestBody latitude,
+                                                                @Part("longitude") RequestBody longitude,
+                                                                @Part("address") RequestBody address,
+                                                                @Part MultipartBody.Part main_image,
+                                                                @Part MultipartBody.Part video,
+                                                                @Part List<MultipartBody.Part> images
+
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/delete-service-image")
+    Single<Response<StatusResponse>> deleteServiceImage(@Header("AUTHORIZATION") String token,
+                                                        @Field("api_key") String api_key,
+                                                        @Field("service_image_id") String service_image_id
+
+    );
 }

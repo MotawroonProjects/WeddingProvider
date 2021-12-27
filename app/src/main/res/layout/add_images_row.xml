@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_cancel"
                 android:padding="6dp"
-                app:tint="@color/gray11"
+                app:tint="@color/red"
                 />
         </androidx.cardview.widget.CardView>
     </FrameLayout>

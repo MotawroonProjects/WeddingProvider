@@ -46,7 +46,7 @@
     <string name="description">Description</string>
     <string name="basic_items">Basic Items</string>
     <string name="additions">Additions</string>
-    <string name="maximum_reservation">Maximum Reservation</string>
+    <string name="maximum_reservation">Maximum number reservation (per day)</string>
     <string name="main_image">Main Image</string>
     <string name="video">Video</string>
     <string name="add_images">Add Images</string>
@@ -77,4 +77,6 @@
     <string name="choose_video">Choose video</string>
     <string name="ch_depart">Choose Department</string>
     <string name="upload_service_images">Upload Service Images</string>
+    <string name="only_one_image">at least only one image</string>
+    <string name="offer_name">Offer name</string>
 </resources>
