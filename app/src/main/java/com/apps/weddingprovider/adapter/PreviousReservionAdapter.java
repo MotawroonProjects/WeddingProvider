@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.PreviousOrderRowBinding;
 import com.apps.weddingprovider.model.ResevisionModel;
+import com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentPreviousReservation;
 
 import java.util.List;
 
@@ -47,7 +48,13 @@ public class PreviousReservionAdapter extends RecyclerView.Adapter<RecyclerView.
 
         MyHolder myHolder = (MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
+        myHolder.binding.btnDetails.setOnClickListener(v -> {
+            if (fragment instanceof FragmentPreviousReservation) {
+                FragmentPreviousReservation fragmentCurrentReservation = (FragmentPreviousReservation) fragment;
+                fragmentCurrentReservation.createSheetDialog(list.get(myHolder.getAdapterPosition()));
 
+            }
+        });
 
     }
 

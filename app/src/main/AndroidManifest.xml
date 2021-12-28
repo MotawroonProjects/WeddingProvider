@@ -31,6 +31,13 @@
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:exported="false" />
+
+        <activity
+            android:name=".uis.activity_qr_code.QrCodeActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".uis.activity_home.HomeActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"

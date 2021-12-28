@@ -32,6 +32,7 @@ import com.apps.weddingprovider.uis.activity_contact_us.ContactUsActivity;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
 import com.apps.weddingprovider.uis.activity_login.LoginActivity;
 import com.apps.weddingprovider.uis.activity_notification.NotificationActivity;
+import com.apps.weddingprovider.uis.activity_qr_code.QrCodeActivity;
 import com.apps.weddingprovider.uis.activity_sign_up.SignUpActivity;
 
 import java.util.List;
@@ -119,6 +120,17 @@ public class FragmentProfile extends BaseFragment {
                     if (getUserModel() != null) {
                         navigateToAddServiceActivity();
                     }
+                }
+        );
+
+        binding.llService.setOnClickListener(view -> {
+                    activity.displayFragmentService();
+                }
+        );
+
+        binding.llScan.setOnClickListener(view -> {
+                    Intent intent = new Intent(activity, QrCodeActivity.class);
+                    startActivity(intent);
                 }
         );
         binding.llLogout.setOnClickListener(view -> {

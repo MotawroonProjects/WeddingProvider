@@ -64,9 +64,24 @@ public class FragmentMyService extends BaseFragment {
 
     private void initView() {
         fragmentServiceMvvm = ViewModelProviders.of(activity).get(FragmentServiceMvvm.class);
+        fragmentServiceMvvm.onDeleteSuccess().observe(activity, integer -> {
+            if (fragmentServiceMvvm.getServiceLiveData().getValue().size() > 0) {
+                fragmentServiceMvvm.getServiceLiveData().getValue().remove(integer);
+                if (adapter != null) {
+                    adapter.removeItem(integer);
+                }
+                if (fragmentServiceMvvm.getServiceLiveData().getValue().size() == 0) {
+                    binding.llNoData.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llNoData.setVisibility(View.GONE);
+
+                }
+            }
+        });
         adapter = new ServiceAdapter(activity, this);
         binding.recView.setLayoutManager(new GridLayoutManager(activity, 2));
         binding.recView.setAdapter(adapter);
+
 
         fragmentServiceMvvm.getIsLoading().observe(activity, isLoading -> {
             binding.swipeRefresh.setRefreshing(isLoading);
@@ -96,5 +111,9 @@ public class FragmentMyService extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString("data", serviceId);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentServiceDetails, bundle);
+    }
+
+    public void deleteService(String id, int adapterPosition) {
+        fragmentServiceMvvm.deleteServiceData(getUserModel(),id,adapterPosition,activity);
     }
 }

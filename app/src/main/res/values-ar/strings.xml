@@ -79,4 +79,5 @@
     <string name="upload_service_images">ارفع صور الخدمة</string>
     <string name="only_one_image">صورة واحدة ع الاقل</string>
     <string name="offer_name">إسم العرض</string>
+    <string name="add_offer">إضافة عرض</string>
 </resources>

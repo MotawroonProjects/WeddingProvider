@@ -52,6 +52,7 @@ public class AddOfferActivity extends BaseActivity {
     private Uri uri;
     private int selectedReq;
     private ServiceModel serviceModel;
+    private ServiceModel.OfferModel offerModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class AddOfferActivity extends BaseActivity {
     private void getDataFromIntent() {
         Intent intent = getIntent();
         serviceModel = (ServiceModel) intent.getSerializableExtra("data");
+        offerModel = (ServiceModel.OfferModel) intent.getSerializableExtra("data2");
 
     }
 
@@ -112,6 +114,17 @@ public class AddOfferActivity extends BaseActivity {
             }
         });
 
+        if (offerModel!=null){
+            binding.icon1.setVisibility(View.GONE);
+            Picasso.get().load(offerModel.getImage()).fit().into(binding.image1);
+            addOfferModel.setMainImage(offerModel.getImage());
+            addOfferModel.setName(offerModel.getName());
+            addOfferModel.setPrice(offerModel.getPrice());
+            addOfferModel.setDescription(offerModel.getText());
+
+            binding.setModel(addOfferModel);
+        }
+
         binding.flUploadImage.setOnClickListener(view -> {
             openSheet();
         });
@@ -128,8 +141,13 @@ public class AddOfferActivity extends BaseActivity {
 
         binding.btnSave.setOnClickListener(view -> {
             if (addOfferModel.isDataValid(this)) {
+                if (offerModel==null){
+                    activityAddOfferMvvm.addOffer(this, addOfferModel, getUserModel(), serviceModel.getId());
 
-                activityAddOfferMvvm.addOffer(this, addOfferModel, getUserModel(), serviceModel.getId());
+                }else {
+                    activityAddOfferMvvm.updateOffer(this, addOfferModel, getUserModel(), offerModel.getId());
+
+                }
             }
         });
     }

@@ -61,6 +61,19 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         });
 
+        myHolder.binding.flDelete.setOnClickListener(v -> {
+            ServiceModel serviceModel = list.get(holder.getAdapterPosition());
+            if (fragment instanceof FragmentMyService) {
+                FragmentMyService fragmentMyService = (FragmentMyService) fragment;
+                fragmentMyService.deleteService(serviceModel.getId(),holder.getAdapterPosition());
+
+            }else  if (fragment instanceof FragmentService) {
+                FragmentService fragmentService = (FragmentService) fragment;
+                fragmentService.deleteService(serviceModel.getId(),holder.getAdapterPosition());
+
+            }
+        });
+
     }
 
     @Override
@@ -96,4 +109,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyDataSetChanged();
     }
 
+    public void removeItem(int pos) {
+        if (list!=null&&list.size()>0){
+            list.remove(pos);
+            notifyItemRemoved(pos);
+        }
+    }
 }

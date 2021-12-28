@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -57,6 +58,20 @@ public class FragmentService extends BaseFragment {
         fragmentServiceMvvm.getIsLoading().observe(activity, isLoading -> {
             binding.swipeRefresh.setRefreshing(isLoading);
         });
+        fragmentServiceMvvm.onDeleteSuccess().observe(activity, integer -> {
+            if (fragmentServiceMvvm.getServiceLiveData().getValue().size() > 0) {
+                fragmentServiceMvvm.getServiceLiveData().getValue().remove(integer);
+                if (adapter != null) {
+                    adapter.removeItem(integer);
+                }
+                if (fragmentServiceMvvm.getServiceLiveData().getValue().size() == 0) {
+                    binding.llNoData.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llNoData.setVisibility(View.GONE);
+
+                }
+            }
+        });
 
         fragmentServiceMvvm.getServiceLiveData().observe(activity, serviceModelList -> {
             if (serviceModelList.size() > 0) {
@@ -83,5 +98,8 @@ public class FragmentService extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString("data", serviceId);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.fragmentCalender, bundle);
+    }
+    public void deleteService(String id, int adapterPosition) {
+        fragmentServiceMvvm.deleteServiceData(getUserModel(),id,adapterPosition,activity);
     }
 }

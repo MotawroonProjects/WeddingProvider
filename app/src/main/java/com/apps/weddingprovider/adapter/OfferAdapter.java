@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.OfferRowBinding;
 import com.apps.weddingprovider.model.ServiceModel;
+import com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentService;
 import com.apps.weddingprovider.uis.activity_home.fragments_app.ServiceDetailsFragment;
+import com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentMyService;
 
 import java.util.List;
 
@@ -57,6 +59,17 @@ public class OfferAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         });
 
+        myHolder.binding.flDelete.setOnClickListener(v -> {
+            ServiceModel.OfferModel offer = list.get(holder.getAdapterPosition());
+
+            if (fragment instanceof ServiceDetailsFragment) {
+                ServiceDetailsFragment serviceDetailsFragment = (ServiceDetailsFragment) fragment;
+                serviceDetailsFragment.deleteOffer(offer.getId(),holder.getAdapterPosition());
+            }
+
+
+        });
+
     }
 
     @Override
@@ -92,4 +105,10 @@ public class OfferAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void removeItem(int pos) {
+        if (list!=null&&list.size()>0){
+            list.remove(pos);
+            notifyItemRemoved(pos);
+        }
+    }
 }

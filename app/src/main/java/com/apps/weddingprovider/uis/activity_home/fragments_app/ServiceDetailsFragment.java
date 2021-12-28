@@ -153,14 +153,24 @@ public class ServiceDetailsFragment extends BaseFragment {
 
         });
 
+        fragmentServiceDetialsMvvm.onDeleteSuccess().observe(activity, integer -> {
+            if (fragmentServiceDetialsMvvm.getSingleService().getValue().getData().getOffer().size() > 0) {
+                fragmentServiceDetialsMvvm.getSingleService().getValue().getData().getOffer().remove(integer);
+                if (offerAdapter != null) {
+                    offerAdapter.removeItem(integer);
+                }
+
+            }
+        });
+        binding.recView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(binding.recView);
 
         fragmentServiceDetialsMvvm.getSingleService().observe(activity, s -> {
             singleServiceDataModel = s;
             if (singleServiceDataModel != null && singleServiceDataModel.getData() != null && singleServiceDataModel.getData().getOffer().size() > 0) {
                 offerAdapter = new OfferAdapter(activity, this);
-                binding.recView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-                SnapHelper snapHelper = new PagerSnapHelper();
-                snapHelper.attachToRecyclerView(binding.recView);
+
                 binding.recView.setAdapter(offerAdapter);
                 offerAdapter.updateList(singleServiceDataModel.getData().getOffer());
 
@@ -319,7 +329,16 @@ public class ServiceDetailsFragment extends BaseFragment {
     }
 
     public void updateOffer(ServiceModel.OfferModel offerModel) {
+        req = 1;
+        Intent intent = new Intent(activity, AddOfferActivity.class);
+        intent.putExtra("data", singleServiceDataModel.getData());
+        intent.putExtra("data2", offerModel);
 
+        launcher.launch(intent);
+    }
+
+    public void deleteOffer(String id, int adapterPosition) {
+        fragmentServiceDetialsMvvm.deleteOfferData(getUserModel(), id, adapterPosition, activity);
     }
 
 

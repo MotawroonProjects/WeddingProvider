@@ -51,7 +51,7 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         navController = Navigation.findNavController(this, R.id.navHostFragment);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(binding.bottomNav, navController);
-        NavigationUI.setupWithNavController(binding.toolBar, navController,appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.toolBar, navController, appBarConfiguration);
         NavigationUI.setupActionBarWithNavController(this, navController);
 
 
@@ -84,9 +84,13 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         }
     }
 
+    public void displayFragmentService() {
+        navController.navigate(R.id.myService);
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(navController,appBarConfiguration)|super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, appBarConfiguration) | super.onSupportNavigateUp();
     }
 
     public void refreshActivity(String lang) {
@@ -110,7 +114,7 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         if (currentFragmentId == R.id.home) {
             finish();
 
-        }  else {
+        } else {
             navController.popBackStack();
         }
 

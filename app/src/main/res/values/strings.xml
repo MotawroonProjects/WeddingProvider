@@ -79,4 +79,5 @@
     <string name="upload_service_images">Upload Service Images</string>
     <string name="only_one_image">at least only one image</string>
     <string name="offer_name">Offer name</string>
+    <string name="add_offer">Add offer</string>
 </resources>

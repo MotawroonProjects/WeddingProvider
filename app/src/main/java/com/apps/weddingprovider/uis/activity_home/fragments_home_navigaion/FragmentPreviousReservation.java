@@ -10,14 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.apps.weddingprovider.R;
+import com.apps.weddingprovider.adapter.OfferExtraItemsAdapter;
 import com.apps.weddingprovider.adapter.PreviousReservionAdapter;
+import com.apps.weddingprovider.databinding.BottomSheetServiceDetailsBinding;
 import com.apps.weddingprovider.databinding.FragmentCurrentReservationBinding;
+import com.apps.weddingprovider.model.ResevisionModel;
 import com.apps.weddingprovider.mvvm.FragmentPreviousReservisonMvvm;
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 
 public class FragmentPreviousReservation extends BaseFragment {
@@ -92,4 +97,34 @@ public class FragmentPreviousReservation extends BaseFragment {
     private void getData() {
         binding.cardNoData.setVisibility(View.VISIBLE);
     }
+
+    public void createSheetDialog(ResevisionModel model) {
+        BottomSheetDialog dialog = new BottomSheetDialog(activity);
+        BottomSheetServiceDetailsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.bottom_sheet_service_details, null, false);
+        dialog.setContentView(binding.getRoot());
+        binding.setModel(model);
+        double total = model.getPrice() + model.getExtra_item_price();
+        binding.setTotal(String.valueOf(total));
+        StringBuilder details;
+        details = new StringBuilder(model.getService().getText());
+
+        binding.setDetails(details.toString());
+        if (model.getReservation_extra_items() != null) {
+            binding.recView.setLayoutManager(new GridLayoutManager(activity, 2, LinearLayoutManager.HORIZONTAL, false));
+            OfferExtraItemsAdapter adapter = new OfferExtraItemsAdapter(activity);
+            binding.recView.setAdapter(adapter);
+            adapter.updateList(model.getReservation_extra_items());
+        }
+
+        binding.btnDelete.setVisibility(View.GONE);
+
+        binding.imageClose.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+
+        dialog.show();
+
+    }
+
 }

@@ -98,7 +98,7 @@ public class ActivityAddOfferMvvm extends AndroidViewModel {
 
     }
 
-    public void addOffer(Context context, AddOfferModel model, UserModel userModel,String service_id) {
+    public void addOffer(Context context, AddOfferModel model, UserModel userModel, String service_id) {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -112,46 +112,98 @@ public class ActivityAddOfferMvvm extends AndroidViewModel {
 
         MultipartBody.Part main_image = Common.getMultiPart(context, Uri.parse(model.getMainImage()), "image");
 
-        Api.getService(Tags.base_url).addOffer("Bearer " + userModel.getData().getToken(), api_part, user_part,service_part, name_part, price_part, text_part, main_image)
+        Api.getService(Tags.base_url).addOffer("Bearer " + userModel.getData().getToken(), api_part, user_part, service_part, name_part, price_part, text_part, main_image)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<Response<StatusResponse>>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                disposable.add(d);
-            }
-
-            @Override
-            public void onNext(@NonNull Response<StatusResponse> response) {
-                dialog.dismiss();
-
-                if (response.isSuccessful()) {
-                    Log.e("code", response.body().getStatus() + "__");
-
-                    if (response.body().getStatus() == 200) {
-                        onDataSuccess.setValue(true);
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
                     }
-                } else {
 
-                }
-            }
+                    @Override
+                    public void onNext(@NonNull Response<StatusResponse> response) {
+                        dialog.dismiss();
 
-            @Override
-            public void onError(@NonNull Throwable throwable) {
-                Log.e("onError", throwable.getMessage());
-                dialog.dismiss();
-            }
+                        if (response.isSuccessful()) {
+                            Log.e("code", response.body().getStatus() + "__");
 
-            @Override
-            public void onComplete() {
-                dialog.dismiss();
-            }
-        });
+                            if (response.body().getStatus() == 200) {
+                                onDataSuccess.setValue(true);
+                            }
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        Log.e("onError", throwable.getMessage());
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dialog.dismiss();
+                    }
+                });
     }
 
+    public void updateOffer(Context context, AddOfferModel model, UserModel userModel, String offer_id) {
+        ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        RequestBody api_part = Common.getRequestBodyText(Tags.api_key);
+        RequestBody user_part = Common.getRequestBodyText(userModel.getData().getId() + "");
+        RequestBody offer_id_part = Common.getRequestBodyText(offer_id);
 
+        RequestBody name_part = Common.getRequestBodyText(model.getName());
+        RequestBody price_part = Common.getRequestBodyText(model.getPrice());
+        RequestBody text_part = Common.getRequestBodyText(model.getDescription());
+        MultipartBody.Part main_image = null;
+        if (!model.getMainImage().startsWith("http")) {
+            main_image = Common.getMultiPart(context, Uri.parse(model.getMainImage()), "image");
 
+        }
+
+        Api.getService(Tags.base_url).updateOffer("Bearer " + userModel.getData().getToken(), api_part, user_part, offer_id_part, name_part, price_part, text_part, main_image)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Observer<Response<StatusResponse>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Response<StatusResponse> response) {
+                        dialog.dismiss();
+
+                        if (response.isSuccessful()) {
+                            Log.e("code", response.body().getStatus() + "__");
+
+                            if (response.body().getStatus() == 200) {
+                                onDataSuccess.setValue(true);
+                            }
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        Log.e("onError", throwable.getMessage());
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dialog.dismiss();
+                    }
+                });
+    }
 
 
 }

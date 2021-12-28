@@ -217,13 +217,27 @@ public interface Service {
     @Multipart
     @POST("api/add-service-offer")
     Observable<Response<StatusResponse>> addOffer(@Header("AUTHORIZATION") String token,
-                                                          @Part("api_key") RequestBody api_key,
-                                                          @Part("user_id") RequestBody user_id,
-                                                          @Part("service_id") RequestBody service_id,
-                                                          @Part("name") RequestBody name,
-                                                          @Part("price") RequestBody price,
-                                                          @Part("text") RequestBody descripsion,
-                                                          @Part MultipartBody.Part main_image
+                                                  @Part("api_key") RequestBody api_key,
+                                                  @Part("user_id") RequestBody user_id,
+                                                  @Part("service_id") RequestBody service_id,
+                                                  @Part("name") RequestBody name,
+                                                  @Part("price") RequestBody price,
+                                                  @Part("text") RequestBody descripsion,
+                                                  @Part MultipartBody.Part main_image
+
+
+    );
+
+    @Multipart
+    @POST("api/edit-service-offer")
+    Observable<Response<StatusResponse>> updateOffer(@Header("AUTHORIZATION") String token,
+                                                     @Part("api_key") RequestBody api_key,
+                                                     @Part("user_id") RequestBody user_id,
+                                                     @Part("offer_id") RequestBody offer_id,
+                                                     @Part("name") RequestBody name,
+                                                     @Part("price") RequestBody price,
+                                                     @Part("text") RequestBody descripsion,
+                                                     @Part MultipartBody.Part main_image
 
 
     );
@@ -256,6 +270,33 @@ public interface Service {
     Single<Response<StatusResponse>> deleteServiceImage(@Header("AUTHORIZATION") String token,
                                                         @Field("api_key") String api_key,
                                                         @Field("service_image_id") String service_image_id
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/delete-service")
+    Single<Response<StatusResponse>> deleteService(@Header("AUTHORIZATION") String token,
+                                                   @Field("api_key") String api_key,
+                                                   @Field("user_id") String user_id,
+                                                   @Field("service_id") String service_id
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/delete-offer")
+    Single<Response<StatusResponse>> deleteOffer(@Header("AUTHORIZATION") String token,
+                                                 @Field("api_key") String api_key,
+                                                 @Field("user_id") String user_id,
+                                                 @Field("offer_id") String offer_id
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/qr-scan")
+    Single<Response<StatusResponse>> confirmReservation(@Header("AUTHORIZATION") String token,
+                                                        @Field("api_key") String api_key,
+                                                        @Field("user_id") String user_id,
+                                                        @Field("bar_code") String bar_code
 
     );
 }

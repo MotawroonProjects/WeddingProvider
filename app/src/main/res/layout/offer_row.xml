@@ -43,6 +43,27 @@
                     app:riv_corner_radius="20dp"
                     app:riv_mutate_background="true" />
 
+                <FrameLayout
+                    android:id="@+id/flDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/circle_white"
+                    android:padding="3dp"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/red"
+
+
+                        />
+                </FrameLayout>
+
 
             </FrameLayout>
 
@@ -80,8 +101,7 @@
                     android:text='@{model.price}'
                     android:textColor="@color/color1"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -111,20 +131,19 @@
                     android:textSize="12sp" />
 
 
-
             </LinearLayout>
+
             <Button
                 android:id="@+id/btnUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="12dp"
+                android:background="@drawable/rounded_color1"
                 android:minWidth="120dp"
                 android:text="@string/update"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:background="@drawable/rounded_color1"
-                />
+                android:textSize="14sp" />
 
 
         </LinearLayout>
