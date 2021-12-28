@@ -14,6 +14,7 @@ public class ServiceModel implements Serializable {
     private String address;
     private String main_image;
     private String video;
+    private String video_link;
     private String text;
     private String rates_val;
     private String rates_count;
@@ -115,6 +116,9 @@ public class ServiceModel implements Serializable {
         return max_limit;
     }
 
+    public String getVideo_link() {
+        return video_link;
+    }
 
     public static class ServiceMainItem implements Serializable {
         private String id;

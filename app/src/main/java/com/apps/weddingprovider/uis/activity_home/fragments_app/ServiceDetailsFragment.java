@@ -4,11 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -62,9 +67,6 @@ public class ServiceDetailsFragment extends BaseFragment {
     private FragmentServiceDetialsMvvm fragmentServiceDetialsMvvm;
     private HomeActivity activity;
     private FragmentServiceDetailsBinding binding;
-    private ExoPlayer player;
-    private DataSource.Factory dataSourceFactory;
-    private DefaultTrackSelector trackSelector;
     private CompositeDisposable disposable = new CompositeDisposable();
     private boolean isInFullScreen = false;
     private Timer timer;
@@ -166,6 +168,38 @@ public class ServiceDetailsFragment extends BaseFragment {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.recView);
 
+        binding.webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        binding.webView.getSettings().setJavaScriptEnabled(true);
+        binding.webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                binding.webView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+                binding.progBarVideo.setVisibility(View.GONE);
+
+            }
+
+
+        });
+
+
         fragmentServiceDetialsMvvm.getSingleService().observe(activity, s -> {
             singleServiceDataModel = s;
             if (singleServiceDataModel != null && singleServiceDataModel.getData() != null && singleServiceDataModel.getData().getOffer().size() > 0) {
@@ -188,25 +222,13 @@ public class ServiceDetailsFragment extends BaseFragment {
                     }
                 }
                 if (singleServiceDataModel.getData().getVideo() != null) {
-                    getVideoImage();
-                    setupPlayer();
+                    binding.webView.loadUrl(singleServiceDataModel.getData().getVideo_link());
                 }
 
             }
         });
         fragmentServiceDetialsMvvm.getSingleServiceData(service_id);
 
-
-        binding.flVideo.setOnClickListener(v -> {
-            isInFullScreen = true;
-
-            binding.motionLayout.transitionToEnd();
-            if (player != null) {
-                player.setPlayWhenReady(true);
-            }
-
-
-        });
 
         binding.btnUpdate.setOnClickListener(v -> {
             req = 1;
@@ -227,106 +249,6 @@ public class ServiceDetailsFragment extends BaseFragment {
 
     }
 
-    private void getVideoImage() {
-
-        int microSecond = 6000000;// 6th second as an example
-        Uri uri = Uri.parse(singleServiceDataModel.getData().getVideo());
-        RequestOptions options = new RequestOptions().frame(microSecond).override(binding.imageVideo.getWidth(), binding.imageVideo.getHeight());
-        Glide.with(activity).asBitmap()
-                .load(uri)
-                .centerCrop()
-                .apply(options)
-                .into(binding.imageVideo);
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void setupPlayer() {
-
-        if (singleServiceDataModel.getData().getVideo() != null) {
-            trackSelector = new DefaultTrackSelector(activity);
-            dataSourceFactory = new DefaultDataSource.Factory(activity);
-            MediaSourceFactory mediaSourceFactory = new DefaultMediaSourceFactory(dataSourceFactory);
-            MediaItem mediaItem = MediaItem.fromUri(Uri.parse(singleServiceDataModel.getData().getVideo()));
-
-            player = new ExoPlayer.Builder(activity)
-                    .setTrackSelector(trackSelector)
-                    .setMediaSourceFactory(mediaSourceFactory)
-                    .build();
-
-            player.setMediaItem(mediaItem);
-            player.setPlayWhenReady(false);
-            player.setRepeatMode(ExoPlayer.REPEAT_MODE_ONE);
-            binding.exoPlayer.setPlayer(player);
-            player.prepare();
-
-            binding.exoPlayer.setOnTouchListener((v, event) -> {
-                if (player != null && player.isPlaying()) {
-                    player.setPlayWhenReady(false);
-                } else if (player != null && !player.isPlaying()) {
-
-                    player.setPlayWhenReady(true);
-
-                }
-                return false;
-            });
-
-
-        }
-
-
-    }
-
-    public boolean isFullScreen() {
-        return isInFullScreen;
-    }
-
-    public void setToNormalScreen() {
-
-        isInFullScreen = false;
-        binding.motionLayout.transitionToStart();
-        if (player != null) {
-            player.setPlayWhenReady(false);
-        }
-
-
-    }
-
-    @Override
-    public void onResume() {
-        if ((Util.SDK_INT <= 23 || player == null) && singleServiceDataModel != null) {
-            setupPlayer();
-        }
-        super.onResume();
-
-
-    }
-
-    @Override
-    public void onStart() {
-        if (Util.SDK_INT > 23) {
-            if (player == null && singleServiceDataModel != null) {
-                setupPlayer();
-                binding.exoPlayer.onResume();
-            }
-
-
-        }
-        super.onStart();
-
-
-    }
-
-    @Override
-    public void onPause() {
-        if (Util.SDK_INT <= 23) {
-            if (player != null) {
-                player.setPlayWhenReady(false);
-            }
-        }
-        super.onPause();
-
-
-    }
 
     public void updateOffer(ServiceModel.OfferModel offerModel) {
         req = 1;
@@ -360,6 +282,12 @@ public class ServiceDetailsFragment extends BaseFragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        binding.webView.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (timer != null) {
@@ -368,13 +296,6 @@ public class ServiceDetailsFragment extends BaseFragment {
         }
         if (timerTask != null) {
             timerTask.cancel();
-        }
-        if (Util.SDK_INT > 23) {
-            if (player != null) {
-                player.release();
-                player = null;
-            }
-
         }
 
 

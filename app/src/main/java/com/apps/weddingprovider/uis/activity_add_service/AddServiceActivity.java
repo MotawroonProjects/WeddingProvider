@@ -295,6 +295,8 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             addServiceModel.setAddress(serviceModel.getAddress());
             addServiceModel.setLat(Double.parseDouble(serviceModel.getLatitude()));
             addServiceModel.setLng(Double.parseDouble(serviceModel.getLongitude()));
+            addServiceModel.setYoutubeLink(serviceModel.getVideo_link());
+            binding.progBar.setVisibility(View.VISIBLE);
             for (ServiceModel.ServiceMainItem mainItem : serviceModel.getService_main_items()) {
                 AddAdditionalItemModel model = new AddAdditionalItemModel();
                 model.setName(mainItem.getName());
@@ -330,6 +332,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             addServiceModel.setMainItemList(mainItemList);
             addServiceModel.setExtraItemList(extraItemList);
             binding.setModel(addServiceModel);
+            binding.webView.loadUrl(serviceModel.getVideo_link());
 
             for (ServiceModel.ServiceImage image : serviceModel.getService_images()) {
                 GalleryModel model = new GalleryModel(image.getId(), image.getImage(), "online");
