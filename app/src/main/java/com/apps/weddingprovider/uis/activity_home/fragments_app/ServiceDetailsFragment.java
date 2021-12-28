@@ -221,7 +221,7 @@ public class ServiceDetailsFragment extends BaseFragment {
                         timer.scheduleAtFixedRate(timerTask, 6000, 6000);
                     }
                 }
-                if (singleServiceDataModel.getData().getVideo() != null) {
+                if (singleServiceDataModel.getData().getVideo_link() != null) {
                     binding.webView.loadUrl(singleServiceDataModel.getData().getVideo_link());
                 }
 
