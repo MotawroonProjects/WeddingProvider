@@ -108,7 +108,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="@string/choose_video"
+                                android:text="@string/select_youtube_video_link"
                                 android:textColor="@color/gray2"
                                 android:textSize="14sp" />
 
@@ -121,20 +121,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginTop="8dp"
+                        android:background="@color/black"
 
                         >
 
-                        <com.google.android.exoplayer2.ui.PlayerView
-                            android:id="@+id/player"
+                        <WebView
+                            android:id="@+id/webView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:auto_show="false"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:played_color="@color/colorPrimary"
-                            app:resize_mode="fill"
-                            app:use_controller="true" />
+                            android:background="@color/black"
+                            android:visibility="invisible"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/progBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+
+                            />
 
 
                     </FrameLayout>

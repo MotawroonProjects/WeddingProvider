@@ -207,8 +207,8 @@ public interface Service {
                                                              @Part("latitude") RequestBody latitude,
                                                              @Part("longitude") RequestBody longitude,
                                                              @Part("address") RequestBody address,
+                                                             @Part("video_link") RequestBody video_link,
                                                              @Part MultipartBody.Part main_image,
-                                                             @Part MultipartBody.Part video,
                                                              @Part List<MultipartBody.Part> images
 
 
@@ -258,8 +258,8 @@ public interface Service {
                                                                 @Part("latitude") RequestBody latitude,
                                                                 @Part("longitude") RequestBody longitude,
                                                                 @Part("address") RequestBody address,
+                                                                @Part("video_link") RequestBody video_link,
                                                                 @Part MultipartBody.Part main_image,
-                                                                @Part MultipartBody.Part video,
                                                                 @Part List<MultipartBody.Part> images
 
 

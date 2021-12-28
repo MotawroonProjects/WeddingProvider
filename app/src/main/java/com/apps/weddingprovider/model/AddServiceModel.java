@@ -27,6 +27,7 @@ public class AddServiceModel extends BaseObservable {
     private double lng;
     private String maxNumber;
     private String description;
+    private String youtubeLink;
     private List<GalleryModel> galleryImages;
     private List<AddAdditionalRowBinding> mainItemList;
     private List<AddAdditionalRowBinding> extraItemList;
@@ -41,7 +42,7 @@ public class AddServiceModel extends BaseObservable {
     public boolean isDataValid(Context context) {
 
         if (!mainImage.isEmpty() &&
-                !videoUri.isEmpty() &&
+                !youtubeLink.isEmpty() &&
                 !name.isEmpty() &&
                 !price.isEmpty() &&
                 !department_id.isEmpty() &&
@@ -77,7 +78,7 @@ public class AddServiceModel extends BaseObservable {
                 Toast.makeText(context, R.string.ch_main_image, Toast.LENGTH_SHORT).show();
             }
 
-            if (videoUri.isEmpty()) {
+            if (youtubeLink.isEmpty()) {
                 Toast.makeText(context, R.string.vid_req, Toast.LENGTH_SHORT).show();
             }
 
@@ -141,6 +142,7 @@ public class AddServiceModel extends BaseObservable {
     public AddServiceModel() {
         mainImage = "";
         videoUri = "";
+        youtubeLink="";
         name = "";
         price = "";
         department_id = "";
@@ -292,5 +294,13 @@ public class AddServiceModel extends BaseObservable {
             }
         }
         return isDataValid;
+    }
+
+    public String getYoutubeLink() {
+        return youtubeLink;
+    }
+
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubeLink = youtubeLink;
     }
 }

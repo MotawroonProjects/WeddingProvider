@@ -80,4 +80,7 @@
     <string name="only_one_image">صورة واحدة ع الاقل</string>
     <string name="offer_name">إسم العرض</string>
     <string name="add_offer">إضافة عرض</string>
+    <string name="select_youtube_video_link">إختر لينك الفيديو (يوتيوب)</string>
+    <string name="enter_youtube_video_link">أدخل رابط الفيديو (يوتيوب)...</string>
+
 </resources>

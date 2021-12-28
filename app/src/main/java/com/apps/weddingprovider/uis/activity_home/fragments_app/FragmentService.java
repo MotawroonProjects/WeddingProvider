@@ -87,6 +87,9 @@ public class FragmentService extends BaseFragment {
         binding.fab.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.activityAddService);
         });
+        binding.flAddService.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.activityAddService);
+        });
         fragmentServiceMvvm.getServiceData(getUserModel());
 
         binding.swipeRefresh.setOnRefreshListener(() -> fragmentServiceMvvm.getServiceData(getUserModel()));

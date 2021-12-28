@@ -15,6 +15,10 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -28,18 +32,23 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.adapter.ImageAddServiceAdapter;
+import com.apps.weddingprovider.adapter.OfferExtraItemsAdapter;
 import com.apps.weddingprovider.adapter.SpinnerDepartmentAdapter;
 import com.apps.weddingprovider.databinding.ActivityAddServiceBinding;
 import com.apps.weddingprovider.databinding.AddAdditionalRowBinding;
 import com.apps.weddingprovider.databinding.AddImagesRowBinding;
+import com.apps.weddingprovider.databinding.BottomSheetServiceDetailsBinding;
+import com.apps.weddingprovider.databinding.BottomSheetVideoLinkBinding;
 import com.apps.weddingprovider.model.AddAdditionalItemModel;
 import com.apps.weddingprovider.model.AddServiceModel;
 import com.apps.weddingprovider.model.DepartmentModel;
 import com.apps.weddingprovider.model.GalleryModel;
+import com.apps.weddingprovider.model.ResevisionModel;
 import com.apps.weddingprovider.model.ServiceModel;
 import com.apps.weddingprovider.model.SingleServiceDataModel;
 import com.apps.weddingprovider.model.UserModel;
@@ -62,12 +71,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddServiceActivity extends BaseActivity implements OnMapReadyCallback {
     private ActivityAddServiceBinding binding;
@@ -187,6 +199,36 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         userModel = preferences.getUserData(this);
         setUpToolbar(binding.toolbar, getString(R.string.add_service), R.color.white, R.color.black);
         binding.setModel(addServiceModel);
+        binding.webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        binding.webView.getSettings().setJavaScriptEnabled(true);
+        binding.webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                binding.webView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+                binding.progBar.setVisibility(View.GONE);
+
+            }
+
+
+        });
         binding.recViewimage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageAddServiceAdapter = new ImageAddServiceAdapter(imagesUriList, this);
         binding.recViewimage.setAdapter(imageAddServiceAdapter);
@@ -207,7 +249,8 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             openSheet();
         });
         binding.llAddVideo.setOnClickListener(view -> {
-            checkVideoPermission();
+            createSheetDialog(addServiceModel.getYoutubeLink());
+            // checkVideoPermission();
         });
         binding.flGallery.setOnClickListener(view -> {
             closeSheet();
@@ -299,7 +342,6 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             binding.icon1.setVisibility(View.GONE);
             addServiceModel.setGalleryImages(imagesUriList);
             addServiceModel.setVideoUri(serviceModel.getVideo());
-            initPlayer(Uri.parse(serviceModel.getVideo()));
 
 
         }
@@ -379,6 +421,50 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
         updateUI();
         checkPermission();
+    }
+
+    public void createSheetDialog(String url) {
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        BottomSheetVideoLinkBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.bottom_sheet_video_link, null, false);
+        dialog.setContentView(binding.getRoot());
+        binding.edtLink.setText(url);
+
+        binding.btnSave.setOnClickListener(view -> {
+            String link = binding.edtLink.getText().toString();
+            if (!link.isEmpty() && extractYTId(link) != null) {
+                String vidId = extractYTId(link);
+                Common.CloseKeyBoard(this, binding.edtLink);
+                String newLink = "http://www.youtube.com/embed/" + vidId;
+                addServiceModel.setYoutubeLink(newLink);
+                AddServiceActivity.this.binding.progBar.setVisibility(View.VISIBLE);
+                AddServiceActivity.this.binding.webView.loadUrl(newLink);
+                binding.edtLink.setError(null);
+                dialog.dismiss();
+
+
+            } else {
+                binding.edtLink.setError(getString(R.string.field_required));
+
+            }
+        });
+        binding.imageClose.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+
+        dialog.show();
+
+    }
+
+    private String extractYTId(String ytUrl) {
+        String vId = null;
+        Pattern pattern = Pattern.compile("^https?://.*(?:www\\.youtube\\.com/|v/|u/\\w/|embed/|watch\\?v=)([^#&?]*).*$",
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(ytUrl);
+        if (matcher.matches()) {
+            vId = matcher.group(1);
+        }
+        return vId;
     }
 
     private int getDepartmentPos(String department_id) {
@@ -616,7 +702,6 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
                 videouri = uri;
                 Log.e("uri", uri + "");
                 addServiceModel.setVideoUri(uri.toString());
-                initPlayer(videouri);
             } else {
                 Toast.makeText(AddServiceActivity.this, R.string.vid_du_less, Toast.LENGTH_SHORT).show();
             }
@@ -625,68 +710,21 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         }
     }
 
-    private void initPlayer(Uri uri) {
-
-
-        if (uri != null) {
-
-            DataSource.Factory factory = new DefaultDataSourceFactory(this, "Wedding");
-
-
-            if (player == null) {
-                player = new SimpleExoPlayer.Builder(this).build();
-                binding.player.setPlayer(player);
-                MediaSource mediaSource = new ProgressiveMediaSource.Factory(factory).createMediaSource(uri);
-                player.prepare(mediaSource);
-
-                player.seekTo(currentWindow, currentPosition);
-                player.setPlayWhenReady(playWhenReady);
-                player.prepare(mediaSource);
-            } else {
-
-                MediaSource mediaSource = new ProgressiveMediaSource.Factory(factory).createMediaSource(uri);
-
-                player.seekTo(currentWindow, currentPosition);
-                player.setPlayWhenReady(playWhenReady);
-                player.prepare(mediaSource);
-            }
-
-        }
-
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (Util.SDK_INT >= 24) {
-            release();
-        }
+        binding.webView.onPause();
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (Util.SDK_INT < 24) {
-            release();
-        }
+        binding.webView.onPause();
+
     }
 
-
-    private void release() {
-        if (player != null) {
-            currentWindow = player.getCurrentWindowIndex();
-            currentPosition = player.getCurrentPosition();
-            player.release();
-            player = null;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initPlayer(videouri);
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

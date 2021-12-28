@@ -356,15 +356,16 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
         RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
+        RequestBody video_part = Common.getRequestBodyText(model.getYoutubeLink());
 
         List<MultipartBody.Part> service_main_items = new ArrayList<>(getMainAttribute(model));
         List<MultipartBody.Part> service_extra_items = new ArrayList<>(getExtraAttribute(model));
 
         MultipartBody.Part main_image = Common.getMultiPart(context, Uri.parse(model.getMainImage()), "main_image");
-        MultipartBody.Part video_part = Common.getMultiPartVideo(context, Uri.parse(model.getVideoUri()), "video");
+        //MultipartBody.Part video_part = Common.getMultiPartVideo(context, Uri.parse(model.getVideoUri()), "video");
         List<MultipartBody.Part> partimageList = getMultipartBodyList(model.getGalleryImages(), "images[]", context);
 
-        Api.getService(Tags.base_url).addServices("Bearer " + userModel.getData().getToken(), api_part, user_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_extra_items, lat_part, lng_part, address_part, main_image, video_part, partimageList)
+        Api.getService(Tags.base_url).addServices("Bearer " + userModel.getData().getToken(), api_part, user_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_extra_items, lat_part, lng_part, address_part, video_part, main_image, partimageList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<SingleServiceDataModel>>() {
             @Override
@@ -416,6 +417,7 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
         RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
+        RequestBody video_part = Common.getRequestBodyText(model.getYoutubeLink());
 
         List<MultipartBody.Part> service_main_items = new ArrayList<>(getMainAttribute(model));
         List<MultipartBody.Part> service_extra_items = new ArrayList<>(getExtraAttribute(model));
@@ -427,14 +429,14 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
 
         }
 
-        MultipartBody.Part video_part = null;
+     /*   MultipartBody.Part video_part = null;
         if (!model.getVideoUri().startsWith("http")) {
             video_part = Common.getMultiPartVideo(context, Uri.parse(model.getVideoUri()), "video");
 
-        }
+        }*/
         List<MultipartBody.Part> partimageList = getMultipartBodyList(model.getGalleryImages(), "images[]", context);
 
-        Api.getService(Tags.base_url).updateServices("Bearer " + userModel.getData().getToken(), api_part, user_part, service_id_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_extra_items, lat_part, lng_part, address_part, main_image, video_part, partimageList)
+        Api.getService(Tags.base_url).updateServices("Bearer " + userModel.getData().getToken(), api_part, user_part, service_id_part, name_part, price_part, text_part, max_part, depart_part, service_main_items, service_extra_items, lat_part, lng_part, address_part, video_part, main_image, partimageList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<SingleServiceDataModel>>() {
             @Override
