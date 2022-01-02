@@ -38,6 +38,7 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         initView();
+        getDataFromIntent();
 
 
     }
@@ -83,6 +84,20 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
             homeActivityMvvm.updateFirebase(this, getUserModel());
         }
     }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("from_firebase")) {
+            if (getUserModel() != null) {
+                Intent intent1 = new Intent(this, NotificationActivity.class);
+                startActivity(intent1);
+            } else {
+                Intent intent1 = new Intent(this, LoginActivity.class);
+                startActivity(intent1);
+            }
+        }
+    }
+
 
     public void displayFragmentService() {
         navController.navigate(R.id.myService);

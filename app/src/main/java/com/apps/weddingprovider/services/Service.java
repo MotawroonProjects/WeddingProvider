@@ -3,6 +3,8 @@ package com.apps.weddingprovider.services;
 
 import com.apps.weddingprovider.model.DatesDataModel;
 import com.apps.weddingprovider.model.DepartmentDataModel;
+import com.apps.weddingprovider.model.NotificationCount;
+import com.apps.weddingprovider.model.NotificationDataModel;
 import com.apps.weddingprovider.model.ReservionDataModel;
 import com.apps.weddingprovider.model.PlaceGeocodeData;
 import com.apps.weddingprovider.model.PlaceMapDetailsData;
@@ -298,5 +300,17 @@ public interface Service {
                                                         @Field("user_id") String user_id,
                                                         @Field("bar_code") String bar_code
 
+    );
+
+    @GET("api/notifications")
+    Single<Response<NotificationDataModel>> getNotifications(@Header("AUTHORIZATION") String token,
+                                                             @Query(value = "api_key") String api_key,
+                                                             @Query(value = "user_id") String user_id
+    );
+
+    @GET("api/is-read-count")
+    Single<Response<NotificationCount>> getNotificationCount(@Header("AUTHORIZATION") String token,
+                                                             @Query(value = "api_key") String api_key,
+                                                             @Query(value = "user_id") String user_id
     );
 }
