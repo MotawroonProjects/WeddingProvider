@@ -26,66 +26,72 @@
         tools:ignore="AllowBackup"
         tools:targetApi="q">
         <activity
-            android:name=".uis.activity_add_offer.AddOfferActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:name=".uis.activity_language.LanguageActivity"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".uis.activity_add_offer.AddOfferActivity"
+            android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
         <activity
             android:name=".uis.activity_qr_code.QrCodeActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_home.HomeActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_notification.NotificationActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_add_service.AddServiceActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_contact_us.ContactUsActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_sign_up.SignUpActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_verification_code.VerificationCodeActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_login.LoginActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".uis.activity_splash.SplashActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:configChanges="orientation|screenLayout|keyboardHidden|screenSize"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:exported="true">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

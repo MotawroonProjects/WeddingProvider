@@ -30,6 +30,7 @@ import com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity;
 import com.apps.weddingprovider.uis.activity_base.BaseFragment;
 import com.apps.weddingprovider.uis.activity_contact_us.ContactUsActivity;
 import com.apps.weddingprovider.uis.activity_home.HomeActivity;
+import com.apps.weddingprovider.uis.activity_language.LanguageActivity;
 import com.apps.weddingprovider.uis.activity_login.LoginActivity;
 import com.apps.weddingprovider.uis.activity_notification.NotificationActivity;
 import com.apps.weddingprovider.uis.activity_qr_code.QrCodeActivity;
@@ -56,6 +57,10 @@ public class FragmentProfile extends BaseFragment {
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (req == 1 && result.getResultCode() == Activity.RESULT_OK) {
                 binding.setModel(getUserModel());
+            }else  if (req == 2 && result.getResultCode() == Activity.RESULT_OK&&result.getData()!=null) {
+               String lang = result.getData().getStringExtra("lang");
+               activity.refreshActivity(lang);
+
             }
         });
         addservicelauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -131,6 +136,13 @@ public class FragmentProfile extends BaseFragment {
         binding.llScan.setOnClickListener(view -> {
                     Intent intent = new Intent(activity, QrCodeActivity.class);
                     startActivity(intent);
+                }
+        );
+
+        binding.llLanguage.setOnClickListener(view -> {
+                    req = 2;
+                    Intent intent = new Intent(activity, LanguageActivity.class);
+                    launcher.launch(intent);
                 }
         );
         binding.llLogout.setOnClickListener(view -> {

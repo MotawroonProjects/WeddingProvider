@@ -82,4 +82,7 @@
     <string name="add_offer">Add offer</string>
     <string name="select_youtube_video_link">Select youtube video link...</string>
     <string name="enter_youtube_video_link">Enter youtube video link</string>
+    <string name="ch_language">Change language</string>
+    <string name="next">Next</string>
+
 </resources>

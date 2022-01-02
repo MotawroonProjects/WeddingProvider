@@ -96,7 +96,6 @@ public class FragmentPreviousReservation extends BaseFragment {
         previousReservionAdapter = new PreviousReservionAdapter(activity, this);
         binding.recView.setAdapter(previousReservionAdapter);
         fragmentCurrentReservisonMvvm.getReservionData(getUserModel());
-        EventBus.getDefault().register(activity);
 
     }
 

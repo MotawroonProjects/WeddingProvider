@@ -82,5 +82,7 @@
     <string name="add_offer">إضافة عرض</string>
     <string name="select_youtube_video_link">إختر لينك الفيديو (يوتيوب)</string>
     <string name="enter_youtube_video_link">أدخل رابط الفيديو (يوتيوب)...</string>
+    <string name="ch_language">تغيير اللغة</string>
+    <string name="next">التالي</string>
 
 </resources>

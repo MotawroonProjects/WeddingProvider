@@ -19,11 +19,16 @@ import com.apps.weddingprovider.R;
 import com.apps.weddingprovider.databinding.ActivityHomeBinding;
 import com.apps.weddingprovider.interfaces.Listeners;
 import com.apps.weddingprovider.language.Language;
+import com.apps.weddingprovider.model.NotModel;
 import com.apps.weddingprovider.model.UserModel;
 import com.apps.weddingprovider.mvvm.HomeActivityMvvm;
 import com.apps.weddingprovider.uis.activity_base.BaseActivity;
 import com.apps.weddingprovider.uis.activity_login.LoginActivity;
 import com.apps.weddingprovider.uis.activity_notification.NotificationActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.paperdb.Paper;
 
@@ -43,10 +48,26 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
 
     }
 
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("from_firebase")) {
+            if (getUserModel() != null) {
+                Intent intent1 = new Intent(this, NotificationActivity.class);
+                startActivity(intent1);
+            } else {
+                Intent intent1 = new Intent(this, LoginActivity.class);
+                startActivity(intent1);
+            }
+        }
+    }
+
 
     private void initView() {
 
         homeActivityMvvm = ViewModelProviders.of(this).get(HomeActivityMvvm.class);
+        homeActivityMvvm.getCount().observe(this, countNumber -> {
+            binding.setCount(countNumber);
+        });
         setSupportActionBar(binding.toolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         navController = Navigation.findNavController(this, R.id.navHostFragment);
@@ -73,6 +94,7 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
 
         binding.imgNotification.setOnClickListener(v -> {
             if (getUserModel() != null) {
+                binding.setCount("0");
                 Intent intent = new Intent(this, NotificationActivity.class);
                 startActivity(intent);
             } else {
@@ -82,20 +104,16 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
         });
         if (getUserModel() != null) {
             homeActivityMvvm.updateFirebase(this, getUserModel());
+            if (!EventBus.getDefault().isRegistered(this)){
+                EventBus.getDefault().register(this);
+
+            }
         }
     }
 
-    private void getDataFromIntent() {
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("from_firebase")) {
-            if (getUserModel() != null) {
-                Intent intent1 = new Intent(this, NotificationActivity.class);
-                startActivity(intent1);
-            } else {
-                Intent intent1 = new Intent(this, LoginActivity.class);
-                startActivity(intent1);
-            }
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewNotificationListener(NotModel model) {
+        homeActivityMvvm.getNotificationCount(getUserModel());
     }
 
 
@@ -141,9 +159,11 @@ public class HomeActivity extends BaseActivity implements Listeners.Verification
     }
 
 
-    public void updateFirebase() {
-        if (getUserModel() != null) {
-            homeActivityMvvm.updateFirebase(this, getUserModel());
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 

@@ -8,20 +8,22 @@
         <variable
             name="lang"
             type="String" />
+
+        <variable
+            name="count"
+            type="String" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-
 
 
             >
@@ -31,8 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="@color/white"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                >
+                app:layout_scrollFlags="scroll|enterAlways|snap">
 
                 <ImageView
                     android:layout_width="132dp"
@@ -44,16 +45,34 @@
                     />
 
 
-                <ImageView
-                    android:id="@+id/imgNotification"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_gravity="end"
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/ic_notification"
 
-                    />
+                    >
+
+                    <ImageView
+                        android:id="@+id/imgNotification"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_notification" />
+
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/circle_primary"
+                        android:gravity="center"
+                        android:text='@{count??"0",default="0"}'
+                        android:textColor="@color/white"
+                        android:textSize="9sp"
+                        tools:ignore="SmallSp" />
+
+                </FrameLayout>
 
 
             </androidx.appcompat.widget.Toolbar>
@@ -78,13 +97,12 @@
             android:layout_gravity="bottom"
             android:background="@color/white"
             app:elevation="5dp"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu"
             app:itemIconTint="@drawable/bottom_nav_item_bg"
             app:itemTextColor="@drawable/bottom_nav_item_bg"
-            />
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu" />
 
 
-</LinearLayout>
+    </LinearLayout>
 </layout>
 

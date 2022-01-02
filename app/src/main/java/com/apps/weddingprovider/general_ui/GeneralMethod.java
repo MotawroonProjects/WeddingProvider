@@ -136,6 +136,19 @@ public class GeneralMethod {
 
     }
 
+    @BindingAdapter("createAt")
+    public static void dateCreateAt(TextView textView, String s) {
+        if (s != null) {
+            try {
+                String[] dates = s.split("T");
+                textView.setText(dates[0]);
+            } catch (Exception e) {
+
+            }
+
+        }
+
+    }
 
 }
 

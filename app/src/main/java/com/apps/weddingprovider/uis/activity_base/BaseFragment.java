@@ -26,17 +26,23 @@ public class BaseFragment extends Fragment {
         return lang;
     }
 
+    protected void setLang(String lang) {
+        Paper.init(context);
+        Paper.book().write("lang", lang);
+    }
+
     protected UserModel getUserModel() {
         Preferences preferences = Preferences.getInstance();
         return preferences.getUserData(context);
 
     }
 
-    protected void clearUserModel(Context context){
+    protected void clearUserModel(Context context) {
         Preferences preferences = Preferences.getInstance();
         preferences.clearUserData(context);
 
     }
+
     protected void setUserModel(UserModel userModel) {
         Preferences preferences = Preferences.getInstance();
         preferences.createUpdateUserData(context, userModel);
