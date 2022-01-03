@@ -136,14 +136,14 @@ public class FragmentCurrentReservation extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewNotificationListener(NotModel model){
+    public void onNewNotificationListener(NotModel model) {
         fragmentCurrentReservisonMvvm.getReservionData(getUserModel());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }

@@ -54,7 +54,7 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
     public ActivityVerificationMvvm(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
-       // mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -64,42 +64,41 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
         startTimer();
         this.phone_code = phone_code;
         this.phone = phone;
-//        mAuth.setLanguageCode(lang);
-//        PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//
-//            @Override
-//            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//                smsCode = phoneAuthCredential.getSmsCode();
-//                smscode.postValue(smsCode);
-//                checkValidCode(smsCode, activity);
-//            }
-//
-//            @Override
-//            public void onCodeSent(@NonNull String verification_id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//                super.onCodeSent(verification_id, forceResendingToken);
-//                verificationId = verification_id;
-//            }
-//
-//
-//            @Override
-//            public void onVerificationFailed(@NonNull FirebaseException e) {
-//                Log.e("dkdkdk", e.toString());
-//                if (e.getMessage() != null) {
-//                } else {
-//
-//                }
-//            }
-//        };
-//        PhoneAuthProvider.getInstance()
-//                .verifyPhoneNumber(
-//                        phone_code + phone,
-//                        120,
-//                        TimeUnit.SECONDS,
-//                        activity,
-//                        mCallBack
-//
-//                );
+        mAuth.setLanguageCode(lang);
+        PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                smsCode = phoneAuthCredential.getSmsCode();
+                smscode.postValue(smsCode);
+                checkValidCode(smsCode, activity);
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String verification_id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(verification_id, forceResendingToken);
+                verificationId = verification_id;
+            }
+
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                Log.e("dkdkdk", e.toString());
+                if (e.getMessage() != null) {
+                } else {
+
+                }
+            }
+        };
+        PhoneAuthProvider.getInstance()
+                .verifyPhoneNumber(
+                        phone_code + phone,
+                        120,
+                        TimeUnit.SECONDS,
+                        activity,
+                        mCallBack
+
+                );
 
 
     }
@@ -146,8 +145,8 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
 
 
     public void checkValidCode(String code, VerificationCodeActivity activity) {
-        login(activity);
-       /* if (verificationId != null) {
+        //login(activity);
+        if (verificationId != null) {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             mAuth.signInWithCredential(credential)
                     .addOnSuccessListener(authResult -> {
@@ -160,7 +159,7 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
             });
         } else {
             // Toast.makeText(context, "wait sms", Toast.LENGTH_SHORT).show();
-        }*/
+        }
 
     }
 
