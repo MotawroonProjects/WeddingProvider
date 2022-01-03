@@ -48,6 +48,10 @@ public class PreviousReservionAdapter extends RecyclerView.Adapter<RecyclerView.
 
         MyHolder myHolder = (MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
+        ResevisionModel model = list.get(position);
+        double total = model.getPrice() + model.getExtra_item_price();
+        myHolder.binding.setTotal(total + "");
+
         myHolder.binding.btnDetails.setOnClickListener(v -> {
             if (fragment instanceof FragmentPreviousReservation) {
                 FragmentPreviousReservation fragmentCurrentReservation = (FragmentPreviousReservation) fragment;

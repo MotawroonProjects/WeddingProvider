@@ -49,9 +49,6 @@ public class FragmentPreviousReservisonMvvm extends AndroidViewModel {
         return listMutableLiveData;
     }
 
-   
-
-   
 
     public MutableLiveData<Boolean> getIsLoading() {
         if (isLoadingLivData == null) {
@@ -66,9 +63,9 @@ public class FragmentPreviousReservisonMvvm extends AndroidViewModel {
     public void getReservionData(UserModel userModel) {
         isLoadingLivData.postValue(true);
 
-       
+
         Api.getService(Tags.base_url)
-                .getPreviousReservation("Bearer " + userModel.getData().getToken(),Tags.api_key,userModel.getData().getId()+"" )
+                .getPreviousReservation("Bearer " + userModel.getData().getToken(), Tags.api_key, userModel.getData().getId() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 

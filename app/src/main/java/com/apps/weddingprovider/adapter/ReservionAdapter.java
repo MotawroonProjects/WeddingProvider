@@ -49,15 +49,18 @@ public class ReservionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         MyHolder myHolder = (MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
-        double total = list.get(position).getPrice()+list.get(position).getExtra_item_price();
-        myHolder.binding.setTotal(total+"");
+
+        ResevisionModel model = list.get(position);
+        double total = model.getPrice() + model.getExtra_item_price();
+        myHolder.binding.setTotal(total + "");
+
 
         myHolder.binding.btnDetails.setOnClickListener(v -> {
             if (fragment instanceof FragmentCurrentReservation) {
                 FragmentCurrentReservation fragmentCurrentReservation = (FragmentCurrentReservation) fragment;
                 fragmentCurrentReservation.createSheetDialog(list.get(myHolder.getAdapterPosition()));
 
-            }else  if (fragment instanceof FragmentCalenderReservation) {
+            } else if (fragment instanceof FragmentCalenderReservation) {
                 FragmentCalenderReservation fragmentCalenderReservation = (FragmentCalenderReservation) fragment;
                 fragmentCalenderReservation.createSheetDialog(list.get(myHolder.getAdapterPosition()));
 
@@ -69,7 +72,7 @@ public class ReservionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 FragmentCurrentReservation fragmentCurrentReservation = (FragmentCurrentReservation) fragment;
                 fragmentCurrentReservation.delete(list.get(myHolder.getAdapterPosition()));
 
-            }else  if (fragment instanceof FragmentCalenderReservation) {
+            } else if (fragment instanceof FragmentCalenderReservation) {
                 FragmentCalenderReservation fragmentCalenderReservation = (FragmentCalenderReservation) fragment;
                 fragmentCalenderReservation.delete(list.get(myHolder.getAdapterPosition()));
 
