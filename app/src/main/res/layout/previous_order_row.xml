@@ -10,7 +10,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.ResevisionModel" />
+            type="com.e_co.weddingprovider.model.ResevisionModel" />
 
         <import type="android.graphics.Color" />
 

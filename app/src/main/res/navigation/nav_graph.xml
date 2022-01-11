@@ -8,45 +8,45 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentHome"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentHome"
         android:label=""
         tools:layout="@layout/fragment_home" />
    
     <fragment
         android:id="@+id/myService"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentMyService"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentMyService"
         android:label=""
         tools:layout="@layout/fragment_my_services" />
     <fragment
         android:id="@+id/profile"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentProfile"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_home_navigaion.FragmentProfile"
         android:label=""
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/fragmentCalender"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentCalender"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_app.FragmentCalender"
         android:label=""
         tools:layout="@layout/fragment_calender" />
 
     <fragment
         android:id="@+id/fragmentService"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentService"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_app.FragmentService"
         android:label=""
         tools:layout="@layout/fragment_my_services" />
     <fragment
         android:id="@+id/fragmentCalenderReservation"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.FragmentCalenderReservation"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_app.FragmentCalenderReservation"
         android:label=""
         tools:layout="@layout/fragment_calender_reservation" />
 
     <fragment
         android:id="@+id/fragmentServiceDetails"
-        android:name="com.apps.weddingprovider.uis.activity_home.fragments_app.ServiceDetailsFragment"
+        android:name="com.e_co.weddingprovider.uis.activity_home.fragments_app.ServiceDetailsFragment"
         android:label=""
         tools:layout="@layout/fragment_service_details" />
     <activity
         android:id="@+id/activityAddService"
-        android:name="com.apps.weddingprovider.uis.activity_add_service.AddServiceActivity"
+        android:name="com.e_co.weddingprovider.uis.activity_add_service.AddServiceActivity"
         tools:layout="@layout/activity_add_service"
         />
 </navigation>

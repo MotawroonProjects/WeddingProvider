@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.ResevisionModel" />
+            type="com.e_co.weddingprovider.model.ResevisionModel" />
 
         <variable
             name="total"

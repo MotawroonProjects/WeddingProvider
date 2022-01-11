@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.AddAdditionalItemModel" />
+            type="com.e_co.weddingprovider.model.AddAdditionalItemModel" />
     </data>
 
     <LinearLayout

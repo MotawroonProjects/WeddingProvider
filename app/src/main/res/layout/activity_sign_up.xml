@@ -12,7 +12,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.SignUpModel" />
+            type="com.e_co.weddingprovider.model.SignUpModel" />
     </data>
 
     <FrameLayout
@@ -203,7 +203,7 @@
 
                         <fragment
                             android:id="@+id/map"
-                            android:name="com.apps.weddingprovider.uis.activity_base.FragmentMapTouchListener"
+                            android:name="com.e_co.weddingprovider.uis.activity_base.FragmentMapTouchListener"
                             android:layout_width="match_parent"
                             android:layout_height="250dp"
                             android:layout_marginTop="8dp" />

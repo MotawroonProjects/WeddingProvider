@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.AddOfferModel" />
+            type="com.e_co.weddingprovider.model.AddOfferModel" />
 
     </data>
 

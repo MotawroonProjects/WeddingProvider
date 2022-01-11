@@ -10,7 +10,7 @@
             type="String" />
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.DepartmentModel" />
+            type="com.e_co.weddingprovider.model.DepartmentModel" />
     </data>
 
 

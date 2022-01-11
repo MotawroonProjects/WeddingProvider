@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.ResevisionModel.ResevisionExtraItems" />
+            type="com.e_co.weddingprovider.model.ResevisionModel.ResevisionExtraItems" />
     </data>
 
     <androidx.cardview.widget.CardView

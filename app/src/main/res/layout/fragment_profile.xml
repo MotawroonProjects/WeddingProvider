@@ -13,7 +13,7 @@
 
         <variable
             name="model"
-            type="com.apps.weddingprovider.model.UserModel" />
+            type="com.e_co.weddingprovider.model.UserModel" />
 
     </data>
 

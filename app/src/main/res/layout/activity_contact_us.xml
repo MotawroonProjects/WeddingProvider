@@ -7,7 +7,7 @@
 
         <variable
             name="contactModel"
-            type="com.apps.weddingprovider.model.ContactUsModel" />
+            type="com.e_co.weddingprovider.model.ContactUsModel" />
 
     </data>
 
