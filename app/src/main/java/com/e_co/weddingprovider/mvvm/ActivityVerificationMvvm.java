@@ -19,8 +19,10 @@ import com.e_co.weddingprovider.uis.activity_verification_code.VerificationCodeA
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +49,7 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
     public MutableLiveData<String> timereturn = new MutableLiveData<>();
     public MutableLiveData<UserModel> userModelMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> found = new MutableLiveData<>();
+    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -59,7 +62,6 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
     }
 
     public void sendSmsCode(String lang, String phone_code, String phone, VerificationCodeActivity activity) {
-
         startTimer();
         this.phone_code = phone_code;
         this.phone = phone;
@@ -77,6 +79,8 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
             public void onCodeSent(@NonNull String verification_id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(verification_id, forceResendingToken);
                 verificationId = verification_id;
+                ActivityVerificationMvvm.this.forceResendingToken = forceResendingToken;
+
             }
 
 
@@ -89,15 +93,16 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
                 }
             }
         };
-        PhoneAuthProvider.getInstance()
-                .verifyPhoneNumber(
-                        phone_code + phone,
-                        120,
-                        TimeUnit.SECONDS,
-                        activity,
-                        mCallBack
+        PhoneAuthOptions options = new PhoneAuthOptions.Builder(mAuth)
+                .setForceResendingToken(forceResendingToken)
+                .setActivity(activity)
+                .setPhoneNumber(phone_code + phone)
+                .setTimeout(120L, TimeUnit.SECONDS)
+                .setCallbacks(mCallBack)
+                .build();
 
-                );
+
+        PhoneAuthProvider.verifyPhoneNumber(options);
 
 
     }
@@ -145,27 +150,34 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
 
     public void checkValidCode(String code, VerificationCodeActivity activity) {
         //login(activity);
+        ProgressDialog dialog = Common.createProgressDialog(activity, activity.getResources().getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
         if (verificationId != null) {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             mAuth.signInWithCredential(credential)
                     .addOnSuccessListener(authResult -> {
-                        login(activity);
+                        login(activity, dialog);
                     }).addOnFailureListener(e -> {
+                dialog.dismiss();
                 if (e.getMessage() != null) {
+                    Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
+
                 } else {
+
 
                 }
             });
         } else {
+            Toast.makeText(activity, "Wait sms maybe take a few minutes", Toast.LENGTH_LONG).show();
+            dialog.dismiss();
             // Toast.makeText(context, "wait sms", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private void login(Context context) {
-        ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
-        dialog.setCancelable(false);
-        dialog.show();
+    private void login(Context context, ProgressDialog dialog) {
+
         Api.getService(Tags.base_url).login(Tags.api_key, phone_code, phone).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -188,13 +200,18 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
                         Toast.makeText(context, context.getResources().getString(R.string.user_blocked), Toast.LENGTH_LONG).show();
                     }
                 } else {
-
+                    try {
+                        Log.e("error",userModelResponse.code()+"_"+userModelResponse.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
+                Log.e("errorLogin",e.toString());
                 dialog.dismiss();
 
             }

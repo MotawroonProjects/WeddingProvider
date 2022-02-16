@@ -41,7 +41,6 @@ public class AddServiceModel extends BaseObservable {
     public boolean isDataValid(Context context) {
 
         if (!mainImage.isEmpty() &&
-                !youtubeLink.isEmpty() &&
                 !name.isEmpty() &&
                 !price.isEmpty() &&
                 !department_id.isEmpty() &&
@@ -77,9 +76,6 @@ public class AddServiceModel extends BaseObservable {
                 Toast.makeText(context, R.string.ch_main_image, Toast.LENGTH_SHORT).show();
             }
 
-            if (youtubeLink.isEmpty()) {
-                Toast.makeText(context, R.string.vid_req, Toast.LENGTH_SHORT).show();
-            }
 
             if (name.isEmpty()) {
                 error_name.set(context.getString(R.string.field_required));
@@ -141,7 +137,7 @@ public class AddServiceModel extends BaseObservable {
     public AddServiceModel() {
         mainImage = "";
         videoUri = "";
-        youtubeLink="";
+        youtubeLink = "";
         name = "";
         price = "";
         department_id = "";

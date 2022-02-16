@@ -84,5 +84,6 @@
     <string name="enter_youtube_video_link">Enter youtube video link</string>
     <string name="ch_language">Change language</string>
     <string name="next">Next</string>
+    <string name="tube_link_not_correct">Youtube video link is not correct</string>
 
 </resources>

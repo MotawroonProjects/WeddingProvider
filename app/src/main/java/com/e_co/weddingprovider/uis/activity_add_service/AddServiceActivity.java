@@ -425,15 +425,20 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
         binding.btnSave.setOnClickListener(view -> {
             String link = binding.edtLink.getText().toString();
-            if (!link.isEmpty() && extractYTId(link) != null) {
-                String vidId = extractYTId(link);
-                Common.CloseKeyBoard(this, binding.edtLink);
-                String newLink = "http://www.youtube.com/embed/" + vidId;
-                addServiceModel.setYoutubeLink(newLink);
-                AddServiceActivity.this.binding.progBar.setVisibility(View.VISIBLE);
-                AddServiceActivity.this.binding.webView.loadUrl(newLink);
-                binding.edtLink.setError(null);
-                dialog.dismiss();
+            if (!link.isEmpty()) {
+
+                if (extractYTId(link) != null) {
+                    String vidId = extractYTId(link);
+                    Common.CloseKeyBoard(this, binding.edtLink);
+                    String newLink = "http://www.youtube.com/embed/" + vidId;
+                    addServiceModel.setYoutubeLink(newLink);
+                    AddServiceActivity.this.binding.progBar.setVisibility(View.VISIBLE);
+                    AddServiceActivity.this.binding.webView.loadUrl(newLink);
+                    binding.edtLink.setError(null);
+                    dialog.dismiss();
+                } else {
+                    binding.edtLink.setError(getString(R.string.tube_link_not_correct));
+                }
 
 
             } else {
@@ -452,12 +457,18 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
 
     private String extractYTId(String ytUrl) {
         String vId = null;
-        Pattern pattern = Pattern.compile("^https?://.*(?:www\\.youtube\\.com/|v/|u/\\w/|embed/|watch\\?v=)([^#&?]*).*$",
-                Pattern.CASE_INSENSITIVE);
+
+
+        Pattern pattern = Pattern.compile("https?://(?:www\\.)?youtu(?:\\.be/|be\\.com/(?:watch\\?v=|v/|embed/|user/(?:[\\w#]+/)+))([^&#?\n]+)");
+
+
+        /*Pattern pattern = Pattern.compile("^https?://.*(?:www\\.youtube\\.com/|v/|u/\\w/|embed/|watch\\?v=)([^#&?]*).*$",
+                Pattern.CASE_INSENSITIVE);*/
         Matcher matcher = pattern.matcher(ytUrl);
-        if (matcher.matches()) {
+        if (matcher.find()) {
             vId = matcher.group(1);
         }
+        Log.e("vid", vId);
         return vId;
     }
 
