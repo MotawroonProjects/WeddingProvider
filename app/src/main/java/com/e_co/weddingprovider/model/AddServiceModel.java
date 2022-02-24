@@ -296,6 +296,9 @@ public class AddServiceModel extends BaseObservable {
     }
 
     public void setYoutubeLink(String youtubeLink) {
+        if(youtubeLink==null){
+            youtubeLink = "";
+        }
         this.youtubeLink = youtubeLink;
     }
 }

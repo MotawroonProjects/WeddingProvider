@@ -273,31 +273,31 @@ public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiCli
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<PlaceMapDetailsData>>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                disposable.add(d);
-            }
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
 
-            @Override
-            public void onSuccess(@NonNull Response<PlaceMapDetailsData> placeMapDetailsDataResponse) {
+                    @Override
+                    public void onSuccess(@NonNull Response<PlaceMapDetailsData> placeMapDetailsDataResponse) {
 
-                if (placeMapDetailsDataResponse.isSuccessful() && placeMapDetailsDataResponse.body() != null) {
+                        if (placeMapDetailsDataResponse.isSuccessful() && placeMapDetailsDataResponse.body() != null) {
 
 
-                    if (placeMapDetailsDataResponse.body().getCandidates().size() > 0) {
-                        String address = placeMapDetailsDataResponse.body().getCandidates().get(0).getFormatted_address();
-                        LocationModel locationModel = new LocationModel(placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLat(), placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLng(), address);
-                        locationModelMutableLiveData.setValue(locationModel);
+                            if (placeMapDetailsDataResponse.body().getCandidates().size() > 0) {
+                                String address = placeMapDetailsDataResponse.body().getCandidates().get(0).getFormatted_address();
+                                LocationModel locationModel = new LocationModel(placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLat(), placeMapDetailsDataResponse.body().getCandidates().get(0).getGeometry().getLocation().getLng(), address);
+                                locationModelMutableLiveData.setValue(locationModel);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
 
                     }
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-        });
+                });
     }
 
     public void getGeoData(final double lat, double lng, String lang) {
@@ -307,31 +307,31 @@ public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiCli
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<PlaceGeocodeData>>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                disposable.add(d);
-            }
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
 
-            @Override
-            public void onSuccess(@NonNull Response<PlaceGeocodeData> placeGeocodeDataResponse) {
-                if (placeGeocodeDataResponse.isSuccessful()) {
-                    if (placeGeocodeDataResponse.body().getResults().size() > 0) {
-                        String address = placeGeocodeDataResponse.body().getResults().get(0).getFormatted_address().replace("Unnamed Road,", "");
-                        double lat = placeGeocodeDataResponse.body().getResults().get(0).getGeometry().getLocation().getLat();
-                        double lng = placeGeocodeDataResponse.body().getResults().get(0).getGeometry().getLocation().getLng();
+                    @Override
+                    public void onSuccess(@NonNull Response<PlaceGeocodeData> placeGeocodeDataResponse) {
+                        if (placeGeocodeDataResponse.isSuccessful()) {
+                            if (placeGeocodeDataResponse.body().getResults().size() > 0) {
+                                String address = placeGeocodeDataResponse.body().getResults().get(0).getFormatted_address().replace("Unnamed Road,", "");
+                                double lat = placeGeocodeDataResponse.body().getResults().get(0).getGeometry().getLocation().getLat();
+                                double lng = placeGeocodeDataResponse.body().getResults().get(0).getGeometry().getLocation().getLng();
 
-                        LocationModel locationModel = new LocationModel(lat, lng, address);
-                        locationModelMutableLiveData.setValue(locationModel);
+                                LocationModel locationModel = new LocationModel(lat, lng, address);
+                                locationModelMutableLiveData.setValue(locationModel);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
 
                     }
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-        });
+                });
     }
 
     public void setContext(Context context) {

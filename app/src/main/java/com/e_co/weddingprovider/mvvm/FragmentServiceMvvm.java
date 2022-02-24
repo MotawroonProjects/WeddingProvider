@@ -104,7 +104,7 @@ public class FragmentServiceMvvm extends AndroidViewModel {
 
     }
 
-    public void deleteServiceData(UserModel userModel, String service_id, int adapterPos,Context context) {
+    public void deleteServiceData(UserModel userModel, String service_id, int adapterPos, Context context) {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();

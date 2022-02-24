@@ -47,7 +47,7 @@ public class ActivityQrCodeMvvm extends AndroidViewModel {
     //_________________________hitting api_________________________________
 
 
-    public void confirmReservation(Context context,  UserModel userModel, String qr_code) {
+    public void confirmReservation(Context context, UserModel userModel, String qr_code) {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -64,8 +64,8 @@ public class ActivityQrCodeMvvm extends AndroidViewModel {
 
                     @Override
                     public void onSuccess(@NonNull Response<StatusResponse> response) {
-                        if (response.isSuccessful()){
-                            if (response.body()!=null&&response.body().getStatus()==200){
+                        if (response.isSuccessful()) {
+                            if (response.body() != null && response.body().getStatus() == 200) {
                                 onDataSuccess.setValue(true);
                             }
                         }
@@ -73,7 +73,7 @@ public class ActivityQrCodeMvvm extends AndroidViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e("confirmeError",e.getMessage());
+                        Log.e("confirmeError", e.getMessage());
                     }
                 });
     }

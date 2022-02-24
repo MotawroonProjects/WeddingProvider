@@ -201,7 +201,7 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
                     }
                 } else {
                     try {
-                        Log.e("error",userModelResponse.code()+"_"+userModelResponse.errorBody().string());
+                        Log.e("error", userModelResponse.code() + "_" + userModelResponse.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -211,7 +211,7 @@ public class ActivityVerificationMvvm extends AndroidViewModel {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Log.e("errorLogin",e.toString());
+                Log.e("errorLogin", e.toString());
                 dialog.dismiss();
 
             }

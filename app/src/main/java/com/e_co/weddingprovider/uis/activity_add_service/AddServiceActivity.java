@@ -125,14 +125,11 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
         activityAddServiceMvvm = ViewModelProviders.of(this).get(ActivityAddServiceMvvm.class);
         activityAddServiceMvvm.setContext(this);
         activityAddServiceMvvm.setLang(getLang());
-        activityAddServiceMvvm.singleServiceDataModelMutableLiveData.observe(this, new Observer<SingleServiceDataModel>() {
-            @Override
-            public void onChanged(SingleServiceDataModel singleServiceDataModel) {
-                if (singleServiceDataModel != null) {
-                    Toast.makeText(AddServiceActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    finish();
-                }
+        activityAddServiceMvvm.singleServiceDataModelMutableLiveData.observe(this, singleServiceDataModel -> {
+            if (singleServiceDataModel != null) {
+                Toast.makeText(AddServiceActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
             }
         });
         activityAddServiceMvvm.getLocationData().observe(this, locationModel -> {
@@ -320,10 +317,19 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
                 });
 
             }
+
+
             addServiceModel.setMainItemList(mainItemList);
             addServiceModel.setExtraItemList(extraItemList);
             binding.setModel(addServiceModel);
-            binding.webView.loadUrl(serviceModel.getVideo_link());
+            if (serviceModel.getVideo_link()==null||serviceModel.getVideo_link().isEmpty()){
+                binding.progBar.setVisibility(View.GONE);
+            }else {
+                binding.progBar.setVisibility(View.VISIBLE);
+
+                binding.webView.loadUrl(serviceModel.getVideo_link());
+
+            }
 
             for (ServiceModel.ServiceImage image : serviceModel.getService_images()) {
                 GalleryModel model = new GalleryModel(image.getId(), image.getImage(), "online");

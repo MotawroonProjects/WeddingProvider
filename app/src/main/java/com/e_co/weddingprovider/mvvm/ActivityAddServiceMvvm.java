@@ -413,6 +413,7 @@ public class ActivityAddServiceMvvm extends AndroidViewModel implements GoogleAp
         RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
         RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
+
         RequestBody video_part = Common.getRequestBodyText(model.getYoutubeLink());
 
         List<MultipartBody.Part> service_main_items = new ArrayList<>(getMainAttribute(model));

@@ -1,11 +1,18 @@
 package com.e_co.weddingprovider.uis.activity_home.fragments_home_navigaion;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +25,8 @@ import com.e_co.weddingprovider.R;
 import com.e_co.weddingprovider.adapter.ServiceAdapter;
 import com.e_co.weddingprovider.databinding.FragmentMyServicesBinding;
 import com.e_co.weddingprovider.mvvm.FragmentServiceMvvm;
+import com.e_co.weddingprovider.mvvm.HomeActivityMvvm;
+import com.e_co.weddingprovider.uis.activity_add_service.AddServiceActivity;
 import com.e_co.weddingprovider.uis.activity_base.BaseFragment;
 import com.e_co.weddingprovider.uis.activity_home.HomeActivity;
 
@@ -26,11 +35,20 @@ public class FragmentMyService extends BaseFragment {
     private HomeActivity activity;
     private FragmentServiceMvvm fragmentServiceMvvm;
     private ServiceAdapter adapter;
+    private HomeActivityMvvm generalMvvm;
+    private ActivityResultLauncher<Intent> launcher;
+    private int req;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
+        launcher= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req==1&&result.getResultCode()== Activity.RESULT_OK){
+                fragmentServiceMvvm.getServiceData(getUserModel());
+
+            }
+        });
 
     }
 
@@ -49,10 +67,13 @@ public class FragmentMyService extends BaseFragment {
     }
 
     private void initView() {
+        generalMvvm = ViewModelProviders.of(activity).get(HomeActivityMvvm.class);
+
         fragmentServiceMvvm = ViewModelProviders.of(activity).get(FragmentServiceMvvm.class);
         fragmentServiceMvvm.onDeleteSuccess().observe(activity, integer -> {
             if (fragmentServiceMvvm.getServiceLiveData().getValue().size() > 0) {
                 fragmentServiceMvvm.getServiceLiveData().getValue().remove(integer);
+
                 if (adapter != null) {
                     adapter.removeItem(integer);
                 }
@@ -84,15 +105,27 @@ public class FragmentMyService extends BaseFragment {
             }
         });
         binding.flAddService.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.activityAddService);
+            navigateToActivityAddService();
         });
         binding.fab.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.activityAddService);
+            navigateToActivityAddService();
+
+
         });
 
         fragmentServiceMvvm.getServiceData(getUserModel());
 
         binding.swipeRefresh.setOnRefreshListener(() -> fragmentServiceMvvm.getServiceData(getUserModel()));
+
+
+
+    }
+
+    private void navigateToActivityAddService() {
+        req =1;
+        Intent intent = new Intent(activity, AddServiceActivity.class);
+        launcher.launch(intent);
+
     }
 
     public void setItemServiceDetails(String serviceId) {
@@ -102,6 +135,6 @@ public class FragmentMyService extends BaseFragment {
     }
 
     public void deleteService(String id, int adapterPosition) {
-        fragmentServiceMvvm.deleteServiceData(getUserModel(),id,adapterPosition,activity);
+        fragmentServiceMvvm.deleteServiceData(getUserModel(), id, adapterPosition, activity);
     }
 }

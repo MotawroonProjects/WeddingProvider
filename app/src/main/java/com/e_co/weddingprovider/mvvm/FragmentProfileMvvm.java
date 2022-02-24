@@ -36,7 +36,7 @@ public class FragmentProfileMvvm extends AndroidViewModel {
 
     }
 
-    public void logout(Context context,  UserModel userModel) {
+    public void logout(Context context, UserModel userModel) {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();

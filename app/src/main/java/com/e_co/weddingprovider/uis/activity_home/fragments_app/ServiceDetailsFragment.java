@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,10 +207,17 @@ public class ServiceDetailsFragment extends BaseFragment {
                     }
                 }
                 if (singleServiceDataModel.getData().getVideo_link() != null) {
+
+                    binding.flVideo.setVisibility(View.VISIBLE);
                     binding.webView.loadUrl(singleServiceDataModel.getData().getVideo_link());
+                } else {
+                    binding.flVideo.setVisibility(View.GONE);
                 }
 
+
             }
+
+            Log.e("vide", singleServiceDataModel.getData().getVideo_link() + "__");
         });
         fragmentServiceDetialsMvvm.getSingleServiceData(service_id);
 

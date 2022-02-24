@@ -24,8 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 public class HomeActivityMvvm extends AndroidViewModel {
-    private Context context;
-
+    private MutableLiveData<Boolean> onServiceAdded = new MutableLiveData<>();
     public MutableLiveData<String> firebase = new MutableLiveData<>();
     private MutableLiveData<String> count;
 
@@ -33,18 +32,27 @@ public class HomeActivityMvvm extends AndroidViewModel {
 
     public HomeActivityMvvm(@NonNull Application application) {
         super(application);
-        context = application.getApplicationContext();
 
 
     }
 
-    public MutableLiveData<String> getCount(){
-        if (count==null){
+
+    public MutableLiveData<String> getCount() {
+        if (count == null) {
             count = new MutableLiveData<>();
         }
 
         return count;
     }
+
+    public MutableLiveData<Boolean> getOnServiceAdded() {
+        if (onServiceAdded == null) {
+            onServiceAdded = new MutableLiveData<>();
+        }
+
+        return onServiceAdded;
+    }
+
     public void updateFirebase(Context context, UserModel userModel) {
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener((Activity) context, task -> {
             if (task.isSuccessful()) {
@@ -77,8 +85,8 @@ public class HomeActivityMvvm extends AndroidViewModel {
 
     }
 
-    public void getNotificationCount(UserModel userModel){
-        if (userModel==null){
+    public void getNotificationCount(UserModel userModel) {
+        if (userModel == null) {
             return;
         }
         Api.getService(Tags.base_url)

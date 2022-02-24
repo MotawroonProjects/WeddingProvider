@@ -106,7 +106,7 @@ public class FragmentCurrentReservisonMvvm extends AndroidViewModel {
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
-        Api.getService(Tags.base_url).deleteReservation("Bearer " + userModel.getData().getToken(), Tags.api_key, userModel.getData().getId() + "", model.getId() + "","refused")
+        Api.getService(Tags.base_url).deleteReservation("Bearer " + userModel.getData().getToken(), Tags.api_key, userModel.getData().getId() + "", model.getId() + "", "refused")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
