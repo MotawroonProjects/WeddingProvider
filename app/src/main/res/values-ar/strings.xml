@@ -85,5 +85,6 @@
     <string name="ch_language">تغيير اللغة</string>
     <string name="next">التالي</string>
     <string name="tube_link_not_correct">رابط الفيديو غير صحيح</string>
+    <string name="appointment">المواعيد</string>
 
 </resources>

@@ -19,17 +19,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.e_co.weddingprovider.R;
 import com.e_co.weddingprovider.adapter.ServiceAdapter;
+import com.e_co.weddingprovider.adapter.ServiceAppointmentAdapter;
 import com.e_co.weddingprovider.databinding.FragmentMyServicesBinding;
+import com.e_co.weddingprovider.databinding.FragmentServicesBinding;
 import com.e_co.weddingprovider.mvvm.FragmentServiceMvvm;
 import com.e_co.weddingprovider.uis.activity_add_service.AddServiceActivity;
 import com.e_co.weddingprovider.uis.activity_base.BaseFragment;
 import com.e_co.weddingprovider.uis.activity_home.HomeActivity;
 
 public class FragmentService extends BaseFragment {
-    private FragmentMyServicesBinding binding;
+    private FragmentServicesBinding binding;
     private HomeActivity activity;
     private FragmentServiceMvvm fragmentServiceMvvm;
-    private ServiceAdapter adapter;
+    private ServiceAppointmentAdapter adapter;
     private ActivityResultLauncher<Intent> launcher;
     private int req;
 
@@ -48,7 +50,7 @@ public class FragmentService extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_services, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_services, container, false);
         return binding.getRoot();
     }
 
@@ -61,7 +63,7 @@ public class FragmentService extends BaseFragment {
 
     private void initView() {
         fragmentServiceMvvm = ViewModelProviders.of(activity).get(FragmentServiceMvvm.class);
-        adapter = new ServiceAdapter(activity, this);
+        adapter = new ServiceAppointmentAdapter(activity, this);
         binding.recView.setLayoutManager(new GridLayoutManager(activity, 2));
         binding.recView.setAdapter(adapter);
 
@@ -94,10 +96,6 @@ public class FragmentService extends BaseFragment {
             }
         });
 
-        binding.fab.setOnClickListener(v -> {
-
-            navigateToActivityAddService();
-        });
         binding.flAddService.setOnClickListener(v -> {
             navigateToActivityAddService();
         });

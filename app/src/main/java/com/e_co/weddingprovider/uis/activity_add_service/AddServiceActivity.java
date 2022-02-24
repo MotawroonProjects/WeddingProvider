@@ -322,9 +322,9 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             addServiceModel.setMainItemList(mainItemList);
             addServiceModel.setExtraItemList(extraItemList);
             binding.setModel(addServiceModel);
-            if (serviceModel.getVideo_link()==null||serviceModel.getVideo_link().isEmpty()){
+            if (serviceModel.getVideo_link() == null || serviceModel.getVideo_link().isEmpty()) {
                 binding.progBar.setVisibility(View.GONE);
-            }else {
+            } else {
                 binding.progBar.setVisibility(View.VISIBLE);
 
                 binding.webView.loadUrl(serviceModel.getVideo_link());
