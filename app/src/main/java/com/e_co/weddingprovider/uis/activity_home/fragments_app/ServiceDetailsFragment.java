@@ -273,11 +273,6 @@ public class ServiceDetailsFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        binding.webView.onPause();
-    }
 
     @Override
     public void onDestroyView() {

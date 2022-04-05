@@ -351,23 +351,54 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 if (selectedReq == READ_REQ) {
 
-                    uri = result.getData().getData();
-                    File file = new File(Common.getImagePath(this, uri));
+
                     if (type.equals("mainImage")) {
+                        uri = result.getData().getData();
+                        File file = new File(Common.getImagePath(this, uri));
+
                         binding.icon1.setVisibility(View.GONE);
 
                         Picasso.get().load(file).fit().into(binding.image1);
                         addServiceModel.setMainImage(uri.toString());
                         binding.setModel(addServiceModel);
                     } else {
-                        if (imagesUriList.size() < 5) {
-                            imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
-                            imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+
+                        if (result.getData().getClipData() != null) {
+                            imagesUriList.clear();
+                            if (result.getData().getClipData().getItemCount() > 5) {
+                                for (int index = 0; index < 5; index++) {
+                                    Uri uri = result.getData().getClipData().getItemAt(index).getUri();
+                                    imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
+
+                                }
+                            } else {
+                                for (int index = 0; index < result.getData().getClipData().getItemCount(); index++) {
+                                    Uri uri = result.getData().getClipData().getItemAt(index).getUri();
+                                    imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
+
+                                }
+
+                            }
+
+                            imageAddServiceAdapter.notifyDataSetChanged();
                             addServiceModel.setGalleryImages(imagesUriList);
                             binding.setModel(addServiceModel);
+
+
                         } else {
-                            Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
+                            uri = result.getData().getData();
+
+                            if (imagesUriList.size() < 5) {
+                                imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
+                                imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
+                                addServiceModel.setGalleryImages(imagesUriList);
+                                binding.setModel(addServiceModel);
+                            } else {
+                                Toast.makeText(this, R.string.max_ad_photo, Toast.LENGTH_SHORT).show();
+                            }
                         }
+
+
                     }
 
 
@@ -400,6 +431,7 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
                                 addServiceModel.setMainImage(uri.toString());
                                 binding.setModel(addServiceModel);
                             } else {
+
                                 if (imagesUriList.size() < 5) {
                                     imagesUriList.add(new GalleryModel("", uri.toString(), "local"));
                                     imageAddServiceAdapter.notifyItemInserted(imagesUriList.size() - 1);
@@ -606,10 +638,12 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
     }
 
     private void SelectImage(int req) {
+
         selectedReq = req;
         Intent intent = new Intent();
 
         if (req == READ_REQ) {
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -619,6 +653,10 @@ public class AddServiceActivity extends BaseActivity implements OnMapReadyCallba
             }
 
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (type.equals("gallery")) {
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+            }
             intent.setType("image/*");
 
             launcher.launch(intent);

@@ -59,6 +59,9 @@ public interface Service {
                                        @Field("latitude") String latitude,
                                        @Field("longitude") String longitude,
                                        @Field("address") String address,
+                                       @Field("facebook") String facebook,
+                                       @Field("instagram") String instagram,
+                                       @Field("twitter") String twitter,
                                        @Field("software_type") String software_type
 
 
@@ -74,6 +77,9 @@ public interface Service {
                                                     @Part("latitude") RequestBody latitude,
                                                     @Part("longitude") RequestBody longitude,
                                                     @Part("address") RequestBody address,
+                                                    @Part("facebook") RequestBody facebook,
+                                                    @Part("instagram") RequestBody instagram,
+                                                    @Part("twitter") RequestBody twitter,
                                                     @Part("software_type") RequestBody software_type,
                                                     @Part MultipartBody.Part logo
 
@@ -88,10 +94,13 @@ public interface Service {
                                             @Field("latitude") String latitude,
                                             @Field("longitude") String longitude,
                                             @Field("address") String address,
-                                            @Field("user_id") String user_id
+                                            @Field("user_id") String user_id,
+                                            @Field("facebook") String facebook,
+                                            @Field("instagram") String instagram,
+                                            @Field("twitter") String twitter
 
 
-    );
+                                            );
 
 
     @Multipart
@@ -103,6 +112,9 @@ public interface Service {
                                                          @Part("latitude") RequestBody latitude,
                                                          @Part("longitude") RequestBody longitude,
                                                          @Part("address") RequestBody address,
+                                                         @Part("facebook") RequestBody facebook,
+                                                         @Part("instagram") RequestBody instagram,
+                                                         @Part("twitter") RequestBody twitter,
                                                          @Part MultipartBody.Part logo
 
 

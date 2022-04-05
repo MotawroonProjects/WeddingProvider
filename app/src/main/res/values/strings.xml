@@ -86,5 +86,9 @@
     <string name="next">Next</string>
     <string name="tube_link_not_correct">Youtube video link is not correct</string>
     <string name="appointment">Appointment</string>
+    <string name="inv_url">invalid url</string>
+    <string name="facebook">Facebook</string>
+    <string name="instagram">Instagram</string>
+    <string name="twitter">Twitter</string>
 
 </resources>

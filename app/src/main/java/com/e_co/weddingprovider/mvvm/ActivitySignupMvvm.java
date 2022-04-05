@@ -76,7 +76,7 @@ public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiCli
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
-        Api.getService(Tags.base_url).signUp(Tags.api_key, model.getName(), phone_code.replace("+", ""), phone, model.getLat() + "", model.getLng() + "", model.getAddress(), "android").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
+        Api.getService(Tags.base_url).signUp(Tags.api_key, model.getName(), phone_code.replace("+", ""), phone, model.getLat() + "", model.getLng() + "", model.getAddress(),model.getFacebook(), model.getInstagram(), model.getInstagram(),"android").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -119,11 +119,16 @@ public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiCli
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
         RequestBody phone_code_part = Common.getRequestBodyText(phone_code.replace("+", ""));
 
+        RequestBody facebook_part = Common.getRequestBodyText(model.getFacebook());
+        RequestBody instagram_part = Common.getRequestBodyText(model.getInstagram());
+        RequestBody twitter_part = Common.getRequestBodyText(model.getTwitter());
+
+
 
         MultipartBody.Part image = Common.getMultiPart(context, uri, "logo");
 
 
-        Api.getService(Tags.base_url).signUpwithImage(api_part, name_part, phone_code_part, phone_part, lat_part, lng_part, address_part, soft_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
+        Api.getService(Tags.base_url).signUpwithImage(api_part, name_part, phone_code_part, phone_part, lat_part, lng_part, address_part,facebook_part,instagram_part,twitter_part, soft_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -160,7 +165,7 @@ public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiCli
         ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
-        Api.getService(Tags.base_url).editProfile("Bearer " + userModel.getData().getToken(), Tags.api_key, model.getName(), model.getLat() + "", model.getLng() + "", model.getAddress(), userModel.getData().getId() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
+        Api.getService(Tags.base_url).editProfile("Bearer " + userModel.getData().getToken(), Tags.api_key, model.getName(), model.getLat() + "", model.getLng() + "", model.getAddress(), userModel.getData().getId() + "", model.getFacebook(), model.getInstagram(), model.getTwitter()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new SingleObserver<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);
@@ -202,11 +207,14 @@ public class ActivitySignupMvvm extends AndroidViewModel implements GoogleApiCli
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
         RequestBody user_part = Common.getRequestBodyText(userModel.getData().getId() + "");
 
+        RequestBody facebook_part = Common.getRequestBodyText(model.getFacebook());
+        RequestBody instagram_part = Common.getRequestBodyText(model.getInstagram());
+        RequestBody twitter_part = Common.getRequestBodyText(model.getTwitter());
 
         MultipartBody.Part image = Common.getMultiPart(context, uri, "logo");
 
 
-        Api.getService(Tags.base_url).editProfilewithImage("Bearer " + userModel.getData().getToken(), api_part, name_part, user_part, lat_part, lng_part, address_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
+        Api.getService(Tags.base_url).editProfilewithImage("Bearer " + userModel.getData().getToken(), api_part, name_part, user_part, lat_part, lng_part, address_part,facebook_part,instagram_part,twitter_part, image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io()).subscribe(new Observer<Response<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposable.add(d);

@@ -86,5 +86,9 @@
     <string name="next">التالي</string>
     <string name="tube_link_not_correct">رابط الفيديو غير صحيح</string>
     <string name="appointment">المواعيد</string>
+    <string name="inv_url">رابط غير صحيح</string>
+    <string name="facebook">فيس بوك</string>
+    <string name="instagram">انستجرام</string>
+    <string name="twitter">تويتر</string>
 
 </resources>

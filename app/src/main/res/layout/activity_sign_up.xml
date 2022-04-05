@@ -64,11 +64,10 @@
                             android:layout_height="match_parent"
                             android:clickable="false"
                             android:longClickable="false"
+                            android:src="@drawable/circle_avatar"
                             app:civ_border_color="@color/white"
                             app:civ_border_width="1dp"
-                            android:src="@drawable/circle_avatar"
                             app:civ_circle_background_color="@color/white" />
-
 
 
                     </FrameLayout>
@@ -99,46 +98,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-
-                    >
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:padding="3dp"
-                        android:src="@drawable/ic_user"
-                        app:tint="@color/gray6"
-
-                        />
-
-                    <EditText
-                        error="@{model.error_name}"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@color/transparent"
-                        android:hint="@string/provider_name"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:singleLine="true"
-                        android:text="@={model.name}"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/gray10"
-                        android:textSize="14sp"
-                        tools:ignore="TextFields" />
-
-
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -208,9 +167,167 @@
                             android:layout_height="250dp"
                             android:layout_marginTop="8dp" />
 
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/facebook"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_url"
+                        app:tint="@color/gray6"
+
+                        />
+
+                    <EditText
+                        error="@{model.error_facebook}"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/transparent"
+                        android:hint="@string/facebook"
+                        android:inputType="textUri"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:text="@={model.facebook}"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray10"
+                        android:textSize="14sp"
+                        tools:ignore="TextFields" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/instagram"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_url"
+                        app:tint="@color/gray6"
+
+                        />
+
+                    <EditText
+                        error="@{model.error_instagram}"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/transparent"
+                        android:hint="@string/instagram"
+                        android:inputType="textUri"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:text="@={model.instagram}"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray10"
+                        android:textSize="14sp"
+                        tools:ignore="TextFields"
+
+                        />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/twitter"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_url"
+                        app:tint="@color/gray6"
+
+                        />
+
+                    <EditText
+                        error="@{model.error_twitter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@color/transparent"
+                        android:hint="@string/twitter"
+                        android:inputType="textUri"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:text="@={model.twitter}"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray10"
+                        android:textSize="14sp"
+                        tools:ignore="TextFields"
+
+                        />
+
+
+                </LinearLayout>
 
 
                 <Button
